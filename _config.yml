@@ -1,1 +1,19 @@
-theme: jekyll-theme-cayman
+name: QComp - Eld
+description: Grupo de Estudos de Computação Quântica
+meta_description: "Grupo de Estudos de Computação Quântica"
+
+markdown: kramdown
+highlighter: rouge
+logo: false
+paginate: 15
+baseurl: 
+domain_name: "https://qcomp-eld.github.io/"
+google_analytics: "UA-XXXXXXXX-X"
+plugins: [jekyll-paginate]
+
+# Details for the RSS feed generator
+url: "https://qcomp-eld.github.io/"
+author: "Your Name"
+
+# Disqus config
+disqus-shortname: ""
