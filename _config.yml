@@ -13,7 +13,7 @@ plugins: [jekyll-paginate]
 
 # Details for the RSS feed generator
 url: "https://qcomp-eld.github.io/"
-author: "Your Name"
+author: "QComp - Instituto Eldorado"
 
 # Disqus config
 disqus-shortname: ""
