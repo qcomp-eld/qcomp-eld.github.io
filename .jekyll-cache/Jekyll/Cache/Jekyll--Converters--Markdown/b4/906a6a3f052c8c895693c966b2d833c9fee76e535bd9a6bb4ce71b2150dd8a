@@ -1,74 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-
-    <title>QComp - Eld - Grupo de Estudos de Computação Quântica</title>
-    <meta name="description" content="Grupo de Estudos de Computação Quântica" />
-
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="MobileOptimized" content="320" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
-    <!-- Customisation  -->
-    <link rel="stylesheet" type="text/css" href="/assets/css/main.css " />
-
-    <!-- for mathjax support -->
-    
-      <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-        TeX: { equationNumbers: { autoNumber: "AMS" } }
-        });
-      </script>
-      <script type="text/javascript" async src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
-
-</head>
-<body class="home-template">
-
-    <header class="main-header post-head no-cover">
-    <nav class="main-nav  clearfix">
-        <a class="back-button icon-arrow-left" href="/">Home</a>
-        <a class="subscribe-button icon-feed" href="/feed.xml">Subscribe</a>
-    </nav>
-</header>
-
-<main class="content" role="main">
-
-    <article class="post">
-
-        <header class="post-header">
-            <h1 class="post-title">O Experimento da Dupla Fenda</h1>
-            <section class="post-meta">
-                
-                    on teoria, computacao-quântica, and educativo
-                
-                <time class="post-date" datetime="2022-05-10">10 May 2022</time>
-            </section>
-        </header>
-
-<!--         <header class="post-header">
-            <a id="blog-logo" href="http://localhost:4000">
-                
-                    <span class="blog-title">QComp - Eld</span>
-                
-            </a>
-        </header> -->
-
-        <!-- <span class="post-meta">
-            <time datetime="2022-05-10">10 May 2022</time>
-            
-                on teoria, computacao-quântica, and educativo
-            
-        </span> -->
-
-        <!-- <h1 class="post-title">O Experimento da Dupla Fenda</h1> -->
-
-        <section class="post-content">
-            <p>Este experimento é interessante por que ilustra as diferenças entre o mundo intuitivo que temos construído e o mundo que é construído a partir dos experimentos em escala atômica.</p>
+I"�(<p>Este experimento é interessante por que ilustra as diferenças entre o mundo intuitivo que temos construído e o mundo que é construído a partir dos experimentos em escala atômica.</p>
 
 <h3 id="o-experimento-de-young">O Experimento de Young</h3>
 
@@ -157,23 +87,14 @@ em que presumimos uma interferência negativa, ou destrutiva, aconteceu.</p>
 
 <p>Neste caso final, uma fonte de luz é colocada depois das fendas e alguns detectores são acionados. Eles são reponsáveis por observar cada um sua fenda e determinar se o elétron passou por lá ou não. Quando um elétron passa pela fenda 1 então o detector \(D_1\) é acionado, quando o elétron passa pela fenda 2 o detector \(D_2\) é acionado.</p>
 
-<p><img src="/assets/images/determinar_a_fenda.png" alt="Experimento com detectores" /></p>
+<p><img src="/assets/images/determinar_a_fenda.png" alt="Experimento com projéteis" /></p>
 
-<p>Quando repetimos os três cenários de observação, primeiro tampando a fenda 2, depois tampando a fenda 1 e por fim deixando ambas abertas o resultado é:</p>
-
-<p><img src="/assets/images/eletron_observado.png" alt="Experimento com detectores" /></p>
+<p><img src="/assets/images/eletron_observado.png" alt="Experimento com projéteis" /></p>
 
 <p><img src="/assets/images/particula_comportamento.jpg" alt="Experimento com projéteis" /></p>
 
-<p>O que acontece é que quando passamos a observar por qual fenda o elétron passou  o resultado é o que o padrão de interferência desaparece! Quando observamos a posição do elétron antes de chegar no anteparo, o elétron para de se comportar como onda e passa a se comportar com partícula. <em>Percebemos que a partícula permanece em superposição até interagir com outros objetos</em>. Quando esta interação acontece chamamos de <em>observação</em>.</p>
-
-<p>Em mais uma disposição da experiência, a intensidade da fonte de luz é reduzida e por isso nem sempre é possível aos detectores perceber por qual fenda o elétron passou. Este caso considera quando o detector não é muito aguçado, consegue observar alguns elétrons mas não todos. O resultado é um misto entre as figuras de interfências e a de partícula.</p>
-
-<p><img src="/assets/images/detector_pouco_agu%C3%A7ado.jpg" alt="Experimento com projéteis" /></p>
-
-<h3 id="por-que-não-observamos-a-superposição-no-cotidiano">Por que não observamos a superposição no cotidiano?</h3>
-
-<p>O que acontece no nosso mundo cotidiano é que os corpos não estão isolados. O isolamento é parte fundamental para que a superposição aconteça. A interação faz com que conhecimento sobre as características dos corpos sejam conhecidos e a superposição se desfaz.</p>
+<p>O que acontece é que quando passamos a observar por qual fenda o elétron passou  o resultado é o que o padrão de interferência desaparece!
+<em>Percebemos que a partícula permanece em superposição até interagir com outros objetos$. Quando esta interação acontece chamamos de $observação</em>.</p>
 
 <h3 id="curiosidades">Curiosidades</h3>
 
@@ -181,81 +102,4 @@ em que presumimos uma interferência negativa, ou destrutiva, aconteceu.</p>
 
 <p><img src="/assets/images/bologna-image.jpg" alt="Experimento realizado por Pier Giorgio Merli, Giulio Pozzi and GianFranco Missiroli em Bologna" /></p>
 
-
-        </section>
-
-        
-
-        <footer class="post-footer">
-            <!-- If we want to display author's name and bio -->
-            
-                <figure class="author-image">
-                    <a class="img" href="/" style="background-image: url(/assets/images/profile.png)">
-                    <span class="hidden">Your Name's Picture</span></a>
-                </figure>
-                <section class="author">
-                    <!-- Author Name -->
-                    <h4> Your Name </h4>
-                    <!-- Author Bio -->
-                    <p>
-                        Here goes the author description. You might want to place some links too in here
-                    </p>
-                </section>
-            
-
-            <!-- Share links section -->
-            <section class="share">
-    <h4>Share this post</h4>
-    <a class="icon-twitter" href="http://twitter.com/share?text=O Experimento da Dupla Fenda&amp;url=https://qcomp-eld.github.io//teoria/computacao-qu%C3%A2ntica/educativo/2022/05/10/o-experimento-da-dupla-fenda.html"
-        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-        <span class="hidden">Twitter</span>
-    </a>
-    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://qcomp-eld.github.io//teoria/computacao-qu%C3%A2ntica/educativo/2022/05/10/o-experimento-da-dupla-fenda.html"
-        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-        <span class="hidden">Facebook</span>
-    </a>
-    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://qcomp-eld.github.io//teoria/computacao-qu%C3%A2ntica/educativo/2022/05/10/o-experimento-da-dupla-fenda.html"
-       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-        <span class="hidden">Google+</span>
-    </a>
-</section>
-
-            <!-- Disqus comments -->
-            
-
-        </footer>
-
-    </article>
-
-</main>
-
-    <footer class="site-footer clearfix">
-      <section class="copyright">
-        <a href="">QComp - Eld</a> &copy; 
-              2022 &bull; All rights reserved.
-      </section>
-      <section class="poweredby">Made with Jekyll using 
-        <a href="http://github.com/rosario/kasper">Kasper theme</a>
-      </section>
-    </footer>
-    
-    <script type="text/javascript" src="/assets/js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
-    <script type="text/javascript" src="/assets/js/index.js"></script>
-
-    <!-- Google Analytics Tracking code -->
-    <script type="text/javascript">
-
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-
-    </script>   
-</body>
-</html>
+:ET
