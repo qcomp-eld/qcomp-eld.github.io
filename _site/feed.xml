@@ -5,46 +5,134 @@
     <description>Grupo de Estudos de Computação Quântica</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+<<<<<<< HEAD
     <pubDate>Tue, 17 May 2022 14:53:07 -0300</pubDate>
     <lastBuildDate>Tue, 17 May 2022 14:53:07 -0300</lastBuildDate>
+=======
+    <pubDate>Sat, 28 May 2022 05:22:49 -0300</pubDate>
+    <lastBuildDate>Sat, 28 May 2022 05:22:49 -0300</lastBuildDate>
+>>>>>>> Artigo portas iniciais
     <generator>Jekyll v4.2.2</generator>
     
       <item>
-        <title>Portas Single-Qubit</title>
+        <title>Portas Quânticas Iniciais (Pauli)</title>
         <description>&lt;p&gt;Portas lógicas formam a base da computação clássica. São ferramentas utilizadas para realização de operações lógicas utilizando bits.
 Quando nos referimos à computação quântica, temos um base computacional ainda em construção, com portas lógicas especificamente criadas para lidarem com Qubits (Bits quânticos).
-No presente artigo serão abordadas as portas lógicas mais simples, que lidam com apenas um qubit, para aprofundarmos nosso conhecimento na nova base computacional que vem sendo criada!&lt;/p&gt;
+No presente artigo serão abordadas as portas lógicas mais simples, que lidam com apenas um qubit, para aprofundarmos nosso conhecimento em computação quântica!&lt;/p&gt;
 
 &lt;h3 id=&quot;computação-clássica&quot;&gt;Computação Clássica&lt;/h3&gt;
-&lt;p&gt;Atualmente, a computação é amplamente utilizada em ….
-É baseada em bits, que representam a menor unidade possível para armazenamento de informações digitais, possuindo dois estados possíveis: 0 ou 1.
-Sistemas digitais que formam os circuitos utilizados amplamente ao redor do mundo são todos baseados em bits e em sua manipulação, para obter assim o resultado desejado com sua aplicação.
-Para manipular bits e criar lógicas complexas a partir de unidades simples, utiliza-se a conhecida “Álgebra Booleana”, onde é possível criar expressões complexas a partir de bits e operações
-predefinidas que podem ser aplicadas a eles. Dentre as operações booleanas existentes, as mais conhecidas são: AND (E), OR (OU), NOT (NEGAÇÃO),&lt;/p&gt;
+&lt;p&gt;Atualmente, a computação classica baseada em conceitos digitais, é amplamente utilizada no mundo todo e baseada em bits, 
+que representam a menor unidade possível para armazenamento de informações digitais, possuindo dois estados possíveis: 0 ou 1.
+Sistemas digitais são todos baseados na manipulação dos bits e para isso, utilizam-se da conhecida “Álgebra Booleana”, onde é possível criar expressões complexas a partir de bits e operações
+predefinidas que podem ser aplicadas a eles. Dentre as operações booleanas existentes, as mais conhecidas são: AND (E), OR (OU), NOT (NEGAÇÃO).&lt;/p&gt;
 
-&lt;p&gt;###&lt;/p&gt;
+&lt;h3 id=&quot;portas-lógicas-digitais&quot;&gt;Portas Lógicas Digitais&lt;/h3&gt;
+&lt;p&gt;As portas lógicas representam aplicações fisicas das operações booleanas, que podem ser aplicadas diretamente aos bits e que podem ser construídas através de circuitos eletrônicos. As mais famosas são:&lt;/p&gt;
+&lt;h5 id=&quot;porta-and-e&quot;&gt;Porta AND (E)&lt;/h5&gt;
+&lt;p&gt;Realiza uma comparação entre dois bits representada como uma multiplicação (.), ou seja, possui dois bits de entrada, e caso ambos estejam no valor 1, o resultado será 1. Caso contrário, o resultado será sempre 0.
+&lt;img src=&quot;/assets/images/portas-simples/AND-Gate.png&quot; alt=&quot;Porta AND&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;porta-or-ou&quot;&gt;Porta OR (OU)&lt;/h5&gt;
+&lt;p&gt;Realiza uma comparação entre dois bits representada como uma soma (+). Caso qualquer um dos bits de entreda possua o valor 1, a saída será 1, ou seja, a única situação possível de retornar 0 será quando os dois bits de entrada estiverem zerados.
+&lt;img src=&quot;/assets/images/portas-simples/OR-Gate.png&quot; alt=&quot;Porta OR&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;porta-not-negação&quot;&gt;Porta NOT (NEGAÇÃO)&lt;/h5&gt;
+&lt;p&gt;Realiza a inversão do valor de entrada. Possui apenas um bit de entrada e seu retorno é o valor oposto, então caso o bit de entrada possua o valo 1, a operação resultará em 0 e assim respectivamente.
+&lt;img src=&quot;/assets/images/portas-simples/NOT-Gate.png&quot; alt=&quot;Porta NOT&quot; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;o-estado-de-um-qubit&quot;&gt;O estado de um Qubit&lt;/h3&gt;
-&lt;p&gt;Antes de abordar diretamente sobre as operações lógicas realizadas com qubits, precisamos definir brevemente seu estado. Qubits, diferentemente de bits clássicos, seguem diretamente as regras da 
-mecânica quântica, permitindo assim uma gama maior e mais complexa de estados possíveis, enquanto bits clássicos possuem apenas dois estados: 0 e 1.
-De forma similar, qubits também possuem os estados 0 e 1, porém, tendo em mente que a abordagem utilizada baseia-se diretamente em comportamentos quânticos, a superposição desses estados é permitida e os estados deixam de ser determinísticos para se tornarem probabilisticos, de forma que apenas saberemos realmente o estado atual de um qubit ao medí-lo. Assim sendo, antes da medição, não podemos afirmar com certeza o valor
-do estado de um qubit, mas sim a probabilidade de que, ao medí-lo, determinado valor será encontrado.&lt;/p&gt;
+&lt;p&gt;Antes de abordar diretamente sobre as operações lógicas realizadas com qubits, precisamos definir brevemente seu estado, que precisa ser considerado de uma maneira diferente de bits clássicos. Qubits seguem diretamente as regras da mecânica quântica, permitindo assim uma gama maior e mais complexa de estados possíveis.&lt;/p&gt;
 
-&lt;h3 id=&quot;state-vectors&quot;&gt;State-Vectors&lt;/h3&gt;
+&lt;p&gt;Enquanto bits clássicos possuem apenas seus dois estados fundamentais: 0 e 1, de forma similar, qubits também possuem os estados 0 e 1, porém, tendo em mente que a abordagem utilizada baseia-se diretamente nas leis da mecânica quântica, a superposição desses estados é permitida e eles deixam de ser determinísticos para se tornarem probabilisticos!&lt;/p&gt;
 
-&lt;h3 id=&quot;superposição&quot;&gt;Superposição&lt;/h3&gt;
+&lt;p&gt;Dessa forma, apenas saberemos realmente o estado atual de um qubit ao medí-lo. Assim sendo, antes da medição, não podemos afirmar com certeza o valor do estado de um qubit, mas sim a probabilidade de que, ao medí-lo, determinado valor será encontrado.&lt;/p&gt;
 
-&lt;h3 id=&quot;bloch-sphere&quot;&gt;Bloch Sphere&lt;/h3&gt;
+&lt;h5 id=&quot;state-vectors&quot;&gt;State-Vectors&lt;/h5&gt;
+&lt;p&gt;Assim sendo, pode-se representar o estado de um qubit de diversas maneiras, uma delas é a partir de vetores de estado, que é um vetor composto pelas amplitudes dos respectivos estados de um qubit. Na imagem abaixo, podemos ver o vetor de estados de um qubit nos estados 0 e 1.&lt;/p&gt;
 
-&lt;h3 id=&quot;matrizes-de-transferência&quot;&gt;Matrizes de transferência&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-simples/state_vectors.png&quot; alt=&quot;Vetores de estado&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;portas-pauli&quot;&gt;Portas Pauli&lt;/h3&gt;
+&lt;p&gt;As amplitudes, referem-se à raíz quadrada da probabilidade, para possibilitar a utilização de números negativos durante a manipulação de estados do qubits a partir de Algebra Linear.&lt;/p&gt;
 
-&lt;h3 id=&quot;porta-hadamard&quot;&gt;Porta Hadamard&lt;/h3&gt;
+&lt;p&gt;O sinal presente nos valores dos estados representa a “fase” do estado, que define também sua forma de interferência. Como devemos seguir à risca as leis da mecânica quântica, é possível que após determinada operação os estados em superposição se excluam mutuamente devido à interferência, por conta desse comportamento é necessária a utilização do sinal para indicação da fase.&lt;/p&gt;
 
-&lt;h3 id=&quot;entaglement&quot;&gt;Entaglement&lt;/h3&gt;
+&lt;p&gt;Como um valor negativo não faz sentido no contexto de probabilidades, utiliza-se sua raíz-quadrada, de forma que a propabilidade sempre será o quadrado da amplitude, removendo valores negativos.&lt;/p&gt;
 
-&lt;p&gt;A primeira vez que se tem conhecimento que este experimento foi realizado foi por &lt;a href=&quot;https://en.wikipedia.org/wiki/Thomas_Young_(scientist)&quot;&gt;Thomas Young&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-simples/amplitude-rule.png&quot; alt=&quot;Regra da Amplitude&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Com a possibilidade da superposição entre os estados, podemos visualizar o estado geral de um qubit como a combinação de dois estados complexos, algebricamente cada possível estado é um número composto por uma parte real e uma imaginária, esse comportamento é expressado a partir da definição abaixo:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-simples/algebric_state.png&quot; alt=&quot;Estado Algébrico&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;bloch-sphere&quot;&gt;Bloch Sphere&lt;/h4&gt;
+&lt;p&gt;Por conta de seu comportamento probabilístico, temos que ao representar um qubit como um vetor de amplitudes, também devemos permitir que os seus componentes sejam números complexos, como mencionado anteriormente. Dessa forma, inicialmente seria impossível criar uma visão geométrica precisa do estado de um qubit, pois quatro dimensões seriam necessárias.&lt;/p&gt;
+
+&lt;p&gt;Tendo esse problema em mente, o físico Felix Bloch criou a Block Sphere. A Bloch sphere consiste em uma representação geométrica da imagem acima (Estado algébrico), em que passa-se a considerar um terceiro eixo como sendo a diferença de fase entre as outras duas componentes. Assim, é possível representar em 3 dimensões todas as 4 propriedades. Abaixo, podemos ver uma imagem da &lt;a href=&quot;https://javafxpert.github.io/grok-bloch/&quot;&gt;Bloch Sphere&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-simples/bloch-2.png&quot; alt=&quot;Block Sphere&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;circuito-quântico&quot;&gt;Circuito Quântico&lt;/h3&gt;
+&lt;p&gt;Assim como na computação clássica, na computação quântica portas lógicas vêm sendo desenvolvidas para aplicar operações pre-definidas aos qubits. Como o estado atual dos qubits é composto por números complexos representados como vetores, tem-se que as portas quânticas são equivalentes a uma determinada “Matriz de Transferência.” As “Matrizes de Transferência” são desenvolvidas para aplicar determinada operação ao vetor de estado de um qubit a partir de sua multiplicação algébrica e assim obter .
+Atualmente, algoritmos quânticos ainda são desenvolvidos no formato de circuitos, em que possuimos qubits de entrada e podemos aplicar portas quânticas em suas trilhas para alterar seu comportamento. Ao final do circuito, deve-se realizar a medição do valor atual do qubit, na imagem abaixo, pode-se ver um exemplo de circuito quântico:
+(Para os exemplos nesse artigo, foram utilizadas imagens da documentação Qiskit e do IBM Quantum Composer)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-simples/quantum_circuit.png&quot; alt=&quot;Circuito Quântico&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;portas-de-pauli&quot;&gt;Portas de Pauli&lt;/h4&gt;
+&lt;p&gt;Dentre as portas quânticas já desenvolvidas, as mais simples são aquelas que possuem apenas 1 qubit de entrada e uma saída. Nesse artigo serão abordadas as portas de Pauli, que são a porta de entrada para o estudo das portas quânticas existentes.&lt;/p&gt;
+
+&lt;h5 id=&quot;porta-x-not&quot;&gt;Porta X (NOT)&lt;/h5&gt;
+&lt;p&gt;A porta X é constantemente relacionada com a porta digital NOT, pois ela é capaz de inverter o estado de um qubit. Na imagem abaixo, pode-se visualizar sua matriz de transferência.
+&lt;img src=&quot;/assets/images/portas-simples/x_matrix.png&quot; alt=&quot;X-Gate&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Para realizarmos a aplicação da matriz de transferência no qubit, realizamos uma simples multiplicação matricial a partir de seu vetor de estado e a matriz, como podemos visualizar na imagem abaixo:
+&lt;img src=&quot;/assets/images/portas-simples/Matrix-multiplication.png&quot; alt=&quot;Gate-Product&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Aplicando a mesma operação com uma porta X, temos:
+&lt;img src=&quot;/assets/images/portas-simples/x_matrix_calc.png&quot; alt=&quot;X-Gate-Calc&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Sendo assim, podemos perceber que a porta X tem a capacidade de inverter diretamente o valor do qubit, porém também pode-se visualizar como a aplicação de uma movimentação Pi no eixo X da bloch sphere, como podemos perceber na imagem abaixo:
+&lt;img src=&quot;/assets/images/portas-simples/Bloch-X.png&quot; alt=&quot;X-Gate-Calc&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Exemplos utilizando o IBM Quantum Composer:
+&lt;img src=&quot;/assets/images/portas-simples/Composer-X.png&quot; alt=&quot;Composer-X&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;portas-y-e-z&quot;&gt;Portas Y e Z&lt;/h5&gt;
+&lt;p&gt;As portas Y e Z possuem características muito similares à porta X, também geram rotações por Pi, porém nos eixos Y e Z da Bloch Sphere respectivamente. Na imagem abaixo pode-se visualizar as respectivas matrizes de transferência:
+&lt;img src=&quot;/assets/images/portas-simples/Y and Z.png&quot; alt=&quot;Y-And-Z-Gates&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Como mencionado anteriormente, a rotação na bloch sphere ocorre nos eixos Y e Z, como representado abaixo:
+&lt;img src=&quot;/assets/images/portas-simples/Bloch-Y.png&quot; alt=&quot;Y-Gate-Rotation&quot; /&gt;
+&lt;img src=&quot;/assets/images/portas-simples/Bloch-Z.png&quot; alt=&quot;Z-Gate-Rotation&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Exemplos utilizando o IBM Quantum Composer:
+&lt;img src=&quot;/assets/images/portas-simples/Composer-Y.png&quot; alt=&quot;Composer-Y&quot; /&gt;
+&lt;img src=&quot;/assets/images/portas-simples/Composer-Z.png&quot; alt=&quot;Composer-Z&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;porta-i&quot;&gt;Porta I&lt;/h5&gt;
+&lt;p&gt;A porta I possui sua matriz de transferência similar às demais, porém com a peculiaridade de deixar a entrada intacta, sem aplicar nenhum tipo de alteração. A porta I, também conhecida por “Identidade” acaba por ser util ao realizar arranjos com expressões complexas e também para ser implementado um hardware que respectivamente apenas disponibilize um sinal exatamente igual ao recebido em sua saída. A respectiva matriz de transferência pode ser visualizada na imagem abaixo:
+&lt;img src=&quot;/assets/images/portas-simples/Pauli-I-c.png&quot; alt=&quot;I-Gate&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Exemplos utilizando o IBM Quantum Composer:
+&lt;img src=&quot;/assets/images/portas-simples/Composer-H-0.png&quot; alt=&quot;Composer-H-0&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;superposição&quot;&gt;Superposição&lt;/h4&gt;
+&lt;p&gt;A superposição acaba por ser a base para a utilidade prática da computação quântica e um dos principais motivos para que ela seja considerada de extrema importância para o futuro. A ideia de superposição segue estritamente as regras da mecânica quântica, definindo que um qubit pode estar em nos dois estados ao mesmo tempo, isso é possível pois devemos ter em mente que, nesse caso, o estado refere-se à probabilidade de um determinado estado real ser encontrado naquele momento, isso implica que o estado atual do qubit não é determinístico, mas sim probabilístico e é representado por uma expressão complexa de coeficientes multiplicados pelos estados possíveis, como demonstrado acima. A utilidade prática de um computador quântico vem à tona quando imaginamos esse tipo de informação sendo tratada de forma nativa por um hardware, da forma que bits são tratados por equipamentos digitais, assim temos a possibilidade de realizar cálculos e aproximações complexas, como a simulação de uma molécula, apenas correlacionando estados de qubits em superposição.
+Até o momento, todas as portas de Pauli demonstradas não necessariamente estão considerando esse efeito, pois elas apenas rotacionam o valor de um qubit, independente de seu estado atual, então se partirmos do pressuposto que estamos utilizando o qubit que inicia no estado 0, utilizando apenas as portas de Pauli, permanecemos com respostas determinísticas na saída, pois apenas rotacionando a partir do estado 0 ainda pode-se saber com certeza qual estado será atingido.&lt;/p&gt;
+
+&lt;h5 id=&quot;porta-hadamard&quot;&gt;Porta Hadamard&lt;/h5&gt;
+&lt;p&gt;Para poder gerar o comportamento de superposição no estado de um qubit, utiliza-se a porta de Hadamard, sua matriz de transferência pode ser visualizada abaixo:
+&lt;img src=&quot;/assets/images/portas-simples/H-Matrix.png&quot; alt=&quot;H-Gate&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ao aplicar-se a porta Hadamard podemos ver os seguintes resultados:
+&lt;img src=&quot;/assets/images/portas-simples/H-States.png&quot; alt=&quot;H-States&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Que são notações definidas para os estados:
+&lt;img src=&quot;/assets/images/portas-simples/Superposition-states.png&quot; alt=&quot;Superposition-States&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Exemplos utilizando o IBM Quantum Composer:
+&lt;img src=&quot;/assets/images/portas-simples/Composer-H-0.png&quot; alt=&quot;Composer-H-0&quot; /&gt;
+&lt;img src=&quot;/assets/images/portas-simples/Composer-H-1.png&quot; alt=&quot;Composer-H-1&quot; /&gt;&lt;/p&gt;
 
 </description>
         <pubDate>Fri, 20 May 2022 05:00:00 -0300</pubDate>
