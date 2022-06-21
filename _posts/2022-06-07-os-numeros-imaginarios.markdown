@@ -2,6 +2,7 @@
 layout: post
 title:  "Os Números Imaginários, uma base para Computação Quântica"
 date:   2022-06-07 12:13:00
+author: carla_dias
 categories: matemática computacao-quântica educativo números-imaginários
 usemathjax: true
 excerpt_separator: <!--more-->

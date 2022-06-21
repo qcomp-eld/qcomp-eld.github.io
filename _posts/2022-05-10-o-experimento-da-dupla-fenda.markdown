@@ -2,6 +2,7 @@
 layout: post
 title:  "O Experimento da Dupla Fenda"
 date:   2022-05-10 14:24:00
+author: carla_dias
 categories: teoria computacao-quântica educativo
 usemathjax: true
 ---
