@@ -5,8 +5,8 @@
     <description>Grupo de Estudos de Computação Quântica</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 05 Jul 2022 12:43:11 -0300</pubDate>
-    <lastBuildDate>Tue, 05 Jul 2022 12:43:11 -0300</lastBuildDate>
+    <pubDate>Tue, 05 Jul 2022 15:16:55 -0300</pubDate>
+    <lastBuildDate>Tue, 05 Jul 2022 15:16:55 -0300</lastBuildDate>
     <generator>Jekyll v4.2.2</generator>
     
       <item>
@@ -38,7 +38,8 @@ A expressão número complexo foi introduzida em 1832 por Gauss.&lt;/p&gt;
 
 &lt;p&gt;Desta forma, podemos definir os números complexos “(…) como distâncias ao logo de direções arbitrárias num plano fixado.” (Conway, 1999, p230).&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/numeros-imagninarios/complexos_Figura4.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/numeros-imagninarios/complexos_Figura4.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: https://www.somatematica.com.br/emedio/complexos/complexos.php&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;propriedades-dos-números-complexos&quot;&gt;Propriedades dos números complexos&lt;/h3&gt;
 
@@ -50,7 +51,8 @@ A expressão número complexo foi introduzida em 1832 por Gauss.&lt;/p&gt;
 
 &lt;p&gt;Podemos representar este número como um vetor em um plano complexo bidimensional.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/numeros-imagninarios/numeros-complexos2.jpg&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/numeros-imagninarios/numeros-complexos2.jpg&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: https://www.infoescola.com/matematica/numeros-complexos/&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;Desta maneira, um par ordenado pode ser identificado como um ponto, como um vetor e ainda como um número complexo. O número complexo, nada mais é do que uma grandeza comporta de duas dimensões.&lt;/p&gt;
 
@@ -86,11 +88,13 @@ A expressão número complexo foi introduzida em 1832 por Gauss.&lt;/p&gt;
 
 &lt;p&gt;Considerando um número complexo \(z = a + bi\), o seu complexo conjugado \(\bar{z} = a - bi\).&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/numeros-imagninarios/C_6_v4_sabsegunda.png&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/numeros-imagninarios/C_6_v4_sabsegunda.png&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://wikiciencias.casadasciencias.org/wiki/index.php/Conjugado_de_um_n%C3%BAmero_complexo&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;O complexo conjungado pode ser vista como a inversão de sinal da parte imaginária do número, ou na forma trigonométrica como a inversão da fase.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/numeros-imagninarios/C_6.1FF_novo_2_sab.png&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/numeros-imagninarios/C_6.1FF_novo_2_sab.png&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://wikiciencias.casadasciencias.org/wiki/index.php/Conjugado_de_um_n%C3%BAmero_complexo&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;Uma relação interessante existe nos números complexos em relação ao seu módulo:&lt;/p&gt;
 
@@ -135,13 +139,13 @@ A expressão número complexo foi introduzida em 1832 por Gauss.&lt;/p&gt;
 &lt;h3 id=&quot;referências&quot;&gt;Referências&lt;/h3&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;https://pt.wikipedia.org/wiki/Ficheiro:Conjugado_de_um_N%C3%BAmero_Complexo.png&lt;/li&gt;
-  &lt;li&gt;https://pt.wikipedia.org/wiki/N%C3%BAmero_complexo&lt;/li&gt;
-  &lt;li&gt;https://noic.com.br/materiais-fisica/ideias/fisica-ideia-37/&lt;/li&gt;
-  &lt;li&gt;https://www.infoescola.com/matematica/numeros-complexos/&lt;/li&gt;
-  &lt;li&gt;https://www.infoescola.com/wp-content/uploads/2017/05/numeros-complexos2.jpg&lt;/li&gt;
-  &lt;li&gt;https://www.ime.unicamp.br/~tcunha/Teach/bit_quantico_VIIIBienal.pdf&lt;/li&gt;
-  &lt;li&gt;https://wikiciencias.casadasciencias.org/wiki/index.php/Conjugado_de_um_n%C3%BAmero_complexo&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://pt.wikipedia.org/wiki/Ficheiro:Conjugado_de_um_N%C3%BAmero_Complexo.png&quot;&gt;https://pt.wikipedia.org/wiki/Ficheiro:Conjugado_de_um_N%C3%BAmero_Complexo.png&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://pt.wikipedia.org/wiki/N%C3%BAmero_complexo&quot;&gt;https://pt.wikipedia.org/wiki/N%C3%BAmero_complexo&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://noic.com.br/materiais-fisica/ideias/fisica-ideia-37/&quot;&gt;https://noic.com.br/materiais-fisica/ideias/fisica-ideia-37/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.infoescola.com/matematica/numeros-complexos/&quot;&gt;https://www.infoescola.com/matematica/numeros-complexos/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.ime.unicamp.br/~tcunha/Teach/bit_quantico_VIIIBienal.pdf&quot;&gt;https://www.ime.unicamp.br/~tcunha/Teach/bit_quantico_VIIIBienal.pdf&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://wikiciencias.casadasciencias.org/wiki/index.php/Conjugado_de_um_n%C3%BAmero_complexo&quot;&gt;https://wikiciencias.casadasciencias.org/wiki/index.php/Conjugado_de_um_n%C3%BAmero_complexo&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.somatematica.com.br/emedio/complexos/complexos.php&quot;&gt;https://www.somatematica.com.br/emedio/complexos/complexos.php&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         <pubDate>Tue, 07 Jun 2022 09:13:00 -0300</pubDate>
@@ -334,28 +338,35 @@ Fonte: &lt;a href=&quot;https://quantum-computing.ibm.com/composer/&quot;&gt;IBM
 
 &lt;p&gt;A primeira vez que se tem conhecimento que este experimento foi realizado foi por &lt;a href=&quot;https://en.wikipedia.org/wiki/Thomas_Young_(scientist)&quot;&gt;Thomas Young&lt;/a&gt; em 1801. Nesta época tinha-se o pensamento de que a luz consistia ou de ondas ou de partículas. Newton era defensor de que a luz fosse composta de partículas enquanto que Huygens defendia que a luz fosse uma onda. Thomas Young foi importante para a construção da ideia de que a luz tinha uma natureza ondular. Ja que ele demonstrou que com a luz acontecia o efeito chamado de &lt;a href=&quot;https://pt.wikipedia.org/wiki/Difra%C3%A7%C3%A3o&quot;&gt;Difração&lt;/a&gt;, um fenômeno físico que ocorre quando uma onda se deforma após encontrar um obstáculo.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/difracao_ondas_mar.jpg&quot; alt=&quot;Difração nas ondas do Mar&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/difracao_ondas_mar.jpg&quot; alt=&quot;Difração nas ondas do Mar&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://www.texasgateway.org/resource/171-understanding-diffraction-and-interference&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;Acontece então que pelo princípio de Huygens cada ponto de uma frente de onda possui a funcionalidade de uma nova fonte pontual. Neste processo, cada nova onda interage uma com as outras de forma a compor a nova frente de onda resultante. Este processo de interação é chamado &lt;em&gt;Interferência&lt;/em&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/500px-Refraction_on_an_aperture_-_Huygens-Fresnel_principle.svg.png&quot; alt=&quot;Difração segundo os princípios de Huygens&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/500px-Refraction_on_an_aperture_-_Huygens-Fresnel_principle.svg.png&quot; alt=&quot;Difração segundo os princípios de Huygens&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://en.wikipedia.org/wiki/Huygens%E2%80%93Fresnel_principle#/media/File:Refraction_on_an_aperture_-_Huygens-Fresnel_principle.svg&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;O padrão de interferência varia conforme o tamanho da abertura em relação ao tamanho do cumprimento de onda.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/tamanhos_diferentes_abertura.jpg&quot; alt=&quot;Aberturas diferentes&quot; /&gt;
-&lt;img src=&quot;/assets/images/dupla-fenda/tamanho_cumprimento_onda.jpg&quot; alt=&quot;Aberturas diferentes&quot; /&gt;&lt;/p&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://www.texasgateway.org/resource/171-understanding-diffraction-and-interference&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/tamanho_cumprimento_onda.jpg&quot; alt=&quot;Aberturas diferentes&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://cnx.org/contents/_aXvpa21@1.100:qsjr0i21@3/Single-Slit-Diffraction&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;o-experimento&quot;&gt;O Experimento&lt;/h3&gt;
 
 &lt;p&gt;O experimento consiste em projetar um feixe de luz através de duas fendas e perceber a figura projetada em um anteparo colocado depois da fenda.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/young.jpg&quot; alt=&quot;O Experimento&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/young.jpg&quot; alt=&quot;O Experimento&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://www.texasgateway.org/resource/171-understanding-diffraction-and-interference&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;Ao invés de mostrar apenas o formato das duas fendas no anteparo, é possivel ver mais que duas figuras projetadas no fundo da caixa.&lt;/p&gt;
 
 &lt;p&gt;Se a luz fosse de pequenas unidades de matéria, estas iriam se comportar passando por uma pequena fresta ou por outra, seguindo em linha reta e apresentando o seguinte padrão no fundo da caixa.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/padrao_particula.jpg&quot; alt=&quot;Padrão de Interferência com uma única fenda&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/padrao_particula.jpg&quot; alt=&quot;Padrão de Interferência com uma única fenda&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://mybigtoe.com.br/experimento-dupla-fenda-quantica/&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;Porém, o visto é um padrão chamado de interferência, em que há posições em que acontece interferência construtiva e há posições em que acontece interferência destrutiva.&lt;/p&gt;
 
@@ -363,7 +374,8 @@ Fonte: &lt;a href=&quot;https://quantum-computing.ibm.com/composer/&quot;&gt;IBM
 
 &lt;p&gt;Aqui, usei este &lt;a href=&quot;https://www.openstaxcollege.org/l/28interference&quot;&gt;simulador&lt;/a&gt; na opção Diffraction para observamos as possíveis figuras projetadas. No experimento, um lazer com comprimento de onda variável é apontado para um anteparo com algumas opções de aberturas.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/unica_fenda.PNG&quot; alt=&quot;Padrão de Interferência com uma única fenda&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/unica_fenda.PNG&quot; alt=&quot;Padrão de Interferência com uma única fenda&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://www.openstaxcollege.org/l/28interference&lt;/em&gt;   &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;Podemos perceber então, um padrão em que a figura formada é muito maior que a fenda, quanto menor inclusive o tamanho da fenda maior o espalhamento da figura.
 A figura apresenta uma maior intensidade no meio e vai diminuindo sua intensidade conforme se afasta do centro, porém, existem alguns pontos em que nenhuma luz chega
@@ -371,7 +383,8 @@ em que presumimos uma interferência negativa, ou destrutiva, aconteceu.&lt;/p&g
 
 &lt;p&gt;E qual seria o padrão visto no caso de haver duas fendas?&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/duas_fendas_experimento.PNG&quot; alt=&quot;Padrão de Interferência com duas fendas&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/duas_fendas_experimento.PNG&quot; alt=&quot;Padrão de Interferência com duas fendas&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://www.openstaxcollege.org/l/28interference&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;É um padrão de interferência.&lt;/p&gt;
 
@@ -383,19 +396,23 @@ em que presumimos uma interferência negativa, ou destrutiva, aconteceu.&lt;/p&g
 
 &lt;p&gt;A ideia era repetir a construção de Young, uma vez utilizando um atirador de projéteis que atiraria através das fendas. As balas só ultrapassam através das fendas. Varios detectores são espalhados pelo anteparo depois das fendas. Ao final de um certo tempo em que o disparador atira projéteis, conta-se as balas em cada detector e se pode fazer uma distribuição diferentes posições é obtida.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_experimento.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_experimento.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: http://www.if.ufrgs.br/historia/young.html&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;Em um primeiro cenário, apenas a primeira fenda está aberta.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_cenario1.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_cenario1.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: http://www.if.ufrgs.br/historia/young.html&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;No segundo cenário, apenas a segunda fenda está aberta.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_cenario2.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_cenario2.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: http://www.if.ufrgs.br/historia/young.html&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;E no terceiro cenário, as duas fendas estão abertas.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_cenario3.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_cenario3.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: http://www.if.ufrgs.br/historia/young.html&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;Perceba que não existem regiões vagas de projéteis, em que projéteis possam não ter chegado de alguma forma. A distribuição das posições que os projéteis chegam ao anteparo final com as duas fendas abertas é percebido como a soma das distribuições de quando cada um das fendas está fechada. Entendemos que as distribuições do cenário 1 e 2 são independentes e por isso, a propabilidade de um projétil chegar em um ponto x é sempre a soma da probabilidade do projétil chegar na posição vindo pela fenda 1 com a probabilidade do projetil chegar na mesma posição vinda pela fenda 2.&lt;/p&gt;
 
@@ -403,7 +420,8 @@ em que presumimos uma interferência negativa, ou destrutiva, aconteceu.&lt;/p&g
 
 &lt;p&gt;Da mesma maneira, considera-se que seja possível criar um disparador de elétrons. Este disparador envia um elétron por vez. O disparador atira os elétrons através de duas fendas e sobre o aparato final existem detectores que registram em que posição o elétron o atingiu. Repetimos os mesmos três cenários do caso de projéteis. A distribuição P&lt;sub&gt;1&lt;/sub&gt; foi construída enquanto a fenda 2 estava fechada. A distribuição P&lt;sub&gt;2&lt;/sub&gt; foi construída quando a fenda 1 estava fechada. E, a distribuição P&lt;sub&gt;12&lt;/sub&gt; foi construída com as duas fendas abertas.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/electron_gun.png&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/electron_gun.png&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: https://quantummechanics.ucsd.edu/ph130a/130_notes/node68.html&lt;/em&gt;&lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;Acontece agora que, quando as duas fendas estão abertas, os eventos de passar por uma fenda ou outra não são mais independentes. Eventos independentes podem ser somados, o que nao acontece na distribuição P&lt;sub&gt;12&lt;/sub&gt;, ela não é a simples soma dos eventos independentes de passar por uma fenda ou passar por outra. Um ajuste matemático é necessário fazer para determinar a distribuição P&lt;sub&gt;12&lt;/sub&gt;. Aparentemente, P&lt;sub&gt;1&lt;/sub&gt; ou P&lt;sub&gt;2&lt;/sub&gt; tem componentes em si que nem sempre são positivas \(\phi\)&lt;sub&gt;1&lt;/sub&gt; e \(\phi\)&lt;sub&gt;2&lt;/sub&gt;. Algumas vezes,  estas componentes tem sinais invertidos e quando somados podem inclusive se cancelar. Desta forma P&lt;sub&gt;12&lt;/sub&gt; deve ser calculado usando o quadrado do módulo da soma entre estas componentes de maneira a fazerem os dados se ajustarem.&lt;/p&gt;
 
@@ -411,25 +429,30 @@ em que presumimos uma interferência negativa, ou destrutiva, aconteceu.&lt;/p&g
 
 &lt;p&gt;Lembramos que apenas um elétron por vez é disparado, e passar por uma fenda ou passar por outra fenda não são mais eventos independentes. Aparenta que de forma similar a uma onda  o elétron passou pelas duas fendas, se propagou de forma ondulatória até que chegou no anteparo. E é este fenômeno que chamamos &lt;em&gt;Superposição&lt;/em&gt;. Reparamos que o elétron esteve na sua forma ondulatória, em superposição, até chegar no anteparo, quando interagiu com o anteparo em sua forma corpuscular.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/Double_slit_experiment.gif&quot; alt=&quot;Simulação baseada na Equação de Shrodinger&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/Double_slit_experiment.gif&quot; alt=&quot;Simulação baseada na Equação de Shrodinger&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: https://en.wikipedia.org/wiki/File:Double_slit_experiment.webm&lt;/em&gt;&lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;o-caso-do-disparador-de-elétros-em-que-se-tenta-determinar-a-fenda-pelo-qual-o-elétron-passou&quot;&gt;O caso do disparador de elétros em que se tenta determinar a fenda pelo qual o elétron passou&lt;/h4&gt;
 
 &lt;p&gt;Neste caso final, uma fonte de luz é colocada depois das fendas e alguns detectores são acionados. Eles são reponsáveis por observar cada um sua fenda e determinar se o elétron passou por lá ou não. Quando um elétron passa pela fenda 1 então o detector \(D_1\) é acionado, quando o elétron passa pela fenda 2 o detector \(D_2\) é acionado.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/determinar_a_fenda.png&quot; alt=&quot;Experimento com detectores&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/determinar_a_fenda.png&quot; alt=&quot;Experimento com detectores&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: https://quantummechanics.ucsd.edu/ph130a/130_notes/node68.html&lt;/em&gt;&lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;Quando repetimos os três cenários de observação, primeiro tampando a fenda 2, depois tampando a fenda 1 e por fim deixando ambas abertas o resultado é:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/eletron_observado.png&quot; alt=&quot;Experimento com detectores&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/eletron_observado.png&quot; alt=&quot;Experimento com detectores&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: https://quantummechanics.ucsd.edu/ph130a/130_notes/node68.html&lt;/em&gt;&lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/particula_comportamento.jpg&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/particula_comportamento.jpg&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://mybigtoe.com.br/experimento-dupla-fenda-quantica/&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;p&gt;O que acontece é que quando passamos a observar por qual fenda o elétron passou  o resultado é o que o padrão de interferência desaparece! Quando observamos a posição do elétron antes de chegar no anteparo, o elétron para de se comportar como onda e passa a se comportar com partícula. &lt;em&gt;Percebemos que a partícula permanece em superposição até interagir com outros objetos&lt;/em&gt;. Quando esta interação acontece chamamos de &lt;em&gt;observação&lt;/em&gt;.&lt;/p&gt;
 
 &lt;p&gt;Em mais uma disposição da experiência, a intensidade da fonte de luz é reduzida e por isso nem sempre é possível aos detectores perceber por qual fenda o elétron passou. Este caso considera quando o detector não é muito aguçado, consegue observar alguns elétrons mas não todos. O resultado é um misto entre as figuras de interfências e a de partícula.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/detector_pouco_agu%C3%A7ado.jpg&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/detector_pouco_agu%C3%A7ado.jpg&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: http://eurekabrasil.com/o-que-e-que-nao-e-mecanica-quantica/&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;por-que-não-observamos-a-superposição-no-cotidiano&quot;&gt;Por que não observamos a superposição no cotidiano?&lt;/h3&gt;
 
@@ -439,7 +462,19 @@ em que presumimos uma interferência negativa, ou destrutiva, aconteceu.&lt;/p&g
 
 &lt;p&gt;Em 1927, Clinton Davisson e Lester Germer observaram a difração de feixes de eletrons através de cristal de niquel. Demostrando propriedades ondulatórias das partículas pela primeira vez. E Geroge Thomson fez o mesmo com filmes finos de celulóide e outros materiais pouco depois. Davisson e Thomson receberam o premio Nobel de 1937 “por sua descoberta experimental da difração de [feixe de] elétrons através de cristais”. Porém, nunca executaram o experimento da dupla fenda com elétrons. O que foi feito em 1961 por Claus Jönsson of Tübingen e em 1970 por Pier Giorgio Merli, Giulio Pozzi and GianFranco Missiroli em Bologna.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bologna-image.jpg&quot; alt=&quot;Experimento realizado por Pier Giorgio Merli, Giulio Pozzi and GianFranco Missiroli em Bologna&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bologna-image.jpg&quot; alt=&quot;Experimento realizado por Pier Giorgio Merli, Giulio Pozzi and GianFranco Missiroli em Bologna&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: https://physicsworld.com/a/the-double-slit-experiment/&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;referências&quot;&gt;Referências&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.texasgateway.org/resource/171-understanding-diffraction-and-interference&quot;&gt;https://www.texasgateway.org/resource/171-understanding-diffraction-and-interference&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.openstaxcollege.org/l/28interference&quot;&gt;https://www.openstaxcollege.org/l/28interference&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://eurekabrasil.com/o-que-e-que-nao-e-mecanica-quantica/&quot;&gt;http://eurekabrasil.com/o-que-e-que-nao-e-mecanica-quantica/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://physicsworld.com/a/the-double-slit-experiment/&quot;&gt;https://physicsworld.com/a/the-double-slit-experiment/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Double-slit_experiment&quot;&gt;https://en.wikipedia.org/wiki/Double-slit_experiment&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://mybigtoe.com.br/experimento-dupla-fenda-quantica/&quot;&gt;https://mybigtoe.com.br/experimento-dupla-fenda-quantica/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 </description>
         <pubDate>Tue, 10 May 2022 11:24:00 -0300</pubDate>

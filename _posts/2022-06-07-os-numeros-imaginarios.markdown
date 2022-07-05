@@ -36,6 +36,7 @@ A expressão número complexo foi introduzida em 1832 por Gauss.
 Desta forma, podemos definir os números complexos "(...) como distâncias ao logo de direções arbitrárias num plano fixado." (Conway, 1999, p230).
 
 ![Experimento com projéteis](/assets/images/numeros-imagninarios/complexos_Figura4.gif)
+<sub><sup>*Ref: https://www.somatematica.com.br/emedio/complexos/complexos.php* </sup></sub>
 
 ### Propriedades dos números complexos
 
@@ -49,6 +50,7 @@ $$ z = a + bi; a, b \in \mathbb{R} $$
 Podemos representar este número como um vetor em um plano complexo bidimensional.
 
 ![Experimento com projéteis](/assets/images/numeros-imagninarios/numeros-complexos2.jpg)
+<sub><sup>*Ref: https://www.infoescola.com/matematica/numeros-complexos/* </sup></sub>
 
 
 Desta maneira, um par ordenado pode ser identificado como um ponto, como um vetor e ainda como um número complexo. O número complexo, nada mais é do que uma grandeza comporta de duas dimensões.
@@ -87,10 +89,12 @@ $$ z = re^{i\theta} $$
 Considerando um número complexo $$ z = a + bi $$, o seu complexo conjugado $$ \bar{z} = a - bi$$.
 
 ![Experimento com projéteis](/assets/images/numeros-imagninarios/C_6_v4_sabsegunda.png)
+<sub><sup> *Ref: https://wikiciencias.casadasciencias.org/wiki/index.php/Conjugado_de_um_n%C3%BAmero_complexo* </sup></sub>
 
 O complexo conjungado pode ser vista como a inversão de sinal da parte imaginária do número, ou na forma trigonométrica como a inversão da fase.
 
 ![Experimento com projéteis](/assets/images/numeros-imagninarios/C_6.1FF_novo_2_sab.png)
+<sub><sup> *Ref: https://wikiciencias.casadasciencias.org/wiki/index.php/Conjugado_de_um_n%C3%BAmero_complexo* </sup></sub>
 
 
 Uma relação interessante existe nos números complexos em relação ao seu módulo:
@@ -136,10 +140,10 @@ $$ \int_{a}^{b} A e^{ikx} A e^{-ikx} dx  = A^2 \int_{a}^{b} dx = A^2 (b-a) $$
 
 ### Referências
 
-- https://pt.wikipedia.org/wiki/Ficheiro:Conjugado_de_um_N%C3%BAmero_Complexo.png
-- https://pt.wikipedia.org/wiki/N%C3%BAmero_complexo
-- https://noic.com.br/materiais-fisica/ideias/fisica-ideia-37/
-- https://www.infoescola.com/matematica/numeros-complexos/
-- https://www.infoescola.com/wp-content/uploads/2017/05/numeros-complexos2.jpg
-- https://www.ime.unicamp.br/~tcunha/Teach/bit_quantico_VIIIBienal.pdf
-- https://wikiciencias.casadasciencias.org/wiki/index.php/Conjugado_de_um_n%C3%BAmero_complexo
+- <https://pt.wikipedia.org/wiki/Ficheiro:Conjugado_de_um_N%C3%BAmero_Complexo.png>
+- <https://pt.wikipedia.org/wiki/N%C3%BAmero_complexo>
+- <https://noic.com.br/materiais-fisica/ideias/fisica-ideia-37/>
+- <https://www.infoescola.com/matematica/numeros-complexos/>
+- <https://www.ime.unicamp.br/~tcunha/Teach/bit_quantico_VIIIBienal.pdf>
+- <https://wikiciencias.casadasciencias.org/wiki/index.php/Conjugado_de_um_n%C3%BAmero_complexo>
+- <https://www.somatematica.com.br/emedio/complexos/complexos.php>
