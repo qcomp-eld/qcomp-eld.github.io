@@ -37,6 +37,7 @@ about: 'about.html'
     {% for post in paginator.posts %}
 
     <article class="post">
+        {% assign author = site.authors[post.author] %}
         <header class="post-header">
             <h2 class="post-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
         </header>
@@ -44,9 +45,9 @@ about: 'about.html'
             {{ post.excerpt }} <a class="read-more" href="{{ post.url | relative_url }}">&raquo;</a>
         </section>
         <footer class="post-meta">
-            {% if site.author %}
-                <img class="author-thumb" src="{{'/assets/images/profile.png' | relative_url}}" alt="Author's profile picture" nopin="nopin" />
-                {{ site.author }}
+            {% if post.author %}
+                <img class="author-thumb" src="{{ author.profile_image | relative_url}}" alt="Author's profile picture" nopin="nopin" />
+                {{ author.display_name }}
             {% endif %}
             {% if post.categories.size > 0 %} 
                 {{ post.categories | array_to_sentence_string | prepend: 'on ' }} 

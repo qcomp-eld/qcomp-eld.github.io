@@ -17,3 +17,20 @@ author: "Your Name"
 
 # Disqus config
 disqus-shortname: ""
+
+
+authors:
+  carla_dias:
+    name: Carla Dias
+    bio: 'Desenvolvedora de Software, gosta de etimologia assim como saber a origem e o por trás de qualquer coisa. Por isso, gosta de Matemática e está se aventurando em Computação Quântica.'
+    display_name: Carla Dias
+    email: carla.silva@eldorado.org.br
+    github: carlamione
+    profile_image: '/assets/images/carla_profile.jpg'
+  fernando_caletti:
+    name: Fernando Caletti
+    bio: ''
+    display_name: Fernando Caletti
+    email: fernando.barros@eldorado.org.br
+    github: fecaletti
+    profile_image: '/assets/images/profile.png'
