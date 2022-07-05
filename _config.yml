@@ -27,3 +27,10 @@ authors:
     email: carla.silva@eldorado.org.br
     github: carlamione
     profile_image: '/assets/images/carla_profile.jpg'
+  fernando_caletti:
+    name: Fernando Caletti
+    bio: ''
+    display_name: Fernando Caletti
+    email: fernando.barros@eldorado.org.br
+    github: fecaletti
+    profile_image: '/assets/images/profile.png'

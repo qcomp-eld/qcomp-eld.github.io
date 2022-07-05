@@ -1,8 +1,8 @@
 ---
 layout: post
-author: 'Fernando Caletti'
 title:  "Portas Quânticas Iniciais (Pauli)"
 date:   2022-05-24 08:00:00
+author: fernando_caletti
 categories: teoria computacao-quântica educativo
 usemathjax: true
 ---

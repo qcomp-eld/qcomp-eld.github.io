@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title></title>
+    <description>Grupo de Estudos de Computação Quântica</description>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Tue, 05 Jul 2022 12:43:11 -0300</pubDate>
+    <lastBuildDate>Tue, 05 Jul 2022 12:43:11 -0300</lastBuildDate>
+    <generator>Jekyll v4.2.2</generator>
+    
+      <item>
+        <title>Os Números Imaginários, uma base para Computação Quântica</title>
+        <description>&lt;p&gt;Os números complexos são a base para a construção do estado quântico.  Os números foram criados e desenvolvidos a partir de problemas humanos e da mesma forma não foi diferente com os números complexos.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;um-pouco-de-história&quot;&gt;Um pouco de história&lt;/h3&gt;
+
+&lt;p&gt;Os números foram criados e desenvolvidos a partir de problemas humanos. Os números naturais resolviam o problema de ter que gerenciar os recursos. Saber se os recursos foram alterados, aumentando ou diminuindo de alguma maneira. Conseguir determinar se haveriam recursos para todas as pessoas do grupo. E perceber se há necessidade de ir buscar mais recursos ou se dá para descansar. Os números inteiros foram desenvolvidos na idade média junto ao surgimento dos bancos. A ideia que você poderia ter continuar removendo um valor mesmo quando não há mais itens a remover continuam dando outros números com sentido oposto. Os números decimais e fracionários são mais antigos, e surgem da necessidade de se dividir os recursos de forma igualitária.
+Um número real pode ser considerado uma “(…) distância, medida em termos de uma dada unidade, com um sentido que lhe é conferido pelo sinal” (Conway 1999, p.230).&lt;/p&gt;
+
+&lt;p&gt;Até o século XVI, não havia soluções para equações do segundo grau tais como \(x^2 + 1 = 0\). Sabendo-se da impossibilidade de multiplicar dois números e encontrar um valor negativo, muitos matemáticos paravam por aí. Gerônimo Cardano (1501-1576), em sua obra &lt;em&gt;Ars Magna&lt;/em&gt;, falava do seguinte problema: “Determinar dois números cuja soma seja 10 e o produto seja 40”. Para tal considerou as expressões \(5 + \sqrt{15}\) e \(5 - \sqrt{-15}\), sem dar mais significado a elas. Conta-se que ele aprendeu com Tartalli.&lt;/p&gt;
+
+&lt;p&gt;Raffaelle Bombelli (1526-1572), numa obra de nome &lt;em&gt;Algebra&lt;/em&gt;, procurava resolver equações de terceiro grau. Bombelli estava a trabalhar com o seguinte problema: “Seja \(x^3\) o volume de um cubo de aresta \(x\) e \(15x\) o volume de um paralelepípedo retângulo cuja área da base é 15 e cuja altura é igual à aresta do cubo. Determine \(x\) de modo que \(x^3 = 15x + 4\)”. A resposta por tentativa é \(x = 4\). Porém, aplicando-se a fórmula de cardano nesta equação de terceiro grau, apareceu na solução uma raiz quadrada de número negativo: \(x = ( 2 - \sqrt{-121})^{1/3} + ( 2 + \sqrt{-121})^{1/3}\).&lt;/p&gt;
+
+&lt;p&gt;Teve a estranha ideia de procurar \(a\) e \(b\) positivos tais que \(a + \sqrt{-b}\) e \(a - \sqrt{-b}\) quando somados fossem iguais as suas raízes. 
+Ou seja:&lt;/p&gt;
+
+\[x = ( 2 - \sqrt{-121})^{1/3} + ( 2 + \sqrt{-121})^{1/3} = (2 + \sqrt{-1}) + (2 - \sqrt{-1}) = 4\]
+
+&lt;p&gt;Bombelli também apresentou as leis algébricas que regiam os cálculos entre números da forma \(a + b \sqrt{-1}\). Em partícular, mostrou que as 4 operções aritméticas sobre números complexos produzem números ainda da mesma forma. Ou seja, o conjuntos dos complexos é fechado para estas operações.&lt;/p&gt;
+
+&lt;p&gt;Um grande passo no estudo dos números complexos foi a sua representação visual. O primeiro a representar geometricamente os números complexos foi Caspar Wessel em 1797, mas foi Jean Argand a quem ficou ligada o nome.&lt;/p&gt;
+
+&lt;p&gt;O símbolo \(i\), para a representação de \(\sqrt{-1}\) foi usado pela primeira vez por Euler, mas só após o seu uso por Gauss em 1801 é que foi aceite. 
+A expressão número complexo foi introduzida em 1832 por Gauss.&lt;/p&gt;
+
+&lt;p&gt;Desta forma, podemos definir os números complexos “(…) como distâncias ao logo de direções arbitrárias num plano fixado.” (Conway, 1999, p230).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/numeros-imagninarios/complexos_Figura4.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;propriedades-dos-números-complexos&quot;&gt;Propriedades dos números complexos&lt;/h3&gt;
+
+&lt;h4 id=&quot;par-ordenado-e-vetor&quot;&gt;Par ordenado e Vetor&lt;/h4&gt;
+
+&lt;p&gt;Seja um número complexo \(z\) da forma:&lt;/p&gt;
+
+\[z = a + bi; a, b \in \mathbb{R}\]
+
+&lt;p&gt;Podemos representar este número como um vetor em um plano complexo bidimensional.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/numeros-imagninarios/numeros-complexos2.jpg&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Desta maneira, um par ordenado pode ser identificado como um ponto, como um vetor e ainda como um número complexo. O número complexo, nada mais é do que uma grandeza comporta de duas dimensões.&lt;/p&gt;
+
+&lt;h4 id=&quot;módulo&quot;&gt;Módulo&lt;/h4&gt;
+
+&lt;p&gt;O módulo do número complexo é o comprimento do vetor que se formaria da origem ao ponto \((a,b)\). Pelo teorema de Pitágoras:&lt;/p&gt;
+
+\[(\|z\|)^2 = a^2 + b^2\]
+
+\[\|z\| = \sqrt{a^2 + b^2}\]
+
+&lt;h4 id=&quot;representação-trigonométrica-e-polar&quot;&gt;Representação trigonométrica e polar&lt;/h4&gt;
+
+&lt;p&gt;Existe uma maneira chamada trigonométrica de representar os números complexos:&lt;/p&gt;
+
+\[z = a + bi\]
+
+\[z = \|z\|  cos(\theta) + \|z\| sen(\theta) i\]
+
+\[z = \|z\| (cos(\theta) + i sen(\theta))\]
+
+&lt;p&gt;Aqui, \(\theta\) é chamado argumento ou fase de \(z\).&lt;/p&gt;
+
+&lt;p&gt;Se aplicada, ainda a Fórmula de Euler:&lt;/p&gt;
+
+\[e^{i\theta} = cos(\theta) + i sen(\theta)\]
+
+&lt;p&gt;Teremos a forma polar, fazendo \(\|z\| = r\)&lt;/p&gt;
+
+\[z = re^{i\theta}\]
+
+&lt;h4 id=&quot;complexo-conjugado&quot;&gt;Complexo Conjugado&lt;/h4&gt;
+
+&lt;p&gt;Considerando um número complexo \(z = a + bi\), o seu complexo conjugado \(\bar{z} = a - bi\).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/numeros-imagninarios/C_6_v4_sabsegunda.png&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;O complexo conjungado pode ser vista como a inversão de sinal da parte imaginária do número, ou na forma trigonométrica como a inversão da fase.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/numeros-imagninarios/C_6.1FF_novo_2_sab.png&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Uma relação interessante existe nos números complexos em relação ao seu módulo:&lt;/p&gt;
+
+\[z . \bar{z} = (a + bi) (a - bi)\]
+
+\[z . \bar{z} =  a^2 -abi + abi -(bi)^2\]
+
+\[z . \bar{z} =  a^2 -(bi)^2\]
+
+\[z . \bar{z} =  a^2 -(b^2 . -1)\]
+
+\[z . \bar{z} =  a^2  + b^2\]
+
+\[z . \bar{z} =  \|z\|^2\]
+
+&lt;h3 id=&quot;as-aplicações&quot;&gt;As aplicações&lt;/h3&gt;
+
+&lt;p&gt;Um número imaginário não serve para medir a quantidade de água num copo, nem para contar o número de dedos que temos! No entanto, existem algumas medidas no nosso mundo onde os números complexos são medidores perfeitos. Um campo eletromagnético é um exemplo: ele tem uma componente elétrica e outra magnética e por isso, é preciso um par de números reais para o descrever! Este par pode ser visto como um número complexo e encontramos, assim, uma aplicação direta na Física, para a estranha regra da multiplicação de números complexos.&lt;/p&gt;
+
+&lt;p&gt;Mas como o conjunto dos números complexos tem a propriedade em que se pode resolver qualquer equação polinomial de qualquer grau. Então uma aplicação interessante dos números complexos é realizar o calculo das raízes usando números complexos e depois consideramos apenas aquelas que, afinal, são reais.&lt;/p&gt;
+
+&lt;h4 id=&quot;computação-quântica&quot;&gt;Computação Quântica&lt;/h4&gt;
+
+&lt;p&gt;O primeiro ponto de aplicação dos números complexos é que a Equação de Shrodinger traz em si a constate $i$. A equação de Shoringer é uma equação que tenta determinar a evolução de um sistema quântico qualquer.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/numeros-imagninarios/img308.png&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Quando aplicada por exemplo, ao movimento livre de uma partícula, ao longo do eixo \(x\), em uma única direção é descrito pela seguinte função de onda:&lt;/p&gt;
+
+\[\psi(x) = A e^{ikx}\]
+
+&lt;p&gt;Opa, se nos lembrarmos bem… É a descrição de um número complexo se trocarmos \(A\) por \(r\) e \(kx\) por \(\theta\).&lt;/p&gt;
+
+&lt;p&gt;Para se calcular a probabilidade de a partícula se encontrar em determinada região é preciso resolver uma integral do tipo:&lt;/p&gt;
+
+\[\int_{a}^{b} \| \psi(x) \|^2 dx\]
+
+&lt;p&gt;Conhecendo-se as propriedades de números complexos:&lt;/p&gt;
+
+\[\int_{a}^{b} A e^{ikx} A e^{-ikx} dx  = A^2 \int_{a}^{b} dx = A^2 (b-a)\]
+
+&lt;h3 id=&quot;referências&quot;&gt;Referências&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;https://pt.wikipedia.org/wiki/Ficheiro:Conjugado_de_um_N%C3%BAmero_Complexo.png&lt;/li&gt;
+  &lt;li&gt;https://pt.wikipedia.org/wiki/N%C3%BAmero_complexo&lt;/li&gt;
+  &lt;li&gt;https://noic.com.br/materiais-fisica/ideias/fisica-ideia-37/&lt;/li&gt;
+  &lt;li&gt;https://www.infoescola.com/matematica/numeros-complexos/&lt;/li&gt;
+  &lt;li&gt;https://www.infoescola.com/wp-content/uploads/2017/05/numeros-complexos2.jpg&lt;/li&gt;
+  &lt;li&gt;https://www.ime.unicamp.br/~tcunha/Teach/bit_quantico_VIIIBienal.pdf&lt;/li&gt;
+  &lt;li&gt;https://wikiciencias.casadasciencias.org/wiki/index.php/Conjugado_de_um_n%C3%BAmero_complexo&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 07 Jun 2022 09:13:00 -0300</pubDate>
+        <link>http://localhost:4000/matem%C3%A1tica/computacao-qu%C3%A2ntica/educativo/n%C3%BAmeros-imagin%C3%A1rios/2022/06/07/os-numeros-imaginarios.html</link>
+        <guid isPermaLink="true">http://localhost:4000/matem%C3%A1tica/computacao-qu%C3%A2ntica/educativo/n%C3%BAmeros-imagin%C3%A1rios/2022/06/07/os-numeros-imaginarios.html</guid>
+        
+        
+        <category>matemática</category>
+        
+        <category>computacao-quântica</category>
+        
+        <category>educativo</category>
+        
+        <category>números-imaginários</category>
+        
+      </item>
+    
+      <item>
+        <title>Portas Quânticas Iniciais (Pauli)</title>
+        <description>&lt;p&gt;Portas lógicas formam a base da computação clássica. São ferramentas utilizadas para realização de operações lógicas utilizando bits.
+Quando nos referimos à computação quântica, temos um base computacional ainda em construção, com portas lógicas especificamente criadas para lidarem com Qubits (Bits quânticos).
+No presente artigo serão abordadas as portas lógicas mais simples, que lidam com apenas um qubit, para aprofundarmos nosso conhecimento em computação quântica!&lt;/p&gt;
+
+&lt;h3 id=&quot;computação-clássica&quot;&gt;Computação Clássica&lt;/h3&gt;
+&lt;p&gt;Atualmente, a computação classica baseada em conceitos digitais, é amplamente utilizada no mundo todo e baseada em bits, 
+que representam a menor unidade possível para armazenamento de informações digitais, possuindo dois estados possíveis: 0 ou 1.
+Sistemas digitais são todos baseados na manipulação dos bits e para isso, utilizam-se da conhecida “Álgebra Booleana”, onde é possível criar expressões complexas a partir de bits e operações
+predefinidas que podem ser aplicadas a eles. Dentre as operações booleanas existentes, as mais conhecidas são: AND (E), OR (OU), NOT (NEGAÇÃO).&lt;/p&gt;
+
+&lt;h3 id=&quot;portas-lógicas-digitais&quot;&gt;Portas Lógicas Digitais&lt;/h3&gt;
+&lt;p&gt;As portas lógicas representam aplicações fisicas das operações booleanas, que podem ser aplicadas diretamente aos bits e que podem ser construídas através de circuitos eletrônicos. As mais famosas são:&lt;/p&gt;
+&lt;h5 id=&quot;porta-and-e&quot;&gt;Porta AND (E)&lt;/h5&gt;
+&lt;p&gt;Realiza uma comparação entre dois bits representada como uma multiplicação (.), ou seja, possui dois bits de entrada, e caso ambos estejam no valor 1, o resultado será 1. Caso contrário, o resultado será sempre 0.
+&lt;img src=&quot;/assets/images/portas-simples/AND-Gate.png&quot; alt=&quot;Porta AND&quot; /&gt;
+Fonte: &lt;a href=&quot;https://www.robotshop.com/community/tutorials/show/electronics-done-quick-7-logic-gates&quot;&gt;SALEH, Abram&lt;/a&gt; (2019).&lt;/p&gt;
+
+&lt;h5 id=&quot;porta-or-ou&quot;&gt;Porta OR (OU)&lt;/h5&gt;
+&lt;p&gt;Realiza uma comparação entre dois bits representada como uma soma (+). Caso qualquer um dos bits de entreda possua o valor 1, a saída será 1, ou seja, a única situação possível de retornar 0 será quando os dois bits de entrada estiverem zerados.
+&lt;img src=&quot;/assets/images/portas-simples/OR-Gate.png&quot; alt=&quot;Porta OR&quot; /&gt;
+Fonte: &lt;a href=&quot;https://www.robotshop.com/community/tutorials/show/electronics-done-quick-7-logic-gates&quot;&gt;SALEH, Abram&lt;/a&gt; (2019).&lt;/p&gt;
+
+&lt;h5 id=&quot;porta-not-negação&quot;&gt;Porta NOT (NEGAÇÃO)&lt;/h5&gt;
+&lt;p&gt;Realiza a inversão do valor de entrada. Possui apenas um bit de entrada e seu retorno é o valor oposto, então caso o bit de entrada possua o valo 1, a operação resultará em 0 e assim respectivamente.
+&lt;img src=&quot;/assets/images/portas-simples/NOT-Gate.png&quot; alt=&quot;Porta NOT&quot; /&gt;
+Fonte: &lt;a href=&quot;https://www.robotshop.com/community/tutorials/show/electronics-done-quick-7-logic-gates&quot;&gt;SALEH, Abram&lt;/a&gt; (2019).&lt;/p&gt;
+
+&lt;h3 id=&quot;o-estado-de-um-qubit&quot;&gt;O estado de um Qubit&lt;/h3&gt;
+&lt;p&gt;Antes de abordar diretamente sobre as operações lógicas realizadas com qubits, precisamos definir brevemente seu estado, que precisa ser considerado de uma maneira diferente de bits clássicos. Qubits seguem diretamente as regras da mecânica quântica, permitindo assim uma gama maior e mais complexa de estados possíveis.&lt;/p&gt;
+
+&lt;p&gt;Enquanto bits clássicos possuem apenas seus dois estados fundamentais: 0 e 1, de forma similar, qubits também possuem os estados 0 e 1, porém, tendo em mente que a abordagem utilizada baseia-se diretamente nas leis da mecânica quântica, a superposição desses estados é permitida e eles deixam de ser determinísticos para se tornarem probabilisticos!&lt;/p&gt;
+
+&lt;p&gt;Dessa forma, apenas saberemos realmente o estado atual de um qubit ao medí-lo. Assim sendo, antes da medição, não podemos afirmar com certeza o valor do estado de um qubit, mas sim a probabilidade de que, ao medí-lo, determinado valor será encontrado.&lt;/p&gt;
+
+&lt;h5 id=&quot;vetores-de-estado&quot;&gt;Vetores de Estado&lt;/h5&gt;
+&lt;p&gt;Assim sendo, pode-se representar o estado de um qubit de diversas maneiras, uma delas é a partir de vetores de estado, que é um vetor composto pelas amplitudes dos respectivos estados de um qubit. Na imagem abaixo, podemos ver o vetor de estados de um qubit nos estados 0 e 1.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-simples/state_vectors.png&quot; alt=&quot;Vetores de estado&quot; /&gt;
+Fonte: &lt;a href=&quot;https://qiskit.org/textbook/ch-states/representing-qubit-states.html#1.2-Qubit-Notation-&quot;&gt;Qiskit Textbook&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;p&gt;As amplitudes, referem-se à raíz quadrada da probabilidade, para possibilitar a utilização de números negativos durante a manipulação de estados do qubits a partir de Algebra Linear.&lt;/p&gt;
+
+&lt;p&gt;O sinal presente nos valores dos estados representa a “fase” do estado, que define também sua forma de interferência. Como devemos seguir à risca as leis da mecânica quântica, é possível que após determinada operação os estados em superposição se excluam mutuamente devido à interferência, por conta desse comportamento é necessária a utilização do sinal para indicação da fase.&lt;/p&gt;
+
+&lt;p&gt;Como um valor negativo não faz sentido no contexto de probabilidades, utiliza-se sua raíz-quadrada, de forma que a propabilidade sempre será o quadrado da amplitude, removendo valores negativos.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-simples/amplitude-rule.png&quot; alt=&quot;Regra da Amplitude&quot; /&gt;
+Fonte: &lt;a href=&quot;https://qiskit.org/textbook/ch-states/representing-qubit-states.html#2.1-A-Very-Important-Rule-&quot;&gt;Qiskit Textbook&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;p&gt;Com a possibilidade da superposição entre os estados, podemos visualizar o estado geral de um qubit como a combinação de dois estados complexos, algebricamente cada possível estado é um número composto por uma parte real e uma imaginária, esse comportamento é expressado a partir da definição abaixo:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-simples/algebric_state.png&quot; alt=&quot;Estado Algébrico&quot; /&gt;
+Fonte: &lt;a href=&quot;https://qiskit.org/textbook/ch-states/representing-qubit-states.html##4-The-Observer-Effect&quot;&gt;Qiskit Textbook&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;h4 id=&quot;bloch-sphere&quot;&gt;Bloch Sphere&lt;/h4&gt;
+&lt;p&gt;Por conta de seu comportamento probabilístico, temos que ao representar um qubit como um vetor de amplitudes, também devemos permitir que os seus componentes sejam números complexos, como mencionado anteriormente. Dessa forma, inicialmente seria impossível criar uma visão geométrica precisa do estado de um qubit, pois quatro dimensões seriam necessárias.&lt;/p&gt;
+
+&lt;p&gt;Tendo esse problema em mente, o físico Felix Bloch criou a Block Sphere. A Bloch sphere consiste em uma representação geométrica da imagem acima (Estado algébrico), em que passa-se a considerar um terceiro eixo como sendo a diferença de fase entre as outras duas componentes. Assim, é possível representar em 3 dimensões todas as 4 propriedades. Abaixo, podemos ver uma imagem da &lt;a href=&quot;https://javafxpert.github.io/grok-bloch/&quot;&gt;Bloch Sphere&lt;/a&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-simples/bloch-2.png&quot; alt=&quot;Block Sphere&quot; /&gt;
+Fonte: &lt;a href=&quot;https://qiskit.org/textbook/ch-states/single-qubit-gates.html#1.1-The-X-Gate-&quot;&gt;Qiskit Textbook&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;h3 id=&quot;circuito-quântico&quot;&gt;Circuito Quântico&lt;/h3&gt;
+&lt;p&gt;Assim como na computação clássica, na computação quântica portas lógicas vêm sendo desenvolvidas para aplicar operações pre-definidas aos qubits. Como o estado atual dos qubits é composto por números complexos representados como vetores, tem-se que as portas quânticas são equivalentes a uma determinada “Matriz de Transferência.” As “Matrizes de Transferência” são desenvolvidas para aplicar determinada operação ao vetor de estado de um qubit a partir de sua multiplicação algébrica e assim obter .
+Atualmente, algoritmos quânticos ainda são desenvolvidos no formato de circuitos, em que possuimos qubits de entrada e podemos aplicar portas quânticas em suas trilhas para alterar seu comportamento. Ao final do circuito, deve-se realizar a medição do valor atual do qubit, na imagem abaixo, pode-se ver um exemplo de circuito quântico:
+(Para os exemplos nesse artigo, foram utilizadas imagens da documentação Qiskit e do IBM Quantum Composer)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-simples/quantum_circuit.png&quot; alt=&quot;Circuito Quântico&quot; /&gt;
+Fonte: &lt;a href=&quot;https://qiskit.org/textbook/ch-states/atoms-computation.html#2.-Computation-as-a-diagram-&quot;&gt;Qiskit Textbook&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;h4 id=&quot;portas-de-pauli&quot;&gt;Portas de Pauli&lt;/h4&gt;
+&lt;p&gt;Dentre as portas quânticas já desenvolvidas, as mais simples são aquelas que possuem apenas 1 qubit de entrada e uma saída. Nesse artigo serão abordadas as portas de Pauli, que são a porta de entrada para o estudo das portas quânticas existentes.&lt;/p&gt;
+
+&lt;h5 id=&quot;porta-x-not&quot;&gt;Porta X (NOT)&lt;/h5&gt;
+&lt;p&gt;A porta X é constantemente relacionada com a porta digital NOT, pois ela é capaz de inverter o estado de um qubit. Na imagem abaixo, pode-se visualizar sua matriz de transferência.
+&lt;img src=&quot;/assets/images/portas-simples/x_matrix.png&quot; alt=&quot;X-Gate&quot; /&gt;
+Fonte: &lt;a href=&quot;https://qiskit.org/textbook/ch-states/single-qubit-gates.html#1.1-The-X-Gate-&quot;&gt;Qiskit Textbook&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;p&gt;Para realizarmos a aplicação da matriz de transferência no qubit, realizamos uma simples multiplicação matricial a partir de seu vetor de estado e a matriz, como podemos visualizar na imagem abaixo:
+&lt;img src=&quot;/assets/images/portas-simples/Matrix-multiplication.png&quot; alt=&quot;Gate-Product&quot; /&gt;
+Fonte: &lt;a href=&quot;https://qiskit.org/textbook/ch-states/single-qubit-gates.html#1.1-The-X-Gate-&quot;&gt;Qiskit Textbook&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;p&gt;Aplicando a mesma operação com uma porta X, temos:
+&lt;img src=&quot;/assets/images/portas-simples/x_matrix_calc.png&quot; alt=&quot;X-Gate-Calc&quot; /&gt;
+Fonte: &lt;a href=&quot;https://qiskit.org/textbook/ch-states/single-qubit-gates.html#1.1-The-X-Gate-&quot;&gt;Qiskit Textbook&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;p&gt;Sendo assim, podemos perceber que a porta X tem a capacidade de inverter diretamente o valor do qubit, porém também pode-se visualizar como a aplicação de uma movimentação Pi no eixo X da bloch sphere, como podemos perceber na imagem abaixo:
+&lt;img src=&quot;/assets/images/portas-simples/Bloch-X.png&quot; alt=&quot;X-Gate-Rotation&quot; /&gt;
+Fonte: &lt;a href=&quot;https://threeplusone.com/pubs/on_gates.pdf&quot;&gt;CROOKS, Gavin E.&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;p&gt;Exemplos utilizando o IBM Quantum Composer:
+&lt;img src=&quot;/assets/images/portas-simples/Composer-X.png&quot; alt=&quot;Composer-X&quot; /&gt;
+Fonte: &lt;a href=&quot;https://quantum-computing.ibm.com/composer/&quot;&gt;IBM Quantum Composer&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;h5 id=&quot;portas-y-e-z&quot;&gt;Portas Y e Z&lt;/h5&gt;
+&lt;p&gt;As portas Y e Z possuem características muito similares à porta X, também geram rotações por Pi, porém nos eixos Y e Z da Bloch Sphere respectivamente. Na imagem abaixo pode-se visualizar as respectivas matrizes de transferência:
+&lt;img src=&quot;/assets/images/portas-simples/Y and Z.png&quot; alt=&quot;Y-And-Z-Gates&quot; /&gt;
+Fonte: &lt;a href=&quot;https://qiskit.org/textbook/ch-states/single-qubit-gates.html#1.2-The-Y-&amp;amp;-Z-gates--&quot;&gt;Qiskit Textbook&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;p&gt;Como mencionado anteriormente, a rotação na bloch sphere ocorre nos eixos Y e Z, como representado abaixo:
+&lt;img src=&quot;/assets/images/portas-simples/Bloch-Y.png&quot; alt=&quot;Y-Gate-Rotation&quot; /&gt;
+Fonte: &lt;a href=&quot;https://threeplusone.com/pubs/on_gates.pdf&quot;&gt;CROOKS, Gavin E.&lt;/a&gt; (2022).
+&lt;img src=&quot;/assets/images/portas-simples/Bloch-Z.png&quot; alt=&quot;Z-Gate-Rotation&quot; /&gt;
+Fonte: &lt;a href=&quot;https://threeplusone.com/pubs/on_gates.pdf&quot;&gt;CROOKS, Gavin E.&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;p&gt;Exemplos utilizando o IBM Quantum Composer:
+&lt;img src=&quot;/assets/images/portas-simples/Composer-Y.png&quot; alt=&quot;Composer-Y&quot; /&gt;
+Fonte: &lt;a href=&quot;https://quantum-computing.ibm.com/composer/&quot;&gt;IBM Quantum Composer&lt;/a&gt; (2022).
+&lt;img src=&quot;/assets/images/portas-simples/Composer-Z.png&quot; alt=&quot;Composer-Z&quot; /&gt;
+Fonte: &lt;a href=&quot;https://quantum-computing.ibm.com/composer/&quot;&gt;IBM Quantum Composer&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;h5 id=&quot;porta-i&quot;&gt;Porta I&lt;/h5&gt;
+&lt;p&gt;A porta I possui sua matriz de transferência similar às demais, porém com a peculiaridade de deixar a entrada intacta, sem aplicar nenhum tipo de alteração. A porta I, também conhecida por “Identidade” acaba por ser util ao realizar arranjos com expressões complexas e também para ser implementado um hardware que respectivamente apenas disponibilize um sinal exatamente igual ao recebido em sua saída. A respectiva matriz de transferência pode ser visualizada na imagem abaixo:
+&lt;img src=&quot;/assets/images/portas-simples/Pauli-I-c.png&quot; alt=&quot;I-Gate&quot; /&gt;
+Fonte: &lt;a href=&quot;https://threeplusone.com/pubs/on_gates.pdf&quot;&gt;CROOKS, Gavin E.&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;p&gt;Exemplos utilizando o IBM Quantum Composer:
+&lt;img src=&quot;/assets/images/portas-simples/Composer-H-0.png&quot; alt=&quot;Composer-H-0&quot; /&gt;
+Fonte: &lt;a href=&quot;https://quantum-computing.ibm.com/composer/&quot;&gt;IBM Quantum Composer&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;h4 id=&quot;superposição&quot;&gt;Superposição&lt;/h4&gt;
+&lt;p&gt;A superposição acaba por ser a base para a utilidade prática da computação quântica e um dos principais motivos para que ela seja considerada de extrema importância para o futuro. A ideia de superposição segue estritamente as regras da mecânica quântica, definindo que um qubit pode estar em nos dois estados ao mesmo tempo, isso é possível pois devemos ter em mente que, nesse caso, o estado refere-se à probabilidade de um determinado estado real ser encontrado naquele momento, isso implica que o estado atual do qubit não é determinístico, mas sim probabilístico e é representado por uma expressão complexa de coeficientes multiplicados pelos estados possíveis, como demonstrado acima. A utilidade prática de um computador quântico vem à tona quando imaginamos esse tipo de informação sendo tratada de forma nativa por um hardware, da forma que bits são tratados por equipamentos digitais, assim temos a possibilidade de realizar cálculos e aproximações complexas, como a simulação de uma molécula, apenas correlacionando estados de qubits em superposição.
+Até o momento, todas as portas de Pauli demonstradas não necessariamente estão considerando esse efeito, pois elas apenas rotacionam o valor de um qubit, independente de seu estado atual, então se partirmos do pressuposto que estamos utilizando o qubit que inicia no estado 0, utilizando apenas as portas de Pauli, permanecemos com respostas determinísticas na saída, pois apenas rotacionando a partir do estado 0 ainda pode-se saber com certeza qual estado será atingido.&lt;/p&gt;
+
+&lt;h5 id=&quot;porta-hadamard&quot;&gt;Porta Hadamard&lt;/h5&gt;
+&lt;p&gt;Para poder gerar o comportamento de superposição no estado de um qubit, utiliza-se a porta de Hadamard, sua matriz de transferência pode ser visualizada abaixo:
+&lt;img src=&quot;/assets/images/portas-simples/H-Matrix.png&quot; alt=&quot;H-Gate&quot; /&gt;
+Fonte: &lt;a href=&quot;https://qiskit.org/textbook/ch-states/single-qubit-gates.html#3.-The-Hadamard-Gate--&quot;&gt;Qiskit Textbook&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;p&gt;Ao aplicar-se a porta Hadamard podemos ver os seguintes resultados:
+&lt;img src=&quot;/assets/images/portas-simples/H-States.png&quot; alt=&quot;H-States&quot; /&gt;
+Fonte: &lt;a href=&quot;https://qiskit.org/textbook/ch-states/single-qubit-gates.html#3.-The-Hadamard-Gate--&quot;&gt;Qiskit Textbook&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;p&gt;Que são notações definidas para os estados:
+&lt;img src=&quot;/assets/images/portas-simples/Superposition-states.png&quot; alt=&quot;Superposition-States&quot; /&gt;
+Fonte: Os autores (2022).&lt;/p&gt;
+
+&lt;p&gt;Exemplos utilizando o IBM Quantum Composer:
+&lt;img src=&quot;/assets/images/portas-simples/Composer-H-0.png&quot; alt=&quot;Composer-H-0&quot; /&gt;
+Fonte: &lt;a href=&quot;https://quantum-computing.ibm.com/composer/&quot;&gt;IBM Quantum Composer&lt;/a&gt; (2022).
+&lt;img src=&quot;/assets/images/portas-simples/Composer-H-1.png&quot; alt=&quot;Composer-H-1&quot; /&gt;
+Fonte: &lt;a href=&quot;https://quantum-computing.ibm.com/composer/&quot;&gt;IBM Quantum Composer&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;h5 id=&quot;referências&quot;&gt;Referências&lt;/h5&gt;
+&lt;ul&gt;
+  &lt;li&gt;ABBAS, A. et al. Learn Quantum Computation Using Qiskit. Qiskit, 2020. Disponível em: https://qiskit.org/textbook/ch-states/single-qubit-gates. Acesso em: 23 mai. 2022.&lt;/li&gt;
+  &lt;li&gt;CROOKS, Gavin E.. Gates, States, and Circuits: Notes on the circuit model of quantum computation. Disponível em: https://threeplusone.com/pubs/on_gates.pdf. Acesso em: 23 mai. 2022.&lt;/li&gt;
+  &lt;li&gt;SALEH, Abram. Electronics Done Quick 7: Logic Gates. Robot Shop, 2019. Disponível em: https://www.robotshop.com/community/tutorials/show/electronics-done-quick-7-logic-gates. Acesso em: 23 mai. 2022.&lt;/li&gt;
+  &lt;li&gt;WIKIPEDIA. Felix Bloch. Disponível em: https://en.wikipedia.org/wiki/Felix_Bloch. Acesso em: 23 mai. 2022.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Tue, 24 May 2022 05:00:00 -0300</pubDate>
+        <link>http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/05/24/portas-unicas.html</link>
+        <guid isPermaLink="true">http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/05/24/portas-unicas.html</guid>
+        
+        
+        <category>teoria</category>
+        
+        <category>computacao-quântica</category>
+        
+        <category>educativo</category>
+        
+      </item>
+    
+      <item>
+        <title>O Experimento da Dupla Fenda</title>
+        <description>&lt;p&gt;Este experimento é interessante por que ilustra as diferenças entre o mundo intuitivo que temos construído e o mundo que é construído a partir dos experimentos em escala atômica.&lt;/p&gt;
+
+&lt;h3 id=&quot;o-experimento-de-young&quot;&gt;O Experimento de Young&lt;/h3&gt;
+
+&lt;p&gt;A primeira vez que se tem conhecimento que este experimento foi realizado foi por &lt;a href=&quot;https://en.wikipedia.org/wiki/Thomas_Young_(scientist)&quot;&gt;Thomas Young&lt;/a&gt; em 1801. Nesta época tinha-se o pensamento de que a luz consistia ou de ondas ou de partículas. Newton era defensor de que a luz fosse composta de partículas enquanto que Huygens defendia que a luz fosse uma onda. Thomas Young foi importante para a construção da ideia de que a luz tinha uma natureza ondular. Ja que ele demonstrou que com a luz acontecia o efeito chamado de &lt;a href=&quot;https://pt.wikipedia.org/wiki/Difra%C3%A7%C3%A3o&quot;&gt;Difração&lt;/a&gt;, um fenômeno físico que ocorre quando uma onda se deforma após encontrar um obstáculo.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/difracao_ondas_mar.jpg&quot; alt=&quot;Difração nas ondas do Mar&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Acontece então que pelo princípio de Huygens cada ponto de uma frente de onda possui a funcionalidade de uma nova fonte pontual. Neste processo, cada nova onda interage uma com as outras de forma a compor a nova frente de onda resultante. Este processo de interação é chamado &lt;em&gt;Interferência&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/500px-Refraction_on_an_aperture_-_Huygens-Fresnel_principle.svg.png&quot; alt=&quot;Difração segundo os princípios de Huygens&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;O padrão de interferência varia conforme o tamanho da abertura em relação ao tamanho do cumprimento de onda.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/tamanhos_diferentes_abertura.jpg&quot; alt=&quot;Aberturas diferentes&quot; /&gt;
+&lt;img src=&quot;/assets/images/dupla-fenda/tamanho_cumprimento_onda.jpg&quot; alt=&quot;Aberturas diferentes&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;o-experimento&quot;&gt;O Experimento&lt;/h3&gt;
+
+&lt;p&gt;O experimento consiste em projetar um feixe de luz através de duas fendas e perceber a figura projetada em um anteparo colocado depois da fenda.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/young.jpg&quot; alt=&quot;O Experimento&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ao invés de mostrar apenas o formato das duas fendas no anteparo, é possivel ver mais que duas figuras projetadas no fundo da caixa.&lt;/p&gt;
+
+&lt;p&gt;Se a luz fosse de pequenas unidades de matéria, estas iriam se comportar passando por uma pequena fresta ou por outra, seguindo em linha reta e apresentando o seguinte padrão no fundo da caixa.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/padrao_particula.jpg&quot; alt=&quot;Padrão de Interferência com uma única fenda&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Porém, o visto é um padrão chamado de interferência, em que há posições em que acontece interferência construtiva e há posições em que acontece interferência destrutiva.&lt;/p&gt;
+
+&lt;h3 id=&quot;experimentando-a-difração&quot;&gt;Experimentando a Difração&lt;/h3&gt;
+
+&lt;p&gt;Aqui, usei este &lt;a href=&quot;https://www.openstaxcollege.org/l/28interference&quot;&gt;simulador&lt;/a&gt; na opção Diffraction para observamos as possíveis figuras projetadas. No experimento, um lazer com comprimento de onda variável é apontado para um anteparo com algumas opções de aberturas.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/unica_fenda.PNG&quot; alt=&quot;Padrão de Interferência com uma única fenda&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos perceber então, um padrão em que a figura formada é muito maior que a fenda, quanto menor inclusive o tamanho da fenda maior o espalhamento da figura.
+A figura apresenta uma maior intensidade no meio e vai diminuindo sua intensidade conforme se afasta do centro, porém, existem alguns pontos em que nenhuma luz chega
+em que presumimos uma interferência negativa, ou destrutiva, aconteceu.&lt;/p&gt;
+
+&lt;p&gt;E qual seria o padrão visto no caso de haver duas fendas?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/duas_fendas_experimento.PNG&quot; alt=&quot;Padrão de Interferência com duas fendas&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;É um padrão de interferência.&lt;/p&gt;
+
+&lt;h3 id=&quot;o-experimento-mental-de-feyman&quot;&gt;O Experimento Mental de Feyman&lt;/h3&gt;
+
+&lt;p&gt;Devido a dificuldade de realizar o experimento da dupla fenda com um disparador de elétrons, Feyman, construiu um arranjo experimental didático para explicar aos seus alunos alguns conceitos da mecânica quântica. Este arranjo experimental era dito “mental” por que ainda não havia sido demonstrado em laboratório em sua versão com um único elétron.&lt;/p&gt;
+
+&lt;h4 id=&quot;o-caso-dos-projéteis&quot;&gt;O caso dos projéteis&lt;/h4&gt;
+
+&lt;p&gt;A ideia era repetir a construção de Young, uma vez utilizando um atirador de projéteis que atiraria através das fendas. As balas só ultrapassam através das fendas. Varios detectores são espalhados pelo anteparo depois das fendas. Ao final de um certo tempo em que o disparador atira projéteis, conta-se as balas em cada detector e se pode fazer uma distribuição diferentes posições é obtida.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_experimento.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Em um primeiro cenário, apenas a primeira fenda está aberta.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_cenario1.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;No segundo cenário, apenas a segunda fenda está aberta.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_cenario2.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;E no terceiro cenário, as duas fendas estão abertas.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_cenario3.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Perceba que não existem regiões vagas de projéteis, em que projéteis possam não ter chegado de alguma forma. A distribuição das posições que os projéteis chegam ao anteparo final com as duas fendas abertas é percebido como a soma das distribuições de quando cada um das fendas está fechada. Entendemos que as distribuições do cenário 1 e 2 são independentes e por isso, a propabilidade de um projétil chegar em um ponto x é sempre a soma da probabilidade do projétil chegar na posição vindo pela fenda 1 com a probabilidade do projetil chegar na mesma posição vinda pela fenda 2.&lt;/p&gt;
+
+&lt;h4 id=&quot;o-caso-do-disparador-de-elétrons&quot;&gt;O caso do disparador de Elétrons&lt;/h4&gt;
+
+&lt;p&gt;Da mesma maneira, considera-se que seja possível criar um disparador de elétrons. Este disparador envia um elétron por vez. O disparador atira os elétrons através de duas fendas e sobre o aparato final existem detectores que registram em que posição o elétron o atingiu. Repetimos os mesmos três cenários do caso de projéteis. A distribuição P&lt;sub&gt;1&lt;/sub&gt; foi construída enquanto a fenda 2 estava fechada. A distribuição P&lt;sub&gt;2&lt;/sub&gt; foi construída quando a fenda 1 estava fechada. E, a distribuição P&lt;sub&gt;12&lt;/sub&gt; foi construída com as duas fendas abertas.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/electron_gun.png&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Acontece agora que, quando as duas fendas estão abertas, os eventos de passar por uma fenda ou outra não são mais independentes. Eventos independentes podem ser somados, o que nao acontece na distribuição P&lt;sub&gt;12&lt;/sub&gt;, ela não é a simples soma dos eventos independentes de passar por uma fenda ou passar por outra. Um ajuste matemático é necessário fazer para determinar a distribuição P&lt;sub&gt;12&lt;/sub&gt;. Aparentemente, P&lt;sub&gt;1&lt;/sub&gt; ou P&lt;sub&gt;2&lt;/sub&gt; tem componentes em si que nem sempre são positivas \(\phi\)&lt;sub&gt;1&lt;/sub&gt; e \(\phi\)&lt;sub&gt;2&lt;/sub&gt;. Algumas vezes,  estas componentes tem sinais invertidos e quando somados podem inclusive se cancelar. Desta forma P&lt;sub&gt;12&lt;/sub&gt; deve ser calculado usando o quadrado do módulo da soma entre estas componentes de maneira a fazerem os dados se ajustarem.&lt;/p&gt;
+
+&lt;p&gt;Acontece então que embora o elétron seja encontrado em uma posição pontual no anteparo, existem posições que ele nunca é atingido e também existe um alargamento da área em que o elétron alcança.&lt;/p&gt;
+
+&lt;p&gt;Lembramos que apenas um elétron por vez é disparado, e passar por uma fenda ou passar por outra fenda não são mais eventos independentes. Aparenta que de forma similar a uma onda  o elétron passou pelas duas fendas, se propagou de forma ondulatória até que chegou no anteparo. E é este fenômeno que chamamos &lt;em&gt;Superposição&lt;/em&gt;. Reparamos que o elétron esteve na sua forma ondulatória, em superposição, até chegar no anteparo, quando interagiu com o anteparo em sua forma corpuscular.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/Double_slit_experiment.gif&quot; alt=&quot;Simulação baseada na Equação de Shrodinger&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;o-caso-do-disparador-de-elétros-em-que-se-tenta-determinar-a-fenda-pelo-qual-o-elétron-passou&quot;&gt;O caso do disparador de elétros em que se tenta determinar a fenda pelo qual o elétron passou&lt;/h4&gt;
+
+&lt;p&gt;Neste caso final, uma fonte de luz é colocada depois das fendas e alguns detectores são acionados. Eles são reponsáveis por observar cada um sua fenda e determinar se o elétron passou por lá ou não. Quando um elétron passa pela fenda 1 então o detector \(D_1\) é acionado, quando o elétron passa pela fenda 2 o detector \(D_2\) é acionado.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/determinar_a_fenda.png&quot; alt=&quot;Experimento com detectores&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Quando repetimos os três cenários de observação, primeiro tampando a fenda 2, depois tampando a fenda 1 e por fim deixando ambas abertas o resultado é:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/eletron_observado.png&quot; alt=&quot;Experimento com detectores&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/particula_comportamento.jpg&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;O que acontece é que quando passamos a observar por qual fenda o elétron passou  o resultado é o que o padrão de interferência desaparece! Quando observamos a posição do elétron antes de chegar no anteparo, o elétron para de se comportar como onda e passa a se comportar com partícula. &lt;em&gt;Percebemos que a partícula permanece em superposição até interagir com outros objetos&lt;/em&gt;. Quando esta interação acontece chamamos de &lt;em&gt;observação&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Em mais uma disposição da experiência, a intensidade da fonte de luz é reduzida e por isso nem sempre é possível aos detectores perceber por qual fenda o elétron passou. Este caso considera quando o detector não é muito aguçado, consegue observar alguns elétrons mas não todos. O resultado é um misto entre as figuras de interfências e a de partícula.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/detector_pouco_agu%C3%A7ado.jpg&quot; alt=&quot;Experimento com projéteis&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;por-que-não-observamos-a-superposição-no-cotidiano&quot;&gt;Por que não observamos a superposição no cotidiano?&lt;/h3&gt;
+
+&lt;p&gt;O que acontece no nosso mundo cotidiano é que os corpos não estão isolados. O isolamento é parte fundamental para que a superposição aconteça. A interação faz com que conhecimento sobre as características dos corpos sejam conhecidos e a superposição se desfaz.&lt;/p&gt;
+
+&lt;h3 id=&quot;curiosidades&quot;&gt;Curiosidades&lt;/h3&gt;
+
+&lt;p&gt;Em 1927, Clinton Davisson e Lester Germer observaram a difração de feixes de eletrons através de cristal de niquel. Demostrando propriedades ondulatórias das partículas pela primeira vez. E Geroge Thomson fez o mesmo com filmes finos de celulóide e outros materiais pouco depois. Davisson e Thomson receberam o premio Nobel de 1937 “por sua descoberta experimental da difração de [feixe de] elétrons através de cristais”. Porém, nunca executaram o experimento da dupla fenda com elétrons. O que foi feito em 1961 por Claus Jönsson of Tübingen e em 1970 por Pier Giorgio Merli, Giulio Pozzi and GianFranco Missiroli em Bologna.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bologna-image.jpg&quot; alt=&quot;Experimento realizado por Pier Giorgio Merli, Giulio Pozzi and GianFranco Missiroli em Bologna&quot; /&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 10 May 2022 11:24:00 -0300</pubDate>
+        <link>http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/05/10/o-experimento-da-dupla-fenda.html</link>
+        <guid isPermaLink="true">http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/05/10/o-experimento-da-dupla-fenda.html</guid>
+        
+        
+        <category>teoria</category>
+        
+        <category>computacao-quântica</category>
+        
+        <category>educativo</category>
+        
+      </item>
+    
+  </channel>
+</rss>
