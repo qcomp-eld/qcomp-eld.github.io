@@ -1,4 +1,10 @@
-# Kasper
+# QComp
+
+This is a blog maintaned by Eldorado's Quantum Comptuting study group.
+
+The blog uses Casper thene for Jekyll.
+
+## Kasper
 
 This is a port of Ghost's default theme [Casper v1](https://github.com/tryghost/casper) for Jekyll. Here is a live [demo](https://rosario.io/kasper). 
 
@@ -6,19 +12,20 @@ Feel free to fork, change, modify and re-use it.
 
 ## Installation
 
-    git clone https://github.com/rosario/kasper.git
-    cd kasper
+Install ruby
+
+Fork https://github.com/qcomp-eld/qcomp-eld.github.io to a personal repository on github
+
+Download your personal repository
+
     gem install jekyll
     gem install jekyll-paginate
+
     
 ## Change _config.yml
 
-Change the following settings in _config.yaml. Most likely you want the `baseurl: ""`
+Create an entry for your user information inside `authors` section.
 
-```
-baseurl: ""
-domain_name: "yourblog-domain.com"
-```
 
 ## How to use it
 
@@ -30,33 +37,27 @@ Build page into `_site` folder
 
     jekyll build
 
-## Kasper theme includes
+## How to create a post
 
-* Pagination
-* Rss
-* Google Analytics Tracking code
-* Code Syntax Highlight
-* Author's profile with picture
-* Disqus comments
+Inside `_posts` folder, create a file with file mae format: `YYYY-MM-DD-title.markdown`
+Add a header inside de file as the sample bellow:
 
-## Screenshots
+```
 
-![index page](https://raw.github.com/rosario/kasper/master/assets/images/kasper-theme-index.png)
-![post page](https://raw.github.com/rosario/kasper/master/assets/images/kasper-theme-post.png)
+---
+layout: post
+title:  "O Experimento da Dupla Fenda"
+date:   2022-05-10 14:24:00
+author: carla_dias
+categories: teoria computacao-quântica educativo
+usemathjax: true
+---
+
+```
 
 
-## Thanks
+## How to publish your post
 
-Most of the work has been already done by the Ghost team, I've just ported Casper to Jekyll. 
-I've also added few things specific to Jekyll and some minor style changes.
+Make sure you have referenced all images and context. 
 
-## Copyright & License
-
-Copyright (C) 2013 Ghost Foundation - Released under the MIT License.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Create a merge request.
