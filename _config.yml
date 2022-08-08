@@ -34,3 +34,10 @@ authors:
     email: fernando.barros@eldorado.org.br
     github: fecaletti
     profile_image: '/assets/images/profile.png'
+  alisson_fumaco:
+    name: Alisson Fumaco
+    bio: ''
+    display_name: Alisson Fumaco
+    email: alisson_fumaco@eldorado.org.br
+    github: alissonfumaco
+    profile_image: '/assets/images/profile.png'
