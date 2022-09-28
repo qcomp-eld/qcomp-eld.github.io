@@ -27,7 +27,8 @@ Como pode-se visualizar na imagem abaixo, a ferramenta já conta com uma gama in
 #### Operações Clássicas
 Iniciaremos a revisão com as operações clássicas, que podem ser aplicadas a qubits sem necessáriamente estarem em um estado de superposição.
 ##### Operação NOT (Pauli X)
-A operação NOT, conhecida como porta X de Pauli, já abordada no artigo X, possui a capacidade de inverter o estado de um qubit, como demonstrado abaixo: 
+A operação NOT, conhecida como porta X de Pauli, já abordada no artigo [portas quânticas iniciais]({% post_url 2022-05-24-portas-unicas %}), possui a capacidade de inverter o estado de um qubit, como demonstrado abaixo: 
+
 
 $$ \ket{0} \rightarrow \ket{1} $$  
 $$ \ket{1} \rightarrow \ket{0} $$
