@@ -435,7 +435,8 @@ Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Qua
 É a simplificação de uma operação Toffoli controlada em três.
 A simplificação Toffoli implementa a operação Toffoli com fases relativas. Assim como a operação RCCX, não é uma equivalente à operação Toffoli, mas pode ser usada em momentos em que a operação completa não precisa ser computada novamente.
 
-Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:
+Na imagem abaixo podemos visualizar a referência da operação na ferramenta Quantum Composer:
+
 
 ![Descrição RC3X](/assets/images/portas-composer/RC3X-composer-description.png)
 
