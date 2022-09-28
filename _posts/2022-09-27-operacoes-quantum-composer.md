@@ -8,7 +8,8 @@ usemathjax: true
 excerpt_separator: <!--more-->
 ---
 
-Até o presente momento, viemos utilizando com frequência os simuladores disponibilizados pela IBM para simulações e demonstrações durante os estudos de outros tópicos na área de computação quântica. Com o intuito de prover um entendimento maior sobre a ferramenta que tem se provado bem útil para os estudos na área, o presente artigo visa servir como um resumo de todas as operações disponibilizadas na ferramenta IBM Quantum Composer, com exemplos práticos. Para que dessa forma, possamos a passar para uma abordagem mais prática no estudo, a partir do uso mais frequente de ferramentas de simulação como essa.
+Até o presente momento, viemos utilizando com frequência os simuladores disponibilizados pela IBM para simulações e demonstrações durante os estudos de outros tópicos na área de computação quântica. Com o intuito de prover um entendimento maior sobre a ferramenta que tem se provado bem útil para os estudos na área, o presente artigo visa servir como um resumo de todas as operações disponibilizadas na ferramenta IBM Quantum Composer, com exemplos práticos. Para que dessa forma, possamos passar para uma abordagem mais prática no estudo, a partir do uso mais frequente de ferramentas de simulação como essa.
+
 
 <!--more-->
 
