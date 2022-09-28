@@ -42,7 +42,8 @@ X = \left[ {\begin{array}{cc}
 \end{array} } \right] 
 $$
 
-A operação NOT é a equivalencia de uma operação RX para o angulo $$\pi$$ ou para 'HZH'.
+A operação NOT é a equivalência de uma operação RX para o ângulo $$\pi$$ ou para 'HZH'.
+
 Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:
 
 ![Descrição X](/assets/images/portas-composer/X-composer-description.png)
