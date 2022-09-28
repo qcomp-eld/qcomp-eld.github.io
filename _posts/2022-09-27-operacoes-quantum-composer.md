@@ -399,7 +399,8 @@ e^{-i\frac{\theta}{2}} && 0 && 0 && 0 \\
 \end{array} } \right]
 $$
 
-Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:
+Na imagem abaixo podemos visualizar a referência da operação na ferramenta Quantum Composer:
+
 
 ![Descrição RZZ](/assets/images/portas-composer/RZZ-composer-description.png)
 Na ferramenta IBM Quantum Composer, o ângulo padrão utilizado é $$\pi/2$$.
