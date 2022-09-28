@@ -418,7 +418,8 @@ e^{i\phi}\sin{\frac{\theta}{2}} && e^{i(\phi + \lambda)}\cos{\frac{\theta}{2}} \
 \end{array} } \right]
 $$
 
-Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:
+Na imagem abaixo podemos visualizar a referência da operação na ferramenta Quantum Composer:
+
 
 ![Descrição U](/assets/images/portas-composer/U-composer-description.png)
 Na ferramenta IBM Quantum Composer, o ângulo padrão utilizado é $$\pi/2$$.
