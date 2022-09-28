@@ -19,7 +19,8 @@ Juntamente a tudo isso, a ferramenta ainda disponibiliza uma aba lateral, que pe
 É importante ressaltar que a edição do circuito via código, no presente momento (27/09/2022), só é possível a partir da linguagem OPENQASM 2.0. Ao passar para a visualização do código em Qiskit, o editor se torna apenas-leitura e é possível apenas visualizar os códigos gerados automaticamente.
 
 ### Lista de Operações do Quantum Composer
-Como pode-se visualizar na imagem abaixo, a ferramenta já conta com uma gama interessante de operações que podem ser aplicadas nos Qubits. Na documentação [oficial da ferramenta](https://quantum-computing.ibm.com/composer/docs/iqx/operations_glossary#u-gate), as operações permitidas são divididas em 5 classificações distintas, elas são: Operações clássicas, Operações de fase, Operações não unitárias e modificadores, Hadamard, Operações quânticas.
+Como pode-se visualizar na imagem abaixo, a ferramenta já conta com uma gama interessante de operações que podem ser aplicadas nos Qubits. Na documentação [oficial da ferramenta](https://quantum-computing.ibm.com/composer/docs/iqx/operations_glossary), as operações permitidas são divididas em 5 classificações distintas, elas são: Operações clássicas, Operações de fase, Operações não unitárias e modificadores, Hadamard, Operações quânticas.
+
 
 ![Operações Quantum Composer](/assets/images/portas-composer/All-operations-composer.png)
 
