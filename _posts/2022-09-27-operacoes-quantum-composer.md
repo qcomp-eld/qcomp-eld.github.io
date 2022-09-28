@@ -463,7 +463,8 @@ O presente artigo tem por principal objetivo descrever as funcionalidades atuais
 Esperamos que o material seja útil para seus estudos e experimentos!
 
 ### Referências
-- https://quantum-computing.ibm.com/composer/docs/iqx/operations_glossary#u-gate
+- https://quantum-computing.ibm.com/composer/docs/iqx/operations_glossary
+
 - https://qiskit.org/documentation/stubs/qiskit.circuit.library.RC3XGate.html
 - https://arxiv.org/abs/quant-ph/0312225
 - https://www.ibm.com/blogs/research/2019/12/qiskit-openpulse/
