@@ -427,7 +427,8 @@ Na ferramenta IBM Quantum Composer, o ângulo padrão utilizado é $$\pi/2$$.
 ##### Operação RCCX
 É a simplificação da operação Toffoli, também conhecida como operação Margolus. A simplificação da operação Toffoli implementa a operação Toffoli a partir de fases relativas. Essa implementação precisa de três operações CX, o que é a menor quantidade possível, como demonstrado [aqui](https://arxiv.org/abs/quant-ph/0312225). Perceba que a simplificação de Toffoli não é equivalente a uma operação Toffoli, mas pode ser utilizada em momentos onde a operação Toffoli não precisaria ser computada novamente.
 
-Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:
+Na imagem abaixo podemos visualizar a referência da operação na ferramenta Quantum Composer:
+
 
 ![Descrição RCCX](/assets/images/portas-composer/RCCX-composer-description.png)
 
