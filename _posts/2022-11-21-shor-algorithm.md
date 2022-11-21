@@ -42,6 +42,8 @@ Podemos construir o circuito (exclusivo para $N=2^{n}$) que foi provado na refer
 <br>
 ![Circuito-TFQ-2n](/assets/images/figura3.1_dissertacao.png)
 Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010).
+<br>
+Onde H representa o gate Hadamard e $R_k$ o gate $R_k$ controlado:
 
 
 
