@@ -9,9 +9,9 @@ usemathjax: true
 
 
 # O que é?
-Algoritmo de decomposição. Dado um número N, encontra os fatores primos que o compõem no produto. Útil para achar decomposições não triviais
+Algoritmo de decomposição. Dado um número N, encontra os fatores primos que o compõem no produto. Útil para achar decomposições em produto não triviais de números compostos utilizados em criptografia
 # Por que estudar?
-Utilizando este algoritmo em um computador quântico podemos quebrar, por exemplo, a criptografia RSA em tempo polinomial (mais rápido). Há de se pontuar que fenomenos de quantum noise (apêndice II) ou quantum-decoherence (apêndice III) interferem neste algoritmo.
+Utilizando este algoritmo em um computador quântico podemos quebrar, por exemplo, a criptografia RSA em tempo polinomial (mais rápido) [fonte]. Há de se pontuar que fenomenos de quantum noise (apêndice II)[fonte] ou quantum-decoherence (apêndice III)[fonte] interferem neste algoritmo. Atualmente o problema em utilizar este algoritmo é devido a limitação de hardware[fonte].
 # Como funciona?
 Dado um número N, nosso problema é equivalente ao problema de encontrar um número divisor não trivial de N entre 1 e N. De fato, achando um número poderiamos executar novamente o algoritmo para encontrar outro número até que N esteja completamente decomposto.
 Passos:
@@ -31,9 +31,9 @@ Notações...
 <br>
 (referencia 3 pg39):
 <br>
-Seja N a dimensão (em $C^{n}$) do espaço de estados para amplitudes.
+Seja N a dimensão (em $C^{n}$) do espaço de representação das amplitudes.
 <br>
-A construção do circuito para qualquer valor de N é um pouco complicada. A TFQ para $N=2^{n}$ com a base fixa ${\ket{0},..., \ket{2^{n}-1}}$ é:
+A construção do circuito para qualquer valor de N é um pouco complicada. A TFQ para $N=2^{n}$ com a base ${\ket{0},..., \ket{2^{n}-1}}$ é:
 $$\ket{j}\rightarrow 1/(2^{n/2})\sum_{k=0}^{2^{n}-1}e^{2\pi ijk/(2^{n})}\ket{k}$$
 Pode-se mostrar ainda que:
 $$\ket{j}\rightarrow (\ket{0}+e^{2\pi i0.j_n}\ket{1})(\ket{0}+e^{2\pi i0.j_{n-1}j_n}\ket{1})...(\ket{0}+e^{2\pi i0.j_1j_2...j_n}\ket{1})$$
@@ -45,8 +45,8 @@ Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EA
 
 
 
-* a matriz de representação da TFD no espaço C^n é unitária
-* TFQ nada mais é do que a TFD com notação diferente (com bras e kets)
+$% a matriz de representação da TFD no espaço C^n é unitária$
+$% TFQ nada mais é do que a TFD com notação diferente (com bras e kets)$
                                                              
                                                              
                                                              
@@ -84,6 +84,8 @@ def is_prime(n: int) -> bool:
 
 
 # O que falta?
-* Terminar Rotina X? tema de dissertação de mestrado da aluna do meu professor
-* Implementação?
-* Apêndices II e III
+* Implementar no IBM Quantum Composer comparando com o exemplo de dimensão N=4 usado na dissertação pg 41
+* Escrever apêndices II e III
+* Circuito TFQ para N qualquer
+* Escrever algoritmo final
+
