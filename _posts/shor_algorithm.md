@@ -25,16 +25,28 @@ Passos:
 8. Se não, $MDC(A^{r/2}+1,N)$ ou $MDC(A^{r/2}-1,N)$ são fatores não triviais de N. Acabou.
                                                              
 ### Rotina X (parte que usa de fato computação quântica para encontrar r):
-Seja $Q$ tal que $Q=2^{q}$ e $N^{2}$ &le; $Q$ < $2N^{2}$. Daí, $Q/r>N$.
+Utilizaremos alguns conceitos para construir a rotina X.
+#### TFQ (Transformada de Fourier Quântica)
+Notações...
 <br>
-Os qbits de input e output precisam ser de superposições entre 0 e Q-1 (cada um tem q qbits).
+(referencia 3 pg39):
 <br>
-Algoritmo:
-1. Começamos usando a decomposição de Schmidt(confirmar com terra):<br>
-$1/\sqrt[]{Q} \sum_{x=0}^{Q-1} |x> = (1/\sqrt[]{2} \sum_{x_1=0}^{1} |x_1>)\otimes...\otimes((1/\sqrt[]{2} \sum_{x_q=0}^{1} |x_q>))$
+Seja N a dimensão (em $C^{n}$) do espaço de estados para amplitudes.
 <br>
-TERMINAR????
+A construção do circuito para qualquer valor de N é um pouco complicada. A TFQ para $N=2^{n}$ com a base fixa ${\ket{0},..., \ket{2^{n}-1}}$ é:
+$$\ket{j}\rightarrow 1/(2^{n/2})\sum_{k=0}^{2^{n}-1}e^{2\pi ijk/(2^{n})}\ket{k}$$
+Pode-se mostrar ainda que:
+$$\ket{j}\rightarrow (\ket{0}+e^{2\pi i0.j_n}\ket{1})(\ket{0}+e^{2\pi i0.j_{n-1}j_n}\ket{1})...(\ket{0}+e^{2\pi i0.j_1j_2...j_n}\ket{1})$$
+<br>
+Podemos construir o circuito (exclusivo para $N=2^{n}$) que foi provado na referencia 3 pg39
+<br>
+![Circuito-TFQ-2n](/assets/images/figura3.1_dissertacao.png)
+Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010).
 
+
+
+* a matriz de representação da TFD no espaço C^n é unitária
+* TFQ nada mais é do que a TFD com notação diferente (com bras e kets)
                                                              
                                                              
                                                              
@@ -68,6 +80,7 @@ def is_prime(n: int) -> bool:
 ## Referências
 * wikipedia/eng
 * Chapter 5 of QFT, Period Finding & Shor's Algorithm
+* Dissertação de Mestrado Adriana Xavier UFMG
 
 
 # O que falta?
