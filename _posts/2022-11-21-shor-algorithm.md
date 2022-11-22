@@ -49,8 +49,15 @@ Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EA
 
 $% a matriz de representação da TFD no espaço C^n é unitária$
 $% TFQ nada mais é do que a TFD com notação diferente (com bras e kets)$
-                                                             
-                                                             
+
+Notação $Z_N$ e aritmetica modular (ler apêndice IV)                                                        
+<br>
+Calculemos, primeiramente, a ordem de $x \in Z_N$. Este é o primeiro passo para a rotina X dado um número N que queremos fatorar.
+Defina a transformação linear $U:C^{n}\rightarrow C^{n}$ por:
+$$U\ket{k}=\ket{xk modN}$$
+
+
+
                                                              
 ## Apêndice I (primality-testing algorithm):
 Algoritmo simples que usa o fato de todos os divisores de um número n serem menores ou iguais a n/2. Em Python:
@@ -78,6 +85,13 @@ def is_prime(n: int) -> bool:
     
 ## Apêndice II (quantum noise)
 ## Apêndice III (quantum-decoherence)
+## Apêndice IV (Aritmética modular)
+Será apresentado algumas notações importantes para o entendimento do algoritmo:
+$$Z_2 = {\overline{0}, \overline{1}} $$
+É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 na divisão por 2. Isto é, $\overline{0}$ representa os números pares enquanto $\overline{1}$ os impares. Pode-se definir uma operação de multiplicação nesse conjunto de forma que $Z_n = \overline{0}, \overline{1}, ..., \overline{n-1}$ seja um grupo. Definimos também a ordem de um número a como o menor inteiro k tal que $a^{k}=e$ onde $e$ denota o elemento neutro do grupo com respeito a operação de multiplicação
+<br>
+Outra notação importante é a de $A (mod N)$ que é o resto da divisão de A por N (em Python usamos %: A%N)
+
 
 ## Referências
 * wikipedia/eng
