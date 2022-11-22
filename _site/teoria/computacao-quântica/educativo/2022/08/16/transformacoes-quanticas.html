@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <title>QComp - Eld - Grupo de Estudos de Computação Quântica</title>
+    <meta name="description" content="Grupo de Estudos de Computação Quântica" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+    <!-- Customisation  -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css " />
+
+    <!-- for mathjax support -->
+    
+      <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+        });
+      </script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+      </script>
+    
+
+</head>
+<body class="home-template">
+
+    <header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        <a class="back-button icon-arrow-left" href="/">Home</a>
+        <a class="subscribe-button icon-feed" href="/feed.xml">Subscribe</a>
+    </nav>
+</header>
+
+<main class="content" role="main">
+    
+
+    <article class="post">
+
+        <header class="post-header">
+            <h1 class="post-title">Transformações Quânticas (Matrizes unitárias, Reversibilidade e No-Cloning Theorem)</h1>
+            <section class="post-meta">
+                
+                    em teoria, computacao-quântica, and educativo
+                
+                <time class="post-date" datetime="2022-08-16">16/00/2022</time>
+            </section>
+        </header>
+
+<!--         <header class="post-header">
+            <a id="blog-logo" href="http://localhost:4000">
+                
+                    <span class="blog-title">QComp - Eld</span>
+                
+            </a>
+        </header> -->
+
+        <!-- <span class="post-meta">
+            <time datetime="2022-08-16">16 Aug 2022</time>
+            
+                on teoria, computacao-quântica, and educativo
+            
+        </span> -->
+
+        <!-- <h1 class="post-title">Transformações Quânticas (Matrizes unitárias, Reversibilidade e No-Cloning Theorem)</h1> -->
+
+        <section class="post-content">
+            <p>Quando começamos a avançar no estudo da computação quântica e já temos noção dos conceitos fundamentais isolados como: o que são qubits, estados de qubits, produto entre qubits. Passa a ser necessário também conhecermos melhor as regras e formas de manipulação dos qubits, para que possamos avançar para utilizações mais práticas do conhecimento em computação quântica como a escrita de algoritmos.</p>
+
+<p>Sendo assim, no presente artigo será abordado diretamente o assunto de Transformações quânticas e suas particularidades para aprofundar o conhecimento nas interações realizadas com qubits em circuitos quânticos.</p>
+
+<!--more-->
+
+<h3 id="estados-quânticos-quantum-states">Estados quânticos (Quantum States)</h3>
+<p>Como já mencionado nos artigos anteriores, a computação quântica é baseada diretamente nas regras da mecânica quântica, o que acaba por trazer uma <strong>abordagem</strong> <strong>probabilísticas</strong> ao invés de determinísticas como na computação clássica.</p>
+
+<p>Assim sendo, por padrão é utilizada uma representação baseada em <strong>vetores</strong> <strong>de</strong> <strong>estado</strong> para lidar algébricamente com qubits, utilizando operações de álgebra linear.
+Para exemplificar, abaixo temos o vetor de estados de um qubit:</p>
+
+\[\psi = a\ket{0} + b\ket{1}\]
+
+<p>O vetor de estados de um qubit é geralmente representado utilizando a notação bra-ket de Dirac, por podermos retratar de forma genérica um vetor em um espaço com infinitas dimensões, dessa forma tem-se a possibilidade de enxergar de forma simplificada arranjos complexos de estados com probabilidades complexas. O mesmo vetor de estados demonstrado acima também pode ser exibido como:</p>
+
+\[\psi = \left[ {\begin{array}{cc}
+a \\
+b \\
+\end{array} } \right]\]
+
+<p>Na segunda representação, temos que os coeficientes <strong>a</strong> e <strong>b</strong>, que representam as amplitudes de um determinado estado. O respectivo estado é determinado por sua posição no vetor e os valores de ambos são <strong>complexos</strong>, podendo possuir uma parte real e uma parte imaginária.</p>
+
+<p>Um sistema com dois qubits, como já visto anteriormente, é representado pelo produto tensorial entre os qubits isolados, que acaba por aumentar a quantidade de estados possíveis seguindo a ordem de \(2^n\) estados para <strong>n</strong> qubits, como pode-se visualizar abaixo:</p>
+
+\[\ket{\psi\phi} = \ket{\psi} \otimes \ket{\phi}\]
+
+<p>Para mais detalhes sobre o cálculo tensorial e entrelaçamento quântico, o assunto é abordado diretamente <a href="/matemática/computacao-quântica/produto-tensorial/entrelaçamento/2022/08/06/multiples-qubits-cross-product-entrelacamento.html">nesse post do nosso blog</a>!</p>
+
+<h3 id="transformação-quântica-transformações-unitárias">Transformação Quântica (Transformações unitárias)</h3>
+<p>Bom, tendo feito nossa breve retomada da representação de estados quânticos, podemos ir para o assunto principal do artigo, que é justamente a transformação de estados.
+Quando nos referimos a transformação quântica, em outras palavras estamos referindo-nos às matrizes de transferência já mencionadas em um <a href="/http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/05/24/portas-unicas.html">outro artigo</a>, que basicamente são matrizes compostas de coeficientes capazes de alterar o estado de um qubit de alguma forma quando aplicadas a ele. A aplicação se dá por meio do calculo do produto de matrizes entre o estado do qubit de entrada e a matriz de transferência.</p>
+
+<p>Por conta da natureza probabilística dos qubits, a natureza não permite informações arbitrárias de suas componentes forçando determinadas regras a serem seguidas ao interagir com seus estados.
+A primeira dessas regras é que toda transformação deve ser diretamente conectada às medições quânticas e a superposição quântica.</p>
+
+<p>Sendo o qubit \(\ket{\psi} = \left[ {\begin{array}{cc}
+0 \\
+1 \\
+\end{array} } \right]\)</p>
+
+<p>E a matriz de transferência H (Hadamard):
+\(H =  \frac{1}{\sqrt{2}}\left[ {\begin{array}{cc}
+1 &amp; 1 \\
+1 &amp; -1\\
+\end{array} } \right]\)</p>
+
+<p>Temos que \(\ket{\psi} \rightarrow H = \ket{\psi}H = \ket{-}\)</p>
+
+<h4 id="matrizes-unitárias">Matrizes Unitárias</h4>
+<p>Tendo em vista as restrições naturais das operações aplicadas a qubits, temos que elas precisam ser lineares e unitárias.
+Mais precisamente, podemos dizer que aplicar uma matriz unitária a um qubit, significa aplicar a mesma matriz a todos os estados possíveis do qubit em superposição.
+Da mesma forma, a linearidade implica que o produto escalar seja preservado, assim sendo, o módulo, ou “comprimento” do vetor aplicado não pode ser alterado com a operação, vetores unitários devem manter-se unitários e estados ortogonais devem manter-se ortogonais. (As componentes são complexas).</p>
+
+<p>Assim sendo, existem argumentos matemáticos que implicam que para qualquer transformação quântica <strong>U</strong>, seu operador adjunto precisa ser idêntico ao seu inverso.
+\(U^\dagger = U^{-1}\)</p>
+
+<p>Além disso, temos algumas outras definições:</p>
+<ul>
+  <li>O produto entre dois operadores unitários é unitário.</li>
+  <li>O produto tensorial entre operadores unitários \(U_1 \otimes U_2\) é transformação unitária de \(X_1 \otimes X_2\) somente se \(U_1\) e \(U_2\) forem transformações unitárias dos respectivos espaços.</li>
+</ul>
+
+<h4 id="reversibilidade">Reversibilidade</h4>
+<p>Devido a natureza incrivelmente frágil dos qubits atuais, um dos grandes problemas enfrentados pela área de computação quântica é o fato de que para reproduzir o comportamento de particulas, o sistema acaba por se tornar sucetível a inúmeros erros e à <strong>decoerência</strong>.</p>
+
+<h6 id="decoerência">Decoerência</h6>
+<p>Definida como a perda de informação de um qubit (mudança de estado) por conta de interação com o ambiente ou outras partes do sistema.</p>
+
+<p>Portanto, um requisito para transformações e operações quânticas funcionarem em larga escala, é que elas sejam também perfeitamente reversíveis.
+Reversibilidade significa sermos capazes de identificar a entrada utilizada somente a partir do conhecimento da saída obtida e da operação realizada, tornando possivel identificar também caso algum tipo de interferencia tenha atingido o sistema no processo.
+Como podemos identificar na imagem abaixo, que demonstra a tabela de valores da porta CNOT, que aplica uma inversão de valor no qubit B apenas caso o qubit A esteja em estado 1.</p>
+
+<p><img src="/assets/images/transformacoes-quanticas/Reversibility-2.png" alt="Reversibilidade 0" />
+Fonte: <a href="https://www.futurelearn.com/info/courses/intro-to-quantum-computing/0/steps/31561">Future Learn</a> (2022).</p>
+
+<p>Como pode-se visualizar na imagem acima, a porta CNOT possui duas saídas (A’ e B’) para tornar-se reversível, pois a saída A’ apenas repassa o estado original do qubit A.
+A partir disso, pode-se perceber o problema mencionado, pois caso a porta não tivesse a saída A’, haveria mais de um estado com a mesma saída e entradas diferentes (1 - 4 e 2 - 3).</p>
+
+<h3 id="no-cloning-theorem">No-Cloning Theorem</h3>
+<p>Agora, abordaremos um teorema estritamente relacionado às transformações unitárias, o <strong>no-cloning theorem</strong>, que implica que é impossível existir uma operação de clonagem perfeita, que seja capaz de copiar completamente o estado de um qubit em outro.</p>
+
+<p>Supondo que \(U\) é um operador unitário que é capaz de clonar outros qubits. Assim sendo, temos que:</p>
+
+<p>\(U(\ket{a}\ket{0}) = \ket{a}\ket{a} \Rightarrow\) para todos os estados quânticos.</p>
+
+<p>Prosseguindo, suponhamos que \(\ket{a}\) e \(\ket{b}\) sejam estados ortogonais, e \(U\) seja capaz de cloná-los livremente, assim sendo:</p>
+
+\[U(\ket{a}\ket{0}) = \ket{a}\ket{a}\]
+
+\[U(\ket{b}\ket{0}) = \ket{b}\ket{b}\]
+
+<p>Agora, considerando que: \(\ket{c} = \frac{1}{\sqrt{2}}(\ket{a} + \ket{b})\)</p>
+
+<p>Por conta da linearidade de transformações quânticas, temos que:</p>
+
+\[U(\ket{c}\ket{0}) = \frac{1}{\sqrt{2}}(U(\ket{a}\ket{0}) + U(\ket{b}\ket{0}))\]
+
+\[U(\ket{c}\ket{0}) = \frac{1}{\sqrt{2}}(\ket{a}\ket{a} + \ket{b}\ket{b})\]
+
+<p>Porém, sendo \(U\) um operador de clonagem, então obrigatoriamente:</p>
+
+\[U(\ket{c}\ket{0}) = \ket{c}\ket{c}\]
+
+<p>O que implica que:</p>
+
+\[U(\ket{c}\ket{0}) = \ket{c}\ket{c} = \frac{1}{2}(\ket{a}\ket{a} + \ket{a}\ket{b} + \ket{b}\ket{a} + \ket{b}\ket{b})\]
+
+<p>O que é diferente da nossa primeira conclusão sobre o resultado do operador \(U\).</p>
+
+\[\frac{1}{2}(\ket{a}\ket{a} + \ket{a}\ket{b} + \ket{b}\ket{a} + \ket{b}\ket{b}) \neq \frac{1}{\sqrt{2}}(\ket{a}\ket{a} + \ket{b}\ket{b})\]
+
+<p>Assim sendo, de acordo com as leis da mecânica quântica, é impossível existir um operador unitário capaz de copiar completamente um estado complexo.
+Porém, é possível atingir uma eficácia suficientemente utilizável a partir de operações conhecidas, já tendo sido identificado até 80% de precisão em uma cópia durante testes de laboratório.</p>
+
+<h5 id="referências">Referências</h5>
+<ul>
+  <li>FUTURE LEARN. Quantum computing: Reversible evolution. Disponível em: https://www.futurelearn.com/info/courses/intro-to-quantum-computing/0/steps/31561.</li>
+  <li>QUANTUM COMPUTING. EdX Quantum Reversibility - Part 1. Disponível em: https://www.youtube.com/watch?v=TpL7gkUGcXU&amp;t=30s.</li>
+  <li>Eleanor Rieffel and Wolfgang Polak. 2011. Quantum Computing: A Gentle Introduction (1st. ed.). The MIT Press.</li>
+  <li>P.A.M Dirac. 1947. The Principles of Quantum Mechanics (3rd. ed.). University Press, Oxford.</li>
+</ul>
+
+        </section>
+
+        
+
+        <footer class="post-footer">
+            <!-- If we want to display author's name and bio -->
+            
+                <figure class="author-image">
+                    <a class="img" href="/" style="background-image: url(/assets/images/profile.png)">
+                    <span class="hidden">Fernando Caletti's Picture</span></a>
+                </figure>
+                <section class="author">
+                    <!-- Author Name -->
+                    <h4> Fernando Caletti </h4>
+                    <!-- Author Bio -->
+                    <p>
+                        
+                    </p>
+                </section>
+            
+
+            <!-- Share links section -->
+            <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?text=Transformações Quânticas (Matrizes unitárias, Reversibilidade e No-Cloning Theorem)&amp;url=https://qcomp-eld.github.io//teoria/computacao-qu%C3%A2ntica/educativo/2022/08/16/transformacoes-quanticas.html"
+        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+        <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://qcomp-eld.github.io//teoria/computacao-qu%C3%A2ntica/educativo/2022/08/16/transformacoes-quanticas.html"
+        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+        <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=https://qcomp-eld.github.io//teoria/computacao-qu%C3%A2ntica/educativo/2022/08/16/transformacoes-quanticas.html"
+       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+        <span class="hidden">Google+</span>
+    </a>
+</section>
+
+            <!-- Disqus comments -->
+            
+
+        </footer>
+
+    </article>
+
+</main>
+
+    <footer class="site-footer clearfix">
+      <section class="copyright">
+        <a href="">QComp - Eld</a> &copy; 
+              2022 &bull; All rights reserved.
+      </section>
+      <section class="poweredby">Made with Jekyll using 
+        <a href="http://github.com/rosario/kasper">Kasper theme</a>
+      </section>
+    </footer>
+    
+    <script type="text/javascript" src="/assets/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="/assets/js/index.js"></script>
+
+    <!-- Google Analytics Tracking code -->
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-XXXXXXXX-X']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>   
+</body>
+</html>
