@@ -42,9 +42,9 @@ Onde $\omega=e^{\frac{2\pi i}{N}}$.
 Em mecânica quântica, substituimos os vetores do tipo $(x_0, x_1, ..., x_{N-1})$ da base canônica por kets do tipo $\sum_{j=0}^{N-1}x_j\ket{j}$. Isto é, as coordenadas (ou amplitudes) continuam as mesmas (existe a bijeção) e a base canônica de $C^{N}$ é escrita como kets $\ket{0}$, $\ket{1}$,...,$\ket{N-1}$. Por exemplo, em N=3: $$(1,0,0)^{t} \rightarrow 1\ket{0}+0\ket{1}+0\ket{2} = \ket{0}$$
 
 A construção do circuito que executa a TFQ para qualquer valor de N é um pouco complicada [pesquisar ainda e deixar como apêndice]. A TFQ para $N=2^{n}$ com a base ${\ket{0},..., \ket{2^{n}-1}}$ é:
-$$\ket{j}\rightarrow 1/(2^{n/2})\sum_{k=0}^{2^{n}-1}e^{2\pi ijk/(2^{n})}\ket{k}$$
+$$\ket{j}\rightarrow 1/(2^{n/2})\sum_{k=0}^{2^{n}-1}e^{2\pi ijk/(2^{n})}\otimes\ket{k}$$
 Pode-se mostrar ainda que (referencia III pg39):
-$$\ket{j}\rightarrow (\ket{0}+e^{2\pi i0.j_n}\ket{1})(\ket{0}+e^{2\pi i0.j_{n-1}j_n}\ket{1})...(\ket{0}+e^{2\pi i0.j_1j_2...j_n}\ket{1})$$
+$$\ket{j}\rightarrow (\ket{0}+e^{2\pi i0.j_n}\ket{1})\otimes(\ket{0}+e^{2\pi i0.j_{n-1}j_n}\ket{1})\otimes...\otimes(\ket{0}+e^{2\pi i0.j_1j_2...j_n}\ket{1})$$
 
 Podemos [referencia III pg30] construir o circuito que executa essa transformação (exclusiva para $N=2^{n}$): 
 
@@ -79,14 +79,14 @@ Aplicamos as portas de Hadamard nos qbits do primeiro registrador resultando em 
 Aplicando as portas $U^{2^j}$ no estado $\ket{\psi_1}$ obtemos: [adicionar o circuito $U^{2^j}$]
 $$\ket{\psi_2}= \frac{1}{\sqrt{2^t}}\sum_{j=0}^{2^{t}-1}\ket{j}\otimes\ket{x^j}$$ onde $x$ assume valores de $\ket{0}$ a $\ket{2^t-1}$. [entender melhor essa parte pg 49].
 Teremos portanto os termos:
-$$\ket{0}\ket{1}, \ket{r}\ket{1}, \ket{2r}\ket{1}, ...,\ket{2^t-r}\ket{1}, $$
+$$\ket{0}\otimes\ket{1}, \ket{r}\otimes\ket{1}, \ket{2r}\otimes\ket{1}, ...,\ket{2^t-r}\otimes\ket{1}, $$
 uma vez que estamos trabalhando no grupo $Z_N$ e a potência modular é definida por $a^n=a*a*...*a$ (n vezes). O primeiro ket de cada produto tensorial tem esses valores porque trata-se de uma função periódica de período (ou resto) r. [entender melhor]. Note que como ainda não foi realizada a medição então todos os estados de $\ket{\psi_2}$ são equiprováveis.
 Rearranjando o estado $\ket{\psi_2}$ obtemos:
-$$\ket{\psi_2}=\frac{1}{2^{\frac{t}{2}}}\sum_{b=0}^{r-1}(\sum_{a=0}^{\frac{2^t}{r}-1}\ket{ar+b})\ket{x^b}$$
+$$\ket{\psi_2}=\frac{1}{2^{\frac{t}{2}}}\sum_{b=0}^{r-1}(\sum_{a=0}^{\frac{2^t}{r}-1}\ket{ar+b})\otimes\ket{x^b}$$
 Realizando uma medição e supondo, sem perda de generalidade, que o resultado tenha sido $\ket{x^{b_1}}$ teremos como estado atual:
-$$\ket{\psi_3}=\sqrt{\frac{r}{2^t}}(\sum_{a=0}^{\frac{2^t}{r}-1}\ket{ar+b_1})\ket{x^{b_1}}$$
+$$\ket{\psi_3}=\sqrt{\frac{r}{2^t}}(\sum_{a=0}^{\frac{2^t}{r}-1}\ket{ar+b_1})\otimes\ket{x^{b_1}}$$
 Para descobrir o valor de $a$ aplicaremos o $TFQ^*$ no primeiro registrador onde * denota o hermitiano da aplicação. Obtemos, conforme (refIII pag50):
-$$\ket{\psi_4}=\frac{1}{\sqrt{r}}(\sum_{k=0}^{r-1}e^{-2\pi ikb_1/r}\ket{\frac{k2^t}{r}})\ket{x^{b_1}}$$
+$$\ket{\psi_4}=\frac{1}{\sqrt{r}}(\sum_{k=0}^{r-1}e^{-2\pi ikb_1/r}\ket{\frac{k2^t}{r}})\otimes\ket{x^{b_1}}$$
 E pronto. Podemos realizar a medição na base computacional. Obtendo $\ket{0}$ quando k=0 não teremos informação sobre o sistema mas se o resultado da medição for $\ket{\frac{k2^t}{r}}$ por algum k>0, dividimos por $2^t$ e teremos duas possibilidades: mdc(k,r)=1 ou mdc(k,r) é diferente de 1. No primeiro caso fazemos $x^r = 1 mod N$ e temos a ordem. No segundo caso o denominador será um d que é um fator de r e nesse caso o algoritmo falha.
 ##### Caso Geral
 Os valores de t e L não mudam. O circuito que implementa a busca de ordem no caso geral é:
