@@ -10,12 +10,16 @@ usemathjax: true
 # Algoritmo de Shor
 
 ## O que é?
-Algoritmo de decomposição. Dado um número N, encontra os fatores primos que o compõem no produto. Útil para achar decomposições em produto não triviais de números compostos utilizados em criptografia
+Algoritmo de decomposição em produtos. Dado um número N, encontra fatores que o compõem no produto. Útil para achar decomposições em produto não triviais de números compostos utilizados em criptografia
 ## Por que estudar?
-Utilizando este algoritmo em um computador quântico podemos quebrar, por exemplo, a criptografia RSA em tempo polinomial (mais rápido) [fonte]. Há de se pontuar que fenomenos de quantum noise [fonte] ou quantum-decoherence [fonte] interferem na execução deste algoritmo. Atualmente o problema em utilizar este é devido a limitação de hardware[fonte].
+Utilizando este algoritmo em um computador quântico podemos quebrar, por exemplo, a criptografia RSA em tempo polinomial (mais rápido) [fonte]. Há de se pontuar que fenomenos de quantum noise [fonte] ou quantum-decoherence [fonte] interferem na execução deste algoritmo. Atualmente o problema em utilizar este é devido a limitações de hardware[fonte].
 ## Como funciona?
-Dado um número N, nosso problema é equivalente ao problema de encontrar um número divisor não trivial de N entre 1 e N. De fato, achando um número poderiamos executar novamente o algoritmo para encontrar outro número até que N esteja completamente decomposto.
-Passos:
+Dado um número N, nosso problema é equivalente ao problema de encontrar um número divisor não trivial de N entre 1 e N. De fato, achando um número-produto poderiamos executar novamente o algoritmo para encontrar outro número até que N esteja completamente decomposto. De fato:
+Seja $N$ nosso número. Encontrando um termo A teriamos: $N_0=N=A*k_1*...*k_n$. Daí, basta achar $N_1=k_1*...*k_n$ e assim sucessivamente.
+O algoritmo é composto por duas etapas. A etapa clássica que é mais simples e de fácil implementação e a etapa onde precisaremos de computação quântica.
+O algoritmo em geral pode ser resumido assim:
+
+Dado N, um número a ser fatorado em produtos, 
 1. Descobrir se N é primo ou composto: usar primality-testing (apêndice I)
 2. Se N for primo então a única decomposição possível é a trivial: 1 e N. Acabou.
 3. Se não, escolha A &isin; &alefsym; qualquer tal que 1<A<N
@@ -39,11 +43,11 @@ $$\frac{1}{\sqrt{N}}\left(\begin{matrix}
 1&\omega^{N-1}&\omega^{N-2}&...&\omega
 \end{matrix}\right)$$
 Onde $\omega=e^{\frac{2\pi i}{N}}$.
-Em mecânica quântica, substituimos os vetores do tipo $(x_0, x_1, ..., x_{N-1})$ da base canônica por kets do tipo $\sum_{j=0}^{N-1}x_j\ket{j}$. Isto é, as coordenadas (ou amplitudes) continuam as mesmas (existe a bijeção) e a base canônica de $C^{N}$ é escrita como kets $\ket{0}$, $\ket{1}$,...,$\ket{N-1}$. Por exemplo, em N=3: $$(1,0,0)^{t} \rightarrow 1\ket{0}+0\ket{1}+0\ket{2} = \ket{0}$$
+Em mecânica quântica, substituimos os vetores do tipo $(x_0, x_1, ..., x_{N-1})$ da base canônica por kets do tipo $\sum_{j=0}^{N-1}x_j\ket{j}$. Isto é, as coordenadas (ou amplitudes) continuam as mesmas (existe a bijeção) e a base canônica de $C^{N}$ [Ou $R^N?$] é escrita como kets $\ket{0}$, $\ket{1}$,...,$\ket{N-1}$. Por exemplo, em N=3: $$(1,0,0)^{t} \rightarrow 1\ket{0}+0\ket{1}+0\ket{2} = \ket{0}$$
 
 A construção do circuito que executa a TFQ para qualquer valor de N é um pouco complicada [pesquisar ainda e deixar como apêndice]. A TFQ para $N=2^{n}$ com a base ${\ket{0},..., \ket{2^{n}-1}}$ é:
-$$\ket{j}\rightarrow 1/(2^{n/2})\sum_{k=0}^{2^{n}-1}e^{2\pi ijk/(2^{n})}\otimes\ket{k}$$
-Pode-se mostrar ainda que (referencia III pg39):
+$$\ket{j}\rightarrow 1/(2^{n/2})\sum_{k=0}^{2^{n}-1}e^{2\pi ijk/(2^{n})}\ket{k}$$
+Pode-se mostrar ainda que a TFQ transforma o ket $\ket{j}$ de forma (referencia III pg39):
 $$\ket{j}\rightarrow (\ket{0}+e^{2\pi i0.j_n}\ket{1})\otimes(\ket{0}+e^{2\pi i0.j_{n-1}j_n}\ket{1})\otimes...\otimes(\ket{0}+e^{2\pi i0.j_1j_2...j_n}\ket{1})$$
 
 Podemos [referencia III pg30] construir o circuito que executa essa transformação (exclusiva para $N=2^{n}$): 
@@ -59,8 +63,8 @@ $$\left(\begin{matrix}
 #### 2. Grupo $Z_N$ e aritmética modular      
 Será apresentado algumas notações importantes para o entendimento do algoritmo:
 $$Z_2 = {\overline{0}, \overline{1}} $$
-É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 na divisão por 2. Isto é, $\overline{0}$ representa os números pares enquanto $\overline{1}$ os impares. Pode-se definir uma operação de multiplicação nesse conjunto de forma que $Z_n = \overline{0}, \overline{1}, ..., \overline{n-1}$ seja um grupo. Definimos também a ordem de um número a como o menor inteiro k tal que $a^{k}=e$ onde $e$ denota o elemento neutro do grupo com respeito a operação de multiplicação
-Outra notação importante é a de $A (mod N)$ que é o resto da divisão de A por N (em Python usamos %: A%N)
+É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 na divisão por 2. Isto é, $\overline{0}$ representa os números pares enquanto $\overline{1}$ os impares. Pode-se definir uma operação de multiplicação nesse conjunto de forma que $Z_n = \overline{0}, \overline{1}, ..., \overline{n-1}$ seja um grupo. Definimos também a ordem de um número $a$ como o menor inteiro k tal que $a^{k}=e$ onde $e$ denota o elemento neutro do grupo com respeito a operação de multiplicação
+Outra notação mais importante ainda é a de $A (mod N)$ que é o resto da divisão de A por N (em Python usamos: A%N)
 Nesta notação, a ordem ou período de um número inteiro A é o menor inteiro tal que $A^rmodN=1$ 
 #### 3. Algoritmo de frações contínuas
 Uma fração contínua é uma expressão do tipo: $$a_0 + \frac{b_1}{a_1+\frac{b_2}{a_2+\frac{b_3}{a_3+...}}}$$
