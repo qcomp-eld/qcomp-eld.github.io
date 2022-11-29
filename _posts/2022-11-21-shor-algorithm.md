@@ -12,7 +12,7 @@ usemathjax: true
 ## O que é?
 Algoritmo de decomposição. Dado um número N, encontra os fatores primos que o compõem no produto. Útil para achar decomposições em produto não triviais de números compostos utilizados em criptografia
 ## Por que estudar?
-Utilizando este algoritmo em um computador quântico podemos quebrar, por exemplo, a criptografia RSA em tempo polinomial (mais rápido) [fonte]. Há de se pontuar que fenomenos de quantum noise (apêndice II)[fonte] ou quantum-decoherence (apêndice III)[fonte] interferem na execução deste algoritmo. Atualmente o problema em utilizar este é devido a limitação de hardware[fonte].
+Utilizando este algoritmo em um computador quântico podemos quebrar, por exemplo, a criptografia RSA em tempo polinomial (mais rápido) [fonte]. Há de se pontuar que fenomenos de quantum noise [fonte] ou quantum-decoherence [fonte] interferem na execução deste algoritmo. Atualmente o problema em utilizar este é devido a limitação de hardware[fonte].
 ## Como funciona?
 Dado um número N, nosso problema é equivalente ao problema de encontrar um número divisor não trivial de N entre 1 e N. De fato, achando um número poderiamos executar novamente o algoritmo para encontrar outro número até que N esteja completamente decomposto.
 Passos:
@@ -61,12 +61,16 @@ Será apresentado algumas notações importantes para o entendimento do algoritm
 $$Z_2 = {\overline{0}, \overline{1}} $$
 É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 na divisão por 2. Isto é, $\overline{0}$ representa os números pares enquanto $\overline{1}$ os impares. Pode-se definir uma operação de multiplicação nesse conjunto de forma que $Z_n = \overline{0}, \overline{1}, ..., \overline{n-1}$ seja um grupo. Definimos também a ordem de um número a como o menor inteiro k tal que $a^{k}=e$ onde $e$ denota o elemento neutro do grupo com respeito a operação de multiplicação
 Outra notação importante é a de $A (mod N)$ que é o resto da divisão de A por N (em Python usamos %: A%N)
-
+Nesta notação, a ordem ou período de um número inteiro A é o menor inteiro tal que $A^rmodN=1$ 
+#### 3. Algoritmo de frações contínuas
+Uma fração contínua é uma expressão do tipo: $$a_0 + \frac{b_1}{a_1+\frac{b_2}{a_2+\frac{b_3}{a_3+...}}}$$
+[não entendi a aplicação deste algoritmo no nosso problema para encontrar $\phi = \frac{r}{s}$]
 #### Algoritmo para a Rotina X
 Calculemos, primeiramente, a ordem de $x \in Z_N$. Este é o primeiro passo para a rotina X dado um número N que queremos fatorar.
-Defina a transformação linear unitária (provado em refIII pag46) $U:C^{n}\rightarrow C^{n}$ por:
+Defina a transformação linear unitária (provado em ref III pg46) $U:C^{n}\rightarrow C^{n}$ por:
 $$U\ket{k}=\ket{xk modN}$$
-Como construir essa porta????? apendice da dissertacao
+Este circuito será de importância fundamental para o funcionamento do algoritmo. Sua construção estará no apêndice II
+[reescrever (está muito ruim)]
 
 ##### Circuito da busca de ordem no caso em que a ordem r de um elemento x de $Z_N$ pode ser escrita como $r = 2^{s}$
 
@@ -99,12 +103,17 @@ $$\ket{\psi_2}=\frac{1}{2^{\frac{t}{2}}}\sum_{j=0}^{2^t-1}\ket{j}\otimes\ket{x^j
 $$\ket{\psi_3}=\frac{1}{2^{t}}\sum_{j,k}^{2^t-1}e^{\frac{-2\pi ikj}{2^t}}\ket{k}\otimes\ket{x^j}$$
 $$\ket{\psi_4}=\ket{c}\otimes\ket{\alpha_c}$$
 com $\ket{c}\in \ket{0}, \ket{1},..., \ket{2^t-1}$ e $\ket{\alpha_c}$ vem da decomposição de $\ket{\psi_3}$ em relação à base computacional do primeiro registrador. 
-Para encontrar r com alta probabilidade..........
+Por fim, encontrar r dependerá de probabilidade. Nem sempre este algoritmo nos retornará a resposta correta. Para aumentar esta probabilidade fazemos $r=\frac{c}{2^t}$. O algoritmo de frações contínuas resolve o problema. A probabilidade de obter um estado $\ket{c}\ket{x^k}$ na base computacional é:
+$$|\frac{1}{q}\sum_{j:x^j\equiv x^k}^{}e^{\frac{-2\pi ijc}{q}}|^2$$
+onde $j:x^j\equiv x^k$ significa todos os j para os quais $x^j\equiv x^k modN$ e $q=2^t$. Pode-se (ref III) mostrar que isso é equivalente a: 
+
+
+##### Busca de ordem de um número e a fatoração de números inteiros
 
 
                                                              
 ## Apêndice I (primality-testing algorithm):
-Algoritmo simples que usa o fato de todos os divisores de um número n serem menores ou iguais a n/2. Em Python:
+Algoritmo simples que usa o fato de todos os divisores de um número n serem menores ou iguais a n/2. Em Python, retornando True para primo e False para composto:
                                                            
 def is_prime(n: int) -> bool:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if n<=3:
@@ -118,22 +127,54 @@ def is_prime(n: int) -> bool:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return True
 
     
-## Apêndice II (quantum noise)
-## Apêndice III (quantum-decoherence)
+
+## Apêndice II (circuito U)
+Este gate é comumente conhecido como quantum phase estimation. Trata-se de um operador unitário (pode-se provar isso) definido por:
+$$U\ket{y}\equiv \ket{(ay) modN}$$
+Isto é, $U$ transforma um ket $\ket{y}$ em um ket que guarda o resto da operação $\frac{ay}{N}$.
+Exemplos:
+1. Tomando N=2 e A=25: $$U\ket{1}=\ket{25mod2}=\ket{1}$$ Logo, neste caso, $r=1$ uma vez que $\ket{25mod2}=\ket{25^1mod2}$
+2. Tomando N=35 e A=3: $$U\ket{1}=\ket{3 mod35}=\ket{3}$$ 
+Uma vez que o algoritmo da divisão nos retorna $3=(35*0)+3$ onde 0 é o resultado da divisão $\frac{3}{35}$.
+Neste caso teriamos também: $$U^2\ket{1}=U\circ U\ket{1}=U\ket{3}=\ket{3*3mod35}=\ket{3^2mod35}=\ket{9}$$ $$U^3\ket{1}=U\circ U^2\ket{1}=U\ket{9}=\ket{9*3mod35}=\ket{3^3mod35}=\ket{27}$$ $$\vdots$$ $$U^{r-1}\ket{1}=\ket{12}$$ $$U^r\ket{1}=U\circ U^{r-1}\ket{1}=U\ket{12}=\ket{3^{12}mod35}=\ket{1}$$ daonde temos que $r=12$
+
+Chegar ao estado $\ket{1}$ após aplicações sucessivas de $U$ não é coincidência. Por construção, iniciando em $\ket{1}$ chegaremos novamente em $\ket{1}$ após r aplicações de $U$. Daí o nome de período da função.
+
+Seja $\ket{x_s}$ o estado definido por: $$\ket{x_s}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}e^{\frac{-2\pi sik}{r}}\ket{A^kmodN}$$ Onde $0\leq s\leq r-1 \in \N$.  Note que este está dentro do espaço de estados por ser combinação linear de autovetores de U. O termo de fase $e^{\frac{-2\pi sik}{r}}$ aparece porque estamos interessados em estados cuja fase difere do estado $\ket{x}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}\ket{A^kmodN}$ o qual nos retorna como autovalor 1 (ref V). O fator $r$ é acrescentado porque é útil termos associarmos o período da função com cada coeficiente. O termo $s$ é acrescentado para generalizar essa diferença de fase e garantir a unicidade de cada autoestado para cada valor de s.
+Aplicando U, pode-se mostrar (ref V) que: $$U\ket{x_s}=e^{\frac{2\pi si}{r}}\ket{x_s}$$ que tem autovalores $e^{\frac{2\pi si}{r}}$.
+Não obstante, ainda teremos que (ref V) $$\frac{1}{\sqrt{r}}\sum_{s=0}^{r-1}\ket{x_s}=\ket{1}$$ Daí, temos que $\ket{1}$ é uma superposição desses estados. Realizando QPE (apêndice III) em U usando o estado $\ket{1}$ mediremos a fase $\phi = \frac{s}{r}$. Usamos o algoritmo de frações continuadas em $\phi$ para achar $r$. O circuito que implementa isso é:
+
+![frac_cont_gate](/assets/images/shor-algorithm/shor_circuit_1.svg)
+Fonte: [Qiskit-Algoritmo Shor](https://qiskit.org/textbook/ch-algorithms/shor.html)
+
+## Apêndice III (Quantum Phase Estimation)
+Dado um operador unitário $U$, queremos estimar um ângulo para o qual $U\ket{\psi}=e^{2\pi i\theta}\ket{\psi}$.
+Começamos com dois conjuntos de qbits. O primeiro conjunto terá qbits configurados para estarem em $\ket{0}$ e o segundo conjunto para o estado $\ket{\psi}$ de forma que nosso estado inicial seja representado por $$\ket{\psi_0}=\ket{0}\otimes\ket{0}\otimes...\otimes\ket{0}\otimes\ket{\psi}$$ onde temos, por exemplo, n vezes o produto tensorial entre os $\ket{0}$. Aplicamos, após isso, n portas de Hadamard (isto é, $H\otimes H\otimes... \otimes H\otimes I$). Teremos, portanto:
+$$\ket{\psi_1}=\frac{1}{2^{n/2}}(\ket{0}+\ket{1})^{\otimes n}\otimes\ket{\psi}$$
+Definimos o gate unitário de controle $CU$ que aplica $U$ no estado $\ket{\psi_i}$ se e só se o bit de controle for $\ket{1}$.
+Como $U\ket{\psi}=e^{2\pi i\theta}\ket{\psi}$ então:
+$$U^{2^j}\ket{\psi}=U^{2^j-1}U\ket{\psi}=U^{2^j-1}e^{2\pi i\theta}\ket{\psi}=...=e^{2\pi i2^j\theta}\ket{\psi}$$ com $0\leq j\leq n-1$. Aplicando os $n$ $CU^{2^j}$ no primeiro conjunto de qbits pode-se mostrar que:
+$$\ket{\psi_2}=\frac{1}{2^{n/2}}\sum_{k=0}^{2^n-1}e^{2\pi i\theta k}\ket{k}\otimes \ket{\psi}$$ Aplicamos agora a transformada inversa de fourier quântica em todos os qbits do primeiro conjunto, conforme mostrado la em cima, obtemos:
+$$\frac{1}{2^{n/2}}\sum_{k=0}^{2^n-1}e^{2\pi i\theta k}\ket{k}\otimes \ket{\psi}\rightarrow \ket{\psi_3}=\frac{1}{2^n}\sum_{x=0}^{2^n-1}\sum_{k=0}^{2^n-1}e^{\frac{-2\pi i k}{2^n}(x-2^n\theta)}\ket{x}\otimes\ket{\psi}$$ Por fim, a expressão acima tem pico perto de $x=2^n\theta$. Se $2^n\theta\in\N$ teremos que uma medição na base computacional nos da a fase no registrador auxiliar com alta probabilidade:$$\ket{\psi_4}=\ket{2^n\theta}\otimes\ket{\psi}$$ se não, a probabilidade de acerto é aproximadamente $40%$ [fonte1 refV ]. Estas operações podem ser representadas pela figura abaixo
+![QPErepresentatio](/assets/images/shor-algorithm/qpe_tex_qz.png)
+Fonte: [Qiskit-Quantum Phase Estimation](https://qiskit.org/textbook/ch-algorithms/quantum-phase-estimation.html)
+
 
 
 
 ## Referências
-* Wikipedia/eng
-* Chapter 5 of QFT, Period Finding & Shor's Algorithm
-* Dissertação de Mestrado Adriana Xavier UFMG
-* Marcelo Terra Cunha - Curso de meq. quantica para matematicos em formação
+I. Wikipedia/eng
+II. Chapter 5 of QFT, Period Finding & Shor's Algorithm
+III. Dissertação de Mestrado Adriana Xavier UFMG
+IV. Marcelo Terra Cunha - Curso de meq. quantica para matematicos em formação
+V. qiskit shor algorithm
 
 
 # O que falta?
 * Implementar no IBM Quantum Composer comparando com o exemplo de dimensão N=4 usado na dissertação pg 41
-* Escrever apêndices II e III
 * Circuito TFQ para N qualquer
-* Escrever algoritmo final
-* Testar apêndice I
+* Terminar Algoritmo de frações continuas
+* Escrever Busca de ordem de um número e a fatoração de números inteiros (fim?)
+
+
 
