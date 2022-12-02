@@ -43,22 +43,70 @@ $$\frac{1}{\sqrt{N}}\left(\begin{matrix}
 1&\omega^{N-1}&\omega^{N-2}&...&\omega
 \end{matrix}\right)$$
 Onde $\omega=e^{\frac{2\pi i}{N}}$.
-Em mecânica quântica, substituimos os vetores do tipo $(x_0, x_1, ..., x_{N-1})$ da base canônica por kets do tipo $\sum_{j=0}^{N-1}x_j\ket{j}$. Isto é, as coordenadas (ou amplitudes) continuam as mesmas (existe a bijeção) e a base canônica de $C^{N}$ [Ou $R^N?$] é escrita como kets $\ket{0}$, $\ket{1}$,...,$\ket{N-1}$. Por exemplo, em N=3: $$(1,0,0)^{t} \rightarrow 1\ket{0}+0\ket{1}+0\ket{2} = \ket{0}$$
+Em mecânica quântica, substituimos os vetores do tipo $(x_0, x_1, ..., x_{N-1})$ da base canônica por kets do tipo $\sum_{j=0}^{N-1}x_j\ket{j}$. Isto é, as coordenadas (ou amplitudes) continuam as mesmas (existe a bijeção) e a base canônica de $C^{N}$ é escrita como kets $\ket{0}$, $\ket{1}$,...,$\ket{N-1}$. Por exemplo, em N=3: $$(1,0,0)^{t} \rightarrow 1\ket{0}+0\ket{1}+0\ket{2} = \ket{0}$$
 
-A construção do circuito que executa a TFQ para qualquer valor de N é um pouco complicada [pesquisar ainda e deixar como apêndice]. A TFQ para $N=2^{n}$ com a base ${\ket{0},..., \ket{2^{n}-1}}$ é:
+A construção do circuito que executa a TFQ para qualquer valor de N é um pouco complicada [apêndice]. A TFQ para $N=2^{n}$ com a base ${\ket{0},..., \ket{2^{n}-1}}$ é:
 $$\ket{j}\rightarrow 1/(2^{n/2})\sum_{k=0}^{2^{n}-1}e^{2\pi ijk/(2^{n})}\ket{k}$$
 Pode-se mostrar ainda que a TFQ transforma o ket $\ket{j}$ de forma (referencia III pg39):
 $$\ket{j}\rightarrow (\ket{0}+e^{2\pi i0.j_n}\ket{1})\otimes(\ket{0}+e^{2\pi i0.j_{n-1}j_n}\ket{1})\otimes...\otimes(\ket{0}+e^{2\pi i0.j_1j_2...j_n}\ket{1})$$
-
-Podemos [referencia III pg30] construir o circuito que executa essa transformação (exclusiva para $N=2^{n}$): 
+Onde $0.j_1j_2...j_n = \frac{j_1}{2}+\frac{j_2}{4}+...+\frac{j_n}{2^n}$  com $j_k=0$ ou $1$
+O circuito [referencia III pg30] que executa essa transformação para um estado $\ket{j}=\ket{j_1j_2j_3...j_n}$ (exclusiva para $N=2^{n}$ que de fato é interessante para computação): 
 
 ![Circuito-TFQ-2n](/assets/images/shor-algorithm/figura3.1_dissertacao.png)
 Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010)
-Onde H representa o gate Hadamard e $R_k$ controlado definido por:
+Onde H representa o gate Hadamard e $R_k$ um gate de controle definido por:
 $$\left(\begin{matrix}
 1&0\\
 0&e^{\frac{2\pi i}{2^k}}
 \end{matrix}\right)$$
+A matriz inversa da matriz de representação (numa base ortonormal) também terá muita importância. Como a matriz é unitária então a matriz hermitiana será igual a inversa. Esta é:
+$$\left(\begin{matrix}
+1&1&1&...&1\\
+1&\tau&\tau^2&...&\tau^{N-1}\\
+1&\tau^2&\tau^3&...&\tau^{N-2}\\
+...&...&...&...&...\\
+1&\tau^{N-1}&\tau^{N-2}&...&\tau\\
+\end{matrix}\right)$$Onde $\tau=e^{\frac{-2\pi i}{N}}$.
+O circuito que executa a operação inversa da TQF é:
+![Circuito-TFQ-2n-inversa](/assets/images/shor-algorithm/tqfinversa.png)
+Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010)
+
+##### Exemplo da TFQ em n=3
+[obs.: tentei com n=2 mas a TFQ me retornou um estado não normalizado. por que?]
+Neste caso a TFQ é um operador unitário que leva $C^8$ em $C^8$ e a matriz que o representa na base {$\ket{ijk}$} com $i,j,k=0$ ou $1$ é:
+$$\frac{1}{\sqrt{8}}\left(\begin{matrix}
+1&1&1&1&1&1&1&1\\
+1&\omega&\omega^2&\omega^3&\omega^4&\omega^5&\omega^6&\omega^7\\
+1&\omega^2&\omega^4&\omega^6&1&\omega^2&\omega^4&\omega^6\\
+1&\omega^3&\omega^6&\omega&\omega^4&\omega^7&\omega^2&\omega^5\\
+1&\omega^4&1&\omega^4&1&\omega^4&1&\omega^4\\
+1&\omega^5&\omega^2&\omega^7&\omega^4&\omega&\omega^6&\omega^3\\
+1&\omega^6&\omega^4&\omega^2&1&\omega^6&\omega^4&\omega^2\\
+1&\omega^7&\omega^6&\omega^5&\omega^4&\omega^3&\omega^2&\omega
+\end{matrix}\right)$$ Onde $\omega=e^{\frac{2\pi i}{8}}$.
+Aplicando a TFQ as coordenadas de $\ket{000}$ obtemos o vetor: $$\frac{1}{\sqrt{8}}(1 1 1 1 1 1 1 1)^t=\frac{1}{\sqrt{8}}\sum_{i,j,k=0,1}^{}\ket{i,j,k}$$.
+Ou seja, a TFQ transforma o ket $\ket{000}$:
+$$\ket{000} \rightarrow^{TFQ} \frac{1}{\sqrt{8}}(\ket{000}+\ket{001}+\ket{010}+\ket{100}+\ket{110}+\ket{101}+\ket{011}+\ket{111})$$ Em Python, importando o modulo qiskit, a implementação do circuito fica:
+
+qc = QuantumCircuit(3)
+qc.h(2)
+qc.cp(pi/2,1,2)
+qc.cp(pi/4,0,2)
+qc.h(1)
+qc.cp(pi/2,0,1)
+qc.h(0)
+qc.swap(0,2)
+
+[ainda não testado. Tentei implementar no IBM mas ainda não consegui achar uma forma de construir o R_k controlado.]
+![Circuito-TFQ-n3](/assets/images/shor-algorithm/n3tfq.png)
+Fonte: [qiskit](https://qiskit.org/textbook/ch-algorithms/quantum-fourier-transform.html#8.-Qiskit-Implementation)
+Como o qbit de entrada padrão é $\ket{0}$ o circuito nos retorna o valor esperado. 
+A implementação no quantum composer da IBM fica:
+![Circuito-TFQ-n3-ibm](/assets/images/shor-algorithm/quantumcomposertfq.png)
+Fonte: Autor
+Note que as probabilidades estão coerentes com o esperado teórico.
+
+
 
 #### 2. Grupo $Z_N$ e aritmética modular      
 Será apresentado algumas notações importantes para o entendimento do algoritmo:
@@ -66,7 +114,7 @@ $$Z_2 = {\overline{0}, \overline{1}} $$
 É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 na divisão por 2. Isto é, $\overline{0}$ representa os números pares enquanto $\overline{1}$ os impares. Pode-se definir uma operação de multiplicação nesse conjunto de forma que $Z_n = \overline{0}, \overline{1}, ..., \overline{n-1}$ seja um grupo. Definimos também a ordem de um número $a$ como o menor inteiro k tal que $a^{k}=e$ onde $e$ denota o elemento neutro do grupo com respeito a operação de multiplicação
 Outra notação mais importante ainda é a de $A (mod N)$ que é o resto da divisão de A por N (em Python usamos: A%N)
 Nesta notação, a ordem ou período de um número inteiro A é o menor inteiro tal que $A^rmodN=1$ 
-#### 3. Algoritmo de frações contínuas
+#### 3. Algoritmo de frações continuadas
 Uma fração contínua é uma expressão do tipo: $$a_0 + \frac{b_1}{a_1+\frac{b_2}{a_2+\frac{b_3}{a_3+...}}}$$
 [não entendi a aplicação deste algoritmo no nosso problema para encontrar $\phi = \frac{r}{s}$]
 #### Algoritmo para a Rotina X
@@ -175,9 +223,8 @@ V. qiskit shor algorithm
 
 
 # O que falta?
-* Implementar no IBM Quantum Composer comparando com o exemplo de dimensão N=4 usado na dissertação pg 41
-* Circuito TFQ para N qualquer
-* Terminar Algoritmo de frações continuas
+* Circuito TFQ para N qualquer em apêndice
+* Terminar Algoritmo de frações continuadas
 * Escrever Busca de ordem de um número e a fatoração de números inteiros (fim?)
 
 
