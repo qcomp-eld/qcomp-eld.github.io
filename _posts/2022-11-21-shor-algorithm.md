@@ -19,18 +19,20 @@ Seja $N$ nosso número. Encontrando um termo A teriamos: $N_0=N=A*k_1*...*k_n$. 
 O algoritmo é composto por duas etapas. A etapa clássica que é mais simples e de fácil implementação e a etapa onde precisaremos de computação quântica.
 O algoritmo em geral pode ser resumido assim:
 
-Dado N, um número a ser fatorado em produtos, 
-1. Descobrir se N é primo ou composto: usar primality-testing (apêndice I)
-2. Se N for primo então a única decomposição possível é a trivial: 1 e N. Acabou.
-3. Se não, escolha A &isin; &alefsym; qualquer tal que 1<A<N
-4. Encontre o MDC (MAIOR divisor comum) de A e N. Seja K este número.
-5. Se K&ne;1 então encontramos um fator não trivial. Acabou.
-6. Se K=1, então execute a rotina X para encontrar o período r da função $f(x)=A^{x}(mod N)$. Note que isso significa que r é o menor inteiro positivo que satisfaz $A^{r}=1(mod N)$
-7. Se r é impar ou $a^{r/2}=-1(mod N)$ então volte para o passo 1.
-8. Se não, $MDC(A^{r/2}+1,N)$ ou $MDC(A^{r/2}-1,N)$ são fatores não triviais de N. Acabou.
+Dado $N$, um número natural a ser fatorado em produtos, 
+1. Descobrir se $N$ é primo ou composto: usar primality-testing (apêndice I).
+2. Se $N$ for primo então a única decomposição possível é a trivial: 1 e $N$. Acabou
+3. Se $N$ for par então repita o algoritmo com $N/2$
+4. Use o algoritmo do apêndice IV para verificar se existem $a$ e $b$ tais que $N=a^b$. Retornar $a$ caso positivo.
+5. Se não, escolha A $\in$ $\N$ qualquer tal que 1<A<N
+6. Encontre o MDC (MAIOR divisor comum) de A e N. Seja K este número.
+7. Se K&ne;1 então encontramos um fator não trivial. Acabou.
+8. Se K=1, então execute a rotina X para encontrar o período r da função $f(x)=A^{x}(mod N)$. Note que isso significa que r é o menor inteiro positivo que satisfaz $A^{r}=1(mod N)$
+9. Se r é impar ou $A^{r/2}=-1(mod N)$ então volte para o passo 1.
+10. Se não, $MDC(A^{r/2}+1,N)$ ou $MDC(A^{r/2}-1,N)$ devem ser fatores não triviais de N. Se não forem, então o algoritmo falhou.
                                                              
-### Rotina X (parte que usa de fato computação quântica para encontrar r):
-Antes de começar, introduziremos alguns conceitos importantes para a construção da rotina X.
+### Rotina X:
+Antes de começar, introduziremos alguns conceitos importantes para a construção da rotina X. Alguns autores chamam a rotina X de Algoritmo de Shor (ao invés de todo o processo).
 #### 1. TFQ (Transformada de Fourier Quântica)
 A Transformada de Fourier Discreta é um operador linear definido de $C^{N}$ para $C^{N}$ levando $(x_0, x_1, ..., x_{N-1})$ para $(y_0, y_1, ..., y_{N-1})$ tal que:
 $$y_k = \frac{1}{\sqrt{N}}\sum_{j=0}^{N-1}x_je^{\frac{2\pi ijk}{N}}$$
@@ -72,7 +74,6 @@ O circuito que executa a operação inversa da TQF é:
 Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010)
 
 ##### Exemplo da TFQ em n=3
-[obs.: tentei com n=2 mas a TFQ me retornou um estado não normalizado. por que?]
 Neste caso a TFQ é um operador unitário que leva $C^8$ em $C^8$ e a matriz que o representa na base {$\ket{ijk}$} com $i,j,k=0$ ou $1$ é:
 $$\frac{1}{\sqrt{8}}\left(\begin{matrix}
 1&1&1&1&1&1&1&1\\
@@ -97,7 +98,7 @@ qc.cp(pi/2,0,1)
 qc.h(0)
 qc.swap(0,2)
 
-[ainda não testado. Tentei implementar no IBM mas ainda não consegui achar uma forma de construir o R_k controlado.]
+[ainda não testado.]
 ![Circuito-TFQ-n3](/assets/images/shor-algorithm/n3tfq.png)
 Fonte: [qiskit](https://qiskit.org/textbook/ch-algorithms/quantum-fourier-transform.html#8.-Qiskit-Implementation)
 Como o qbit de entrada padrão é $\ket{0}$ o circuito nos retorna o valor esperado. 
@@ -111,13 +112,32 @@ Note que as probabilidades estão coerentes com o esperado teórico.
 #### 2. Grupo $Z_N$ e aritmética modular      
 Será apresentado algumas notações importantes para o entendimento do algoritmo:
 $$Z_2 = {\overline{0}, \overline{1}} $$
-É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 na divisão por 2. Isto é, $\overline{0}$ representa os números pares enquanto $\overline{1}$ os impares. Pode-se definir uma operação de multiplicação nesse conjunto de forma que $Z_n = \overline{0}, \overline{1}, ..., \overline{n-1}$ seja um grupo. Definimos também a ordem de um número $a$ como o menor inteiro k tal que $a^{k}=e$ onde $e$ denota o elemento neutro do grupo com respeito a operação de multiplicação
-Outra notação mais importante ainda é a de $A (mod N)$ que é o resto da divisão de A por N (em Python usamos: A%N)
-Nesta notação, a ordem ou período de um número inteiro A é o menor inteiro tal que $A^rmodN=1$ 
+É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 na divisão por 2. Isto é, $\overline{0}$ representa os números pares enquanto $\overline{1}$ os impares. 
+Pode-se definir (ref I) operações de adição e multiplicação nesse conjunto de forma que $Z_n = \overline{0}, \overline{1}, ..., \overline{n-1}$ seja um grupo. A adição pode ser tal que $\overline{a}+\overline{b}=\overline{a+b}$ e a multiplicação, não obstante, pode ser $\overline{a}*\overline{b}=\overline{a*b}$. Note que é extremamente conveniente a forma que definimos essas operações. De fato, para somar ou multiplicar os elementos do grupo bastar somar e multiplicar da forma usual e os elementos neutros serão os usuais.
+Definimos também a ordem de um número $a$ como o menor inteiro k tal que $a^{k}=e$ onde $e$ denota o elemento neutro do grupo com respeito a operação de multiplicação
+Outra notação mais importante ainda é a de $A (mod N)$. Esta representa o resto da divisão de A por N (em Python usamos: A%N)
+Nesta notação, a ordem ou período de um número inteiro A é o menor inteiro tal que $A^r(modN)=1$ 
 #### 3. Algoritmo de frações continuadas
-Uma fração contínua é uma expressão do tipo: $$a_0 + \frac{b_1}{a_1+\frac{b_2}{a_2+\frac{b_3}{a_3+...}}}$$
-[não entendi a aplicação deste algoritmo no nosso problema para encontrar $\phi = \frac{r}{s}$]
-#### Algoritmo para a Rotina X
+A teoria geral de frações continuadas é vasta em conteúdo. Neste artigo abordaremos apenas uma aplicação para um caso particular onde é útil para o algoritmo de Shor.
+Queremos expressar um certo número racional $k=\frac{a}{b}$ como combinações de frações dentro de frações conhecidas como frações continuadas ou contínuas.
+Uma fração continuada é uma expressão do tipo: $$a_0 + \frac{b_1}{a_1+\frac{b_2}{a_2+\frac{b_3}{a_3+...}}}$$
+Um caso particular é quando a fração em questão é finita e $b_1=b_2=...=1$. Nesse caso teremos:
+$$a_0 + \frac{1}{a_1+\frac{1}{a_2+\frac{1}{...+\frac{1}{a_m}}}}$$
+Utilizaremos o algoritmo de Euclides (apêndice V) para computar os termos $a_i$. Achemos, por exemplo, o MDC entre 69 e 15:
+
+$69=4*15+9$
+$15=1*9+6$
+$9=1*6+3$
+$6=2*3+0$
+
+Note que podemos expressar, a partir da primeira linha acima dividida por 15, a fração $\frac{69}{15}$ como:
+$$\frac{69}{15}=4+\frac{9}{15}=4+\frac{1}{\frac{15}{9}}$$
+Utilizando a segunda linha dividida por 9:
+$$\frac{69}{15}=4+\frac{1}{1+\frac{6}{9}}=4+\frac{1}{1+\frac{1}{\frac{9}{6}}}$$
+Realizando a mesma operação para a terceira e quarta linha encontramos, por fim:
+$$\frac{69}{15}=4+\frac{1}{1+\frac{1}{1+\frac{1}{2}}}$$ Este algoritmo terá fundamental importância para acharmos os termos convergentes de uma fração resultante do algoritmo de Shor.
+
+### Algoritmo para a Rotina X
 Calculemos, primeiramente, a ordem de $x \in Z_N$. Este é o primeiro passo para a rotina X dado um número N que queremos fatorar.
 Defina a transformação linear unitária (provado em ref III pg46) $U:C^{n}\rightarrow C^{n}$ por:
 $$U\ket{k}=\ket{xk modN}$$
@@ -126,7 +146,7 @@ Este circuito será de importância fundamental para o funcionamento do algoritm
 
 ##### Circuito da busca de ordem no caso em que a ordem r de um elemento x de $Z_N$ pode ser escrita como $r = 2^{s}$
 
-O primeiro registrador deve possuir $t=[log_2N^2+1]$ qbits no estado $\ket{0}$ e o segundo registrador $L=[log_2N+1]$ qbits no estado $\ket{1}$. [não entendi esses valores t==n?]
+O primeiro registrador deve possuir $t=[log_2N^2+1]$ qbits no estado $\ket{0}$ e o segundo registrador $L=[log_2N+1]$ qbits no estado $\ket{1}$. O valor de L é a quantidade de bits para representar o número $N$ em notação binária.
 
 ![busca-de-ordem-caso-simples](/assets/images/shor-algorithm/figura4.1_dissertacao.png)
 Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010)
@@ -157,13 +177,42 @@ $$\ket{\psi_4}=\ket{c}\otimes\ket{\alpha_c}$$
 com $\ket{c}\in \ket{0}, \ket{1},..., \ket{2^t-1}$ e $\ket{\alpha_c}$ vem da decomposição de $\ket{\psi_3}$ em relação à base computacional do primeiro registrador. 
 Por fim, encontrar r dependerá de probabilidade. Nem sempre este algoritmo nos retornará a resposta correta. Para aumentar esta probabilidade fazemos $r=\frac{c}{2^t}$. O algoritmo de frações contínuas resolve o problema. A probabilidade de obter um estado $\ket{c}\ket{x^k}$ na base computacional é:
 $$|\frac{1}{q}\sum_{j:x^j\equiv x^k}^{}e^{\frac{-2\pi ijc}{q}}|^2$$
-onde $j:x^j\equiv x^k$ significa todos os j para os quais $x^j\equiv x^k modN$ e $q=2^t$. Pode-se (ref III) mostrar que isso é equivalente a: 
+onde $j:x^j\equiv x^k$ significa todos os j para os quais $x^j\equiv x^k modN$ e $q=2^t$. Pode-se (ref III) mostrar que isso é equivalente a uma expressão do tipo: 
+$$|\frac{1}{q}(\frac{1-e^{-2\pi i\alpha (rc)_q/q}}{1-e^{-2\pi i (rc)_q/q}})|$$ onde $\alpha = \frac{q-\beta}{r}$ com sendo o resto da divisão de q por r.
+Na referência II temos uma analise mais detalhada deste resultado.
+
+[Faltou detalhar melhor quando o algoritmo falha, quando não retorna informação util e quando da certo]
 
 
-##### Busca de ordem de um número e a fatoração de números inteiros
+#### Busca de ordem de um número e a fatoração de números inteiros
+
+Seja $r$ a ordem, já encontrada, de um elemento $x \in Z_N$. Se $r=\phi(N)$, onde $\phi$ denota a função totiente de Euler, então dizemos que $x$ é uma raiz primitiva módulo $N$.
+
+##### Exemplo (ref. II)
+
+Vamos fatorar o número 21 utilizando o algoritmo segundo a refII:
+$\textbf{Passo 1}$: Pode-se usar o algoritmo de primality testing para verificar que N não é primo. Trata-se de um número composto por $3*7$       
+$\textbf{Passo 2}$: Como 21 não é primo ignoramos essa etapa.
+$\textbf{Passo 3}$: 21 Não é par. Ignoramos essa etapa.
+$\textbf{Passo 4}$: Utilizando o algoritmo descrito no apêndice IV descobrimos que não existe $a$ e $b$ inteiros positivos para os quais $21=a^b$.
+$\textbf{Passo 5}$: Escolhemos $2 \in$ [$1, 20$] um número qualquer entre $1$ e $20$.
+$\textbf{Passo 6}$: Daí, $K$=MDC(2,21)=1.
+$\textbf{Passo 7}$: Não ocorre. Ignoramos.
+$\textbf{Passo 8}$: Executamos a rotina X para encontrar o período ou ordem do número 2. Isto é, $r$ tal que $2^r=1(mod21)$.
+Nesse caso, $t=[log_221^2]+1=9$ (o valor exato é $9.78463...$ mas consideramos apenas o primeiro digito) e portanto teremos 9 qbits iniciados no estado $\ket{0}$ no primeiro registrador. Como $L=[log_221+1]=5$, o estado do segundo registrador será $\ket{1}=\ket{00001}$
+
+A porta $U: C^{2^5} \rightarrow C^{2^5} $ definida para $\ket{y}$ será: $$U\ket{y}=\ket{(2y)mod21}$$ O estado inicial será:
+$$\ket{\psi_0}=\ket{00...01}=\ket{0}\otimes \ket{0}\otimes \ket{0}\otimes \ket{0}\otimes \ket{0}\otimes \ket{0}\otimes\ket{0}\otimes \ket{0}\otimes \ket{0}\otimes \ket{1}$$ Aplicando Hadamard nos 9 qbits do primeiro registrador: $$\ket{\psi_1}=\frac{1}{\sqrt{2^9}}\sum_{j=0}^{511}\ket{j}\otimes \ket{1}$$ Aplicando as portas $U^{2^j}$ onde $j$ vai de 0 até 8 obtemos: $$\ket{\psi_2}=\frac{1}{\sqrt{512}}\sum_{j=0}^{511}\ket{j}\otimes \ket{2^j mod21}=$$ $$\frac{1}{\sqrt{512}}(\ket{0} \ket{1}+\ket{1} \ket{2}+\ket{2} \ket{4}+\ket{3} \ket{8}+\ket{4} \ket{16}+\ket{5} \ket{11}+ \\\ket{6} \ket{1}+\ket{7} \ket{2}+\ket{8} \ket{4}+\ket{9} \ket{8}+\ket{10} \ket{16}+\ket{11} \ket{11}+\\ \ket{12} \ket{1}+\ket{13} \ket{2}+\ket{14} \ket{4}+\ket{15} \ket{8}+\ket{16} \ket{16}+\ket{17} \ket{11}+\\...\\ +\ket{510} \ket{1}+\ket{511} \ket{2})$$ Agrupando os termos: $$=\frac{1}{\sqrt{512}}((\ket{0}+\ket{6} +\ket{12}+\ket{18}+\ket{24}+...+\ket{510})\ket{1}+ \\ (\ket{1}+\ket{7}+\ket{13}+\ket{19}+\ket{25}+...+\ket{511})\ket{2}+\\ (\ket{2}+\ket{8}+\ket{14}+\ket{20}+\ket{26}+...+\ket{506})\ket{4}+\\  (\ket{3}+\ket{9}+\ket{15}+\ket{21}+\ket{27}+...+\ket{507})\ket{8}+\\ (\ket{4}+\ket{10}+\ket{16}+\ket{22}+\ket{28}+...+\ket{508})\ket{16}+\\  (\ket{5}+\ket{11}+\ket{17}+\ket{23}+\ket{29}+...+\ket{509})\ket{11})$$ Note que visualizando dessa forma, fica claro que podemos decompor o estado atual como uma combinação dos estados {$\ket{1}, \ket{2}, \ket{4}, \ket{8}, \ket{16}, \ket{11}$}. 
+O próximo passo, seguindo a figura lá de cima é realizar uma medição no sistema do segundo registrador. Suponha que o resultado da medição seja $\ket{2}$. Daí o sistema passa a ser descrito pelo estado: $$\ket{\psi_3}=\frac{1}{\sqrt{86}}(\ket{1}+\ket{7}+\ket{13}+\ket{19}+\ket{25}+...+\ket{511})\otimes \ket{2}\\=\frac{1}{\sqrt{86}}\sum_{a=0}^{85}\ket{6a+1}\otimes \ket{2}$$ onde o termo $\sqrt{86}$ foi construido para normalização do estado.
+Aplicando a Transformada de Fourier Inversa obtemos: $$\ket{\psi_4}=\frac{1}{\sqrt{512}}\frac{1}{\sqrt{86}}\sum_{j=0}^{511}([\sum_{a=0}^{85}e^{\frac{-2\pi ij6a}{512}}]e^{\frac{-2\pi ij}{512}})\ket{2}$$ Encontrando, por fim, a probabilidade de encontrar um estado $\ket{j}$ (tiramos o modulo ao quadrado): $$P(j)=\frac{1}{512*86}|\sum_{a=0}^{85}e^{\frac{-2\pi i6ja}{512}}|^2$$ Podemos mostrar que esse resultado é igual a: $$\frac{1}{512*86}\frac{1-cos(\frac{86\pi 3j}{128})}{1-cos(\frac{3\pi j}{128})}$$ que tem máximo global em $\frac{512k}{6}$ com $k$ entre 0 e 5. Será a partir desse $k$ que encontraremos a ordem $r$ de 2.
+O próximo passo é medirmos agora na base canônica. Suponha que seja retornado o valor $j=85$. Dividindo por 512 ainda não teremos 6 no denominador.
+Usemos o algoritmo de frações continuadas para achar convergentes menores que 21:
+$$\frac{85}{512}=\frac{1}{\frac{512}{85}}=\frac{1}{6+\frac{2}{85}}=\frac{1}{6+\frac{1}{42+\frac{1}{2}}}$$ Disso temos que os candidatos (convergentes) são: $\frac{1}{6}$, $\frac{42}{253}$ e $\frac{85}{512}$. Testemos $\frac{1}{6}$: Selecionando o denominador e calculando $2^6=1mod21$ encontramos o valor de $r$ como $r=6$.
+Entretanto, por se tratar de um algoritmo probabilistico, poderiamos ter outros valores retornados. É possível que nosso algoritmo nos retorne um valor inútil ou pior ainda, falhe quando tivermos alguns resultados especificos. Por exemplo, se $j=0$ e não 85, não teríamos nenhum resultado útil para os convergentes. Se $j=171$ encontrariamos 3 candidatos que não nos fornece a ordem de 2.
+Continuando com o algoritmo, como $r=6$ é par e $2^\frac{r}{2}=2^3=8$ que é diferente de $-1mod21$. Daí, calculamos MDC($2^3-1$, $21$)=7 e MDC($2^3+1$, $21$)=3. Encontramos assim dois fatores de 21 conforme queriamos.
 
 
-                                                             
+                
 ## Apêndice I (primality-testing algorithm):
 Algoritmo simples que usa o fato de todos os divisores de um número n serem menores ou iguais a n/2. Em Python, retornando True para primo e False para composto:
                                                            
@@ -178,6 +227,7 @@ def is_prime(n: int) -> bool:
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False                
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return True
 
+Existem outros algoritmos mais sofisticados para n grande.
     
 
 ## Apêndice II (circuito U)
@@ -192,7 +242,7 @@ Neste caso teriamos também: $$U^2\ket{1}=U\circ U\ket{1}=U\ket{3}=\ket{3*3mod35
 
 Chegar ao estado $\ket{1}$ após aplicações sucessivas de $U$ não é coincidência. Por construção, iniciando em $\ket{1}$ chegaremos novamente em $\ket{1}$ após r aplicações de $U$. Daí o nome de período da função.
 
-Seja $\ket{x_s}$ o estado definido por: $$\ket{x_s}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}e^{\frac{-2\pi sik}{r}}\ket{A^kmodN}$$ Onde $0\leq s\leq r-1 \in \N$.  Note que este está dentro do espaço de estados por ser combinação linear de autovetores de U. O termo de fase $e^{\frac{-2\pi sik}{r}}$ aparece porque estamos interessados em estados cuja fase difere do estado $\ket{x}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}\ket{A^kmodN}$ o qual nos retorna como autovalor 1 (ref V). O fator $r$ é acrescentado porque é útil termos associarmos o período da função com cada coeficiente. O termo $s$ é acrescentado para generalizar essa diferença de fase e garantir a unicidade de cada autoestado para cada valor de s.
+Seja $\ket{x_s}$ o estado definido por: $$\ket{x_s}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}e^{\frac{-2\pi sik}{r}}\ket{A^kmodN}$$ Onde $0\leq s\leq r-1 \in \N$.  Note que este está dentro do espaço de estados por ser combinação linear de autovetores de U. O termo de fase $e^{\frac{-2\pi sik}{r}}$ aparece porque estamos interessados em estados cuja fase difere do estado $\ket{x}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}\ket{A^kmodN}$ o qual nos retorna como autovalor 1 (ref V). O fator $r$ é acrescentado porque é útil associarmos o período da função com cada coeficiente. O termo $s$ é acrescentado para generalizar essa diferença de fase e garantir a unicidade de cada autoestado para cada valor de s.
 Aplicando U, pode-se mostrar (ref V) que: $$U\ket{x_s}=e^{\frac{2\pi si}{r}}\ket{x_s}$$ que tem autovalores $e^{\frac{2\pi si}{r}}$.
 Não obstante, ainda teremos que (ref V) $$\frac{1}{\sqrt{r}}\sum_{s=0}^{r-1}\ket{x_s}=\ket{1}$$ Daí, temos que $\ket{1}$ é uma superposição desses estados. Realizando QPE (apêndice III) em U usando o estado $\ket{1}$ mediremos a fase $\phi = \frac{s}{r}$. Usamos o algoritmo de frações continuadas em $\phi$ para achar $r$. O circuito que implementa isso é:
 
@@ -211,8 +261,40 @@ $$\frac{1}{2^{n/2}}\sum_{k=0}^{2^n-1}e^{2\pi i\theta k}\ket{k}\otimes \ket{\psi}
 ![QPErepresentatio](/assets/images/shor-algorithm/qpe_tex_qz.png)
 Fonte: [Qiskit-Quantum Phase Estimation](https://qiskit.org/textbook/ch-algorithms/quantum-phase-estimation.html)
 
+## Apêndice IV (algoritmo $N=a^b$)
+Suponha que N possa ser escrito como $N=a^b$ com $a$,$b$ inteiros.
+$$N=a^b \implies log_2N = b*log_2a \implies L>b*log_2a$$ Onde $L=[log_2N+1]$ é a quantidade de bits para representar o número $N$. 
+1. Escolha i = 2
+2. Defina $x=\frac{log_2N}{i}$
+3. Encontre os dois inteiros mais próximos de $2^x$: $u_1$ e $u_2$
+4. Compute $u_1^i$ e $u_2^i$. Se um dos resultados for igual a $N$ então retorne o par ($i$,$u_j$) tal que $u_j^i=N$. Se não, i=i+1 e retorne a 1.
 
+Note que o algoritmo é de simples implementação. Tua complexidade é $O(L^4)$ conforme mostrado na refII.
 
+##### Exemplo:
+Seja N=9. 
+
+Iniciando por i=2 temos $x=\frac{log_29}{2}=1.58496...\approx1.585$. 
+Daí, $2^{1.585}\approx3$ e portanto $u_1=3$ e $u_2=4$.
+Calculamos $u_1^2=9$ e $u_2^2=16$. Retornamos portanto o par (2, $u_1=3$) = ($a$, $b$). 
+
+## Apêndice V (algoritmo de Euclides)
+Este algoritmo serve para encontrar o maior divisor comum (MDC) entre dois números naturais. 
+Sejam $a$ e $b$ dois números inteiros positivos dados. 
+1. Defina $c_1=a$, $d_1=b$ e $i=1$
+2. Divida $c_i$ por $d_i$ e retorne $r_i$ o resto dessa divisão
+3. Se $r_i=0$ retorne $d_i$. 
+Se não, $c_{i+1}=d_i$ enquanto $d_{i+1}=r_i$ e, por fim, i=i+1.
+##### Exemplo:
+Seja $a=348$ e $b=156$.
+Primeira iteração:
+$r_1=36$ pois $348=156*2+36$ (algoritmo da divisão).
+Segunda iteração:
+$c_2=156$, $d_2=36$ e $r_2=12$ pois $156=36*4+12$
+Terceira iteração:
+$c_3=36$, $d_3=12$ e $r_3=0$ pois $36=12*3+0$
+
+Logo, MDC(9,6)=3
 
 ## Referências
 I. Wikipedia/eng
@@ -222,10 +304,11 @@ IV. Marcelo Terra Cunha - Curso de meq. quantica para matematicos em formação
 V. qiskit shor algorithm
 
 
-# O que falta?
-* Circuito TFQ para N qualquer em apêndice
-* Terminar Algoritmo de frações continuadas
+# Futuro
+* Circuito TFQ para N qualquer
 * Escrever Busca de ordem de um número e a fatoração de números inteiros (fim?)
-
+* Complexidade dos algoritmos apresentados
+* Implementação (usando bibliotecas prontas) e comparação nos casos em que N é grande.
+* Explicar/entender melhor quando o algoritmo falha e quando não retorna nada de útil.
 
 
