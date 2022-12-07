@@ -10,29 +10,33 @@ usemathjax: true
 # Algoritmo de Shor
 
 ## O que é?
-Algoritmo de decomposição em produtos. Dado um número N, encontra fatores que o compõem no produto. Útil para achar decomposições em produto não triviais de números compostos utilizados em criptografia
+Algoritmo de decomposição de um número em produtos de números primos. Útil para achar decomposições em produto não triviais de números compostos utilizados em criptografia
 ## Por que estudar?
-Utilizando este algoritmo em um computador quântico podemos quebrar, por exemplo, a criptografia RSA em tempo polinomial (mais rápido) [fonte]. Há de se pontuar que fenomenos de quantum noise [fonte] ou quantum-decoherence [fonte] interferem na execução deste algoritmo. Atualmente o problema em utilizar este é devido a limitações de hardware[fonte].
+Os algoritmos utilizados atualmente para fatorar números inteiros o fazem em tempo superpolinomial.
+O algoritmo de Shor implementado em um computador quântico pode quebrar criptografias baseadas em chave pública (e.g. RSA) em tempo polinomial. Há de se pontuar que fenomenos de quantum noise ou quantum-decoherence interferem, naturalmente, na execução deste algoritmo. Atualmente o problema em utilizar este algoritmo é devido a limitações de hardware nas operações que usam computação quântica.
 ## Como funciona?
-Dado um número N, nosso problema é equivalente ao problema de encontrar um número divisor não trivial de N entre 1 e N. De fato, achando um número-produto poderiamos executar novamente o algoritmo para encontrar outro número até que N esteja completamente decomposto. De fato:
-Seja $N$ nosso número. Encontrando um termo A teriamos: $N_0=N=A*k_1*...*k_n$. Daí, basta achar $N_1=k_1*...*k_n$ e assim sucessivamente.
-O algoritmo é composto por duas etapas. A etapa clássica que é mais simples e de fácil implementação e a etapa onde precisaremos de computação quântica.
-O algoritmo em geral pode ser resumido assim:
+Dado um número N, queremos escrevê-lo como $$N=k_1^{e_1}k_2^{e_2}k_3^{e_3}...k_m^{e_m}$$ onde $k_i \in \N$ é um número primo e $e_j \in \N$ com $0<i,j<m+1$
+Este problema é equivalente ao problema de encontrar um número divisor não trivial de N entre 1 e N. De fato, achando um número-produto poderiamos executar novamente o algoritmo para encontrar outro número até que N esteja completamente decomposto:
+Seja $N$ nosso número. Encontrando um divisor primo A teriamos: $N_0=N=A*k_1*...*k_n$. Daí, basta achar $N_1=k_1*...*k_n$ e assim sucessivamente.
+O algoritmo é composto por duas etapas. A etapa clássica - mais simples e de fácil implementação - e a etapa onde precisaremos de computação quântica - mais sofisticada.
+Um algoritmo que resolve nosso problema pode ser resumido assim:
 
 Dado $N$, um número natural a ser fatorado em produtos, 
 1. Descobrir se $N$ é primo ou composto: usar primality-testing (apêndice I).
 2. Se $N$ for primo então a única decomposição possível é a trivial: 1 e $N$. Acabou
 3. Se $N$ for par então repita o algoritmo com $N/2$
 4. Use o algoritmo do apêndice IV para verificar se existem $a$ e $b$ tais que $N=a^b$. Retornar $a$ caso positivo.
-5. Se não, escolha A $\in$ $\N$ qualquer tal que 1<A<N
-6. Encontre o MDC (MAIOR divisor comum) de A e N. Seja K este número.
+5. Se não, escolha $A \in \N$ qualquer tal que $1<A<N$
+6. Encontre o MDC (MAIOR divisor comum) entre A e N. Seja K este número, isto é, $K=MDC(A,N)$
 7. Se K&ne;1 então encontramos um fator não trivial. Acabou.
 8. Se K=1, então execute a rotina X para encontrar o período r da função $f(x)=A^{x}(mod N)$. Note que isso significa que r é o menor inteiro positivo que satisfaz $A^{r}=1(mod N)$
 9. Se r é impar ou $A^{r/2}=-1(mod N)$ então volte para o passo 1.
 10. Se não, $MDC(A^{r/2}+1,N)$ ou $MDC(A^{r/2}-1,N)$ devem ser fatores não triviais de N. Se não forem, então o algoritmo falhou.
-                                                             
+
+Com exceção da etapa 8, a qual usa computação quântica, utilizamos apenas rotinas clássicas. Por isso, focaremos nessa etapa que alguns autores chamam de algoritmo de Shor (ao invés de todo o processo).
+
 ### Rotina X:
-Antes de começar, introduziremos alguns conceitos importantes para a construção da rotina X. Alguns autores chamam a rotina X de Algoritmo de Shor (ao invés de todo o processo).
+Antes de começar, introduziremos alguns conceitos importantes para a construção dessa rotina. Estes são: Transformada de Fourier quântica, aritmética modular, algoritmo de Euclides e de frações continuadas, 
 #### 1. TFQ (Transformada de Fourier Quântica)
 A Transformada de Fourier Discreta é um operador linear definido de $C^{N}$ para $C^{N}$ levando $(x_0, x_1, ..., x_{N-1})$ para $(y_0, y_1, ..., y_{N-1})$ tal que:
 $$y_k = \frac{1}{\sqrt{N}}\sum_{j=0}^{N-1}x_je^{\frac{2\pi ijk}{N}}$$
@@ -47,12 +51,12 @@ $$\frac{1}{\sqrt{N}}\left(\begin{matrix}
 Onde $\omega=e^{\frac{2\pi i}{N}}$.
 Em mecânica quântica, substituimos os vetores do tipo $(x_0, x_1, ..., x_{N-1})$ da base canônica por kets do tipo $\sum_{j=0}^{N-1}x_j\ket{j}$. Isto é, as coordenadas (ou amplitudes) continuam as mesmas (existe a bijeção) e a base canônica de $C^{N}$ é escrita como kets $\ket{0}$, $\ket{1}$,...,$\ket{N-1}$. Por exemplo, em N=3: $$(1,0,0)^{t} \rightarrow 1\ket{0}+0\ket{1}+0\ket{2} = \ket{0}$$
 
-A construção do circuito que executa a TFQ para qualquer valor de N é um pouco complicada [apêndice]. A TFQ para $N=2^{n}$ com a base ${\ket{0},..., \ket{2^{n}-1}}$ é:
+A construção do circuito que executa a TFQ para qualquer valor de N é um pouco complicada. A TFQ para $N=2^{n}$ com a base ${\ket{0},..., \ket{2^{n}-1}}$ é:
 $$\ket{j}\rightarrow 1/(2^{n/2})\sum_{k=0}^{2^{n}-1}e^{2\pi ijk/(2^{n})}\ket{k}$$
-Pode-se mostrar ainda que a TFQ transforma o ket $\ket{j}$ de forma (referencia III pg39):
+Pode-se mostrar ainda que a TFQ transforma o ket $\ket{j}$ de forma que (ref. III pg39):
 $$\ket{j}\rightarrow (\ket{0}+e^{2\pi i0.j_n}\ket{1})\otimes(\ket{0}+e^{2\pi i0.j_{n-1}j_n}\ket{1})\otimes...\otimes(\ket{0}+e^{2\pi i0.j_1j_2...j_n}\ket{1})$$
 Onde $0.j_1j_2...j_n = \frac{j_1}{2}+\frac{j_2}{4}+...+\frac{j_n}{2^n}$  com $j_k=0$ ou $1$
-O circuito [referencia III pg30] que executa essa transformação para um estado $\ket{j}=\ket{j_1j_2j_3...j_n}$ (exclusiva para $N=2^{n}$ que de fato é interessante para computação): 
+O circuito que executa essa transformação para um estado $\ket{j}=\ket{j_1j_2j_3...j_n}$ é [ref.III pg30]: 
 
 ![Circuito-TFQ-2n](/assets/images/shor-algorithm/figura3.1_dissertacao.png)
 Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010)
@@ -98,7 +102,6 @@ qc.cp(pi/2,0,1)
 qc.h(0)
 qc.swap(0,2)
 
-[ainda não testado.]
 ![Circuito-TFQ-n3](/assets/images/shor-algorithm/n3tfq.png)
 Fonte: [qiskit](https://qiskit.org/textbook/ch-algorithms/quantum-fourier-transform.html#8.-Qiskit-Implementation)
 Como o qbit de entrada padrão é $\ket{0}$ o circuito nos retorna o valor esperado. 
@@ -186,7 +189,7 @@ Na referência II temos uma analise mais detalhada deste resultado.
 
 #### Busca de ordem de um número e a fatoração de números inteiros
 
-Seja $r$ a ordem, já encontrada, de um elemento $x \in Z_N$. Se $r=\phi(N)$, onde $\phi$ denota a função totiente de Euler, então dizemos que $x$ é uma raiz primitiva módulo $N$.
+Sabendo a ordem $r$ de um número $x \in Z_\N$, fica fácil de achar o divisor do número N. Aqui daremos um exemplo prático de como isso acontece.
 
 ##### Exemplo (ref. II)
 
@@ -230,7 +233,7 @@ def is_prime(n: int) -> bool:
 Existem outros algoritmos mais sofisticados para n grande.
     
 
-## Apêndice II (circuito U)
+## Apêndice II (gate U)
 Este gate é comumente conhecido como quantum phase estimation. Trata-se de um operador unitário (pode-se provar isso) definido por:
 $$U\ket{y}\equiv \ket{(ay) modN}$$
 Isto é, $U$ transforma um ket $\ket{y}$ em um ket que guarda o resto da operação $\frac{ay}{N}$.
@@ -249,7 +252,7 @@ Não obstante, ainda teremos que (ref V) $$\frac{1}{\sqrt{r}}\sum_{s=0}^{r-1}\ke
 ![frac_cont_gate](/assets/images/shor-algorithm/shor_circuit_1.svg)
 Fonte: [Qiskit-Algoritmo Shor](https://qiskit.org/textbook/ch-algorithms/shor.html)
 
-## Apêndice III (Quantum Phase Estimation)
+## Apêndice III (aplicação do gate U)
 Dado um operador unitário $U$, queremos estimar um ângulo para o qual $U\ket{\psi}=e^{2\pi i\theta}\ket{\psi}$.
 Começamos com dois conjuntos de qbits. O primeiro conjunto terá qbits configurados para estarem em $\ket{0}$ e o segundo conjunto para o estado $\ket{\psi}$ de forma que nosso estado inicial seja representado por $$\ket{\psi_0}=\ket{0}\otimes\ket{0}\otimes...\otimes\ket{0}\otimes\ket{\psi}$$ onde temos, por exemplo, n vezes o produto tensorial entre os $\ket{0}$. Aplicamos, após isso, n portas de Hadamard (isto é, $H\otimes H\otimes... \otimes H\otimes I$). Teremos, portanto:
 $$\ket{\psi_1}=\frac{1}{2^{n/2}}(\ket{0}+\ket{1})^{\otimes n}\otimes\ket{\psi}$$
@@ -297,18 +300,16 @@ $c_3=36$, $d_3=12$ e $r_3=0$ pois $36=12*3+0$
 Logo, MDC(9,6)=3
 
 ## Referências
-I. Wikipedia/eng
-II. Chapter 5 of QFT, Period Finding & Shor's Algorithm
-III. Dissertação de Mestrado Adriana Xavier UFMG
-IV. Marcelo Terra Cunha - Curso de meq. quantica para matematicos em formação
-V. qiskit shor algorithm
+I. QFT, Period Finding & Shor's Algorithm [https://courses.edx.org/c4x/BerkeleyX/CS191x/asset/chap5.pdf]
+II. Algoritmo de Shor e sua aplicação à fatoração de números inteiros, Adriana Xavier Freitas, UFGM. Dissertação de Mestrado com orientação de Marcelo Terra Cunha
+III. Marcelo Terra Cunha - Curso de mecânica quântica para matemáticos em formação
+IV. Shor's Algorithm do Qiskit [https://qiskit.org/textbook/ch-algorithms/shor.html] visitado em 07/12/2022.
+V. Quantum Computation and Quantum Information - Michael A. Nielsen (2000)
 
 
 # Futuro
-* Circuito TFQ para N qualquer
-* Escrever Busca de ordem de um número e a fatoração de números inteiros (fim?)
 * Complexidade dos algoritmos apresentados
-* Implementação (usando bibliotecas prontas) e comparação nos casos em que N é grande.
+* Implementação (usando bibliotecas prontas) e comparação entre algoritmo clássico nos casos em que N é grande.
 * Explicar/entender melhor quando o algoritmo falha e quando não retorna nada de útil.
 
 
