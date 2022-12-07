@@ -36,11 +36,11 @@ Dado $N$, um número natural a ser fatorado em produtos,
 Com exceção da etapa 8, a qual usa computação quântica, utilizamos apenas rotinas clássicas. Por isso, focaremos nessa etapa que alguns autores chamam de algoritmo de Shor (ao invés de todo o processo).
 
 ### Rotina X:
-Antes de começar, introduziremos alguns conceitos importantes para a construção dessa rotina. Estes são: Transformada de Fourier quântica, aritmética modular, algoritmo de Euclides e de frações continuadas, 
+Antes de começar, introduziremos alguns conceitos importantes para a construção dessa rotina. Estes são: Transformada de Fourier quântica, aritmética modular, algoritmo de Euclides e de frações continuadas. Outras ferramentas importantes para simplificar o algoritmo estarão disponiveis na seção de apêndice.
 #### 1. TFQ (Transformada de Fourier Quântica)
 A Transformada de Fourier Discreta é um operador linear definido de $C^{N}$ para $C^{N}$ levando $(x_0, x_1, ..., x_{N-1})$ para $(y_0, y_1, ..., y_{N-1})$ tal que:
 $$y_k = \frac{1}{\sqrt{N}}\sum_{j=0}^{N-1}x_je^{\frac{2\pi ijk}{N}}$$
-Por ser um operador linear unitário (provado em referência II) este tem representação matricial. Na base canônica de $C^{N}$, esta é:
+Por ser um operador linear unitário (provado em ref. II) este tem representação matricial. Na base canônica de $C^{N}$, esta é:
 $$\frac{1}{\sqrt{N}}\left(\begin{matrix}
 1&1&1&...&1\\
 1&\omega&\omega^2&...&\omega^{N-1}\\
@@ -51,21 +51,20 @@ $$\frac{1}{\sqrt{N}}\left(\begin{matrix}
 Onde $\omega=e^{\frac{2\pi i}{N}}$.
 Em mecânica quântica, substituimos os vetores do tipo $(x_0, x_1, ..., x_{N-1})$ da base canônica por kets do tipo $\sum_{j=0}^{N-1}x_j\ket{j}$. Isto é, as coordenadas (ou amplitudes) continuam as mesmas (existe a bijeção) e a base canônica de $C^{N}$ é escrita como kets $\ket{0}$, $\ket{1}$,...,$\ket{N-1}$. Por exemplo, em N=3: $$(1,0,0)^{t} \rightarrow 1\ket{0}+0\ket{1}+0\ket{2} = \ket{0}$$
 
-A construção do circuito que executa a TFQ para qualquer valor de N é um pouco complicada. A TFQ para $N=2^{n}$ com a base ${\ket{0},..., \ket{2^{n}-1}}$ é:
-$$\ket{j}\rightarrow 1/(2^{n/2})\sum_{k=0}^{2^{n}-1}e^{2\pi ijk/(2^{n})}\ket{k}$$
-Pode-se mostrar ainda que a TFQ transforma o ket $\ket{j}$ de forma que (ref. III pg39):
-$$\ket{j}\rightarrow (\ket{0}+e^{2\pi i0.j_n}\ket{1})\otimes(\ket{0}+e^{2\pi i0.j_{n-1}j_n}\ket{1})\otimes...\otimes(\ket{0}+e^{2\pi i0.j_1j_2...j_n}\ket{1})$$
-Onde $0.j_1j_2...j_n = \frac{j_1}{2}+\frac{j_2}{4}+...+\frac{j_n}{2^n}$  com $j_k=0$ ou $1$
-O circuito que executa essa transformação para um estado $\ket{j}=\ket{j_1j_2j_3...j_n}$ é [ref.III pg30]: 
+A justificativa teórica da construção do circuito que executa a TFQ para qualquer valor de N é um pouco complicada. Ao invés disso trabalharemos com o caso $N=2^n$ que é conveniente uma vez que o número N de entrada será representado por bits. 
+Substituindo $N=2^{n}$ com a base ${\ket{0},..., \ket{2^{n}-1}}$ na expressão da transformada de fourier discreta encontramos que a TFQ age num ket $\ket{j} $ de forma:
+$$\ket{j}\rightarrow 1/(2^{n/2})\sum_{k=0}^{2^{n}-1}e^{2\pi ijk/(2^{n})}\ket{k}$$ Pode-se mostrar ainda que a TFQ transforma o ket $\ket{j}$ de forma que (ref. III pg39):
+$$\ket{j}\rightarrow (\ket{0}+e^{2\pi i0.j_n}\ket{1})\otimes(\ket{0}+e^{2\pi i0.j_{n-1}j_n}\ket{1})\otimes...\otimes(\ket{0}+e^{2\pi i0.j_1j_2...j_n}\ket{1})$$ Onde $0.j_1j_2...j_n = \frac{j_1}{2}+\frac{j_2}{4}+...+\frac{j_n}{2^n}$  com $j_k=0$ ou $1$
+Aqui fica claro que o circuito que implementa essa transformação para um estado $\ket{j}=\ket{j_1j_2j_3...j_n}$ é: 
 
 ![Circuito-TFQ-2n](/assets/images/shor-algorithm/figura3.1_dissertacao.png)
 Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010)
-Onde H representa o gate Hadamard e $R_k$ um gate de controle definido por:
+Onde H representa o gate de Hadamard e $R_k$ um gate de controle definido por:
 $$\left(\begin{matrix}
 1&0\\
 0&e^{\frac{2\pi i}{2^k}}
 \end{matrix}\right)$$
-A matriz inversa da matriz de representação (numa base ortonormal) também terá muita importância. Como a matriz é unitária então a matriz hermitiana será igual a inversa. Esta é:
+A matriz inversa da matriz de representação (numa base ortonormal) também terá muita importância. Como a matriz da TFQ é unitária então a matriz hermitiana será igual a inversa. Logo esta é:
 $$\left(\begin{matrix}
 1&1&1&...&1\\
 1&\tau&\tau^2&...&\tau^{N-1}\\
@@ -116,15 +115,16 @@ Note que as probabilidades estão coerentes com o esperado teórico.
 Será apresentado algumas notações importantes para o entendimento do algoritmo:
 $$Z_2 = {\overline{0}, \overline{1}} $$
 É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 na divisão por 2. Isto é, $\overline{0}$ representa os números pares enquanto $\overline{1}$ os impares. 
-Pode-se definir (ref I) operações de adição e multiplicação nesse conjunto de forma que $Z_n = \overline{0}, \overline{1}, ..., \overline{n-1}$ seja um grupo. A adição pode ser tal que $\overline{a}+\overline{b}=\overline{a+b}$ e a multiplicação, não obstante, pode ser $\overline{a}*\overline{b}=\overline{a*b}$. Note que é extremamente conveniente a forma que definimos essas operações. De fato, para somar ou multiplicar os elementos do grupo bastar somar e multiplicar da forma usual e os elementos neutros serão os usuais.
+Pode-se definir (ref. I) operações de adição e multiplicação nesse conjunto de forma que $Z_n = \overline{0}, \overline{1}, ..., \overline{n-1}$ seja um grupo. A adição pode ser tal que $\overline{a}+\overline{b}=\overline{a+b}$ e a multiplicação, não obstante, pode ser $\overline{a}*\overline{b}=\overline{a*b}$. Note que é extremamente conveniente a forma que definimos essas operações. De fato, para somar ou multiplicar os elementos do grupo bastar somar e multiplicar da forma usual e os elementos neutros serão os usuais.
 Definimos também a ordem de um número $a$ como o menor inteiro k tal que $a^{k}=e$ onde $e$ denota o elemento neutro do grupo com respeito a operação de multiplicação
 Outra notação mais importante ainda é a de $A (mod N)$. Esta representa o resto da divisão de A por N (em Python usamos: A%N)
-Nesta notação, a ordem ou período de um número inteiro A é o menor inteiro tal que $A^r(modN)=1$ 
+Nesta notação, a ordem ou período de um número inteiro A é o menor inteiro $r$ tal que $A^r(modN)=1$ 
+Por fim, definimos a congruência modular no conjunto $Z_N$ como $a \equiv b\mod N$ quando $\overline{a}=\overline{b}$.
 #### 3. Algoritmo de frações continuadas
 A teoria geral de frações continuadas é vasta em conteúdo. Neste artigo abordaremos apenas uma aplicação para um caso particular onde é útil para o algoritmo de Shor.
 Queremos expressar um certo número racional $k=\frac{a}{b}$ como combinações de frações dentro de frações conhecidas como frações continuadas ou contínuas.
 Uma fração continuada é uma expressão do tipo: $$a_0 + \frac{b_1}{a_1+\frac{b_2}{a_2+\frac{b_3}{a_3+...}}}$$
-Um caso particular é quando a fração em questão é finita e $b_1=b_2=...=1$. Nesse caso teremos:
+Nosso caso particular será quando a fração em questão é finita e $b_1=b_2=...=1$. Nesse caso teremos:
 $$a_0 + \frac{1}{a_1+\frac{1}{a_2+\frac{1}{...+\frac{1}{a_m}}}}$$
 Utilizaremos o algoritmo de Euclides (apêndice V) para computar os termos $a_i$. Achemos, por exemplo, o MDC entre 69 e 15:
 
@@ -134,41 +134,38 @@ $9=1*6+3$
 $6=2*3+0$
 
 Note que podemos expressar, a partir da primeira linha acima dividida por 15, a fração $\frac{69}{15}$ como:
-$$\frac{69}{15}=4+\frac{9}{15}=4+\frac{1}{\frac{15}{9}}$$
-Utilizando a segunda linha dividida por 9:
-$$\frac{69}{15}=4+\frac{1}{1+\frac{6}{9}}=4+\frac{1}{1+\frac{1}{\frac{9}{6}}}$$
-Realizando a mesma operação para a terceira e quarta linha encontramos, por fim:
+$$\frac{69}{15}=4+\frac{9}{15}=4+\frac{1}{\frac{15}{9}}$$ Utilizando a segunda linha dividido por 9:
+$$\frac{69}{15}=4+\frac{1}{1+\frac{6}{9}}=4+\frac{1}{1+\frac{1}{\frac{9}{6}}}$$ Realizando a mesma operação para a terceira e quarta linha encontramos, por fim:
 $$\frac{69}{15}=4+\frac{1}{1+\frac{1}{1+\frac{1}{2}}}$$ Este algoritmo terá fundamental importância para acharmos os termos convergentes de uma fração resultante do algoritmo de Shor.
 
 ### Algoritmo para a Rotina X
-Calculemos, primeiramente, a ordem de $x \in Z_N$. Este é o primeiro passo para a rotina X dado um número N que queremos fatorar.
-Defina a transformação linear unitária (provado em ref III pg46) $U:C^{n}\rightarrow C^{n}$ por:
-$$U\ket{k}=\ket{xk modN}$$
-Este circuito será de importância fundamental para o funcionamento do algoritmo. Sua construção estará no apêndice II
-[reescrever (está muito ruim)]
+A rotina X é basicamente um algoritmo quântico de busca de ordem $r$ de um número $x \in Z_{N}$. Tendo este, é fácil achar um fator primo para a decomposição.
+Utilizaremos operador unitário (provado em ref. III pg46) definido por $U:C^{n}\rightarrow C^{n}$ tal que:
+$$U\ket{k}=\ket{xk modN}$$ Este circuito será de importância fundamental para o funcionamento do algoritmo. Sua construção está no apêndice II. 
+Comecemos pelo caso em que $r$ pode ser reescrito como $2^s$ e depois iremos para o caso geral.
 
 ##### Circuito da busca de ordem no caso em que a ordem r de um elemento x de $Z_N$ pode ser escrita como $r = 2^{s}$
 
-O primeiro registrador deve possuir $t=[log_2N^2+1]$ qbits no estado $\ket{0}$ e o segundo registrador $L=[log_2N+1]$ qbits no estado $\ket{1}$. O valor de L é a quantidade de bits para representar o número $N$ em notação binária.
+O primeiro registrador deve possuir $t=[log_2N^2+1]$ qbits no estado $\ket{0}$ e o segundo registrador estará no estado $\ket{00...01}=\ket{1}$. A quantidade de zeros do estado do segundo registrador será $L-1=log_2N$. Note que o valor de L é a quantidade de bits necessária para representar o número $N$ em notação binária. O circuito que implementa [ref. II] nossa busca pela ordem $r=2^s$ é:
 
 ![busca-de-ordem-caso-simples](/assets/images/shor-algorithm/figura4.1_dissertacao.png)
-Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010)
+Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010) 
+OBS.: Aqui os gates representados por $x^{2^j}$ são exatamente iguais aos gates $U^{2^j}$ abordados no apêndice II sendo apenas uma questão de notação.
+
 Começamos por $\ket{\psi_0} = \ket{0...00} \otimes \ket{1}$ o estado inicial conforme o circuito criado.
 Aplicamos as portas de Hadamard nos qbits do primeiro registrador resultando em $$\ket{\psi_1} = \frac{1}{\sqrt{2^t}}\sum_{j=0}^{2^{t}-1}\ket{j}\otimes\ket{1}$$
-Aplicando as portas $U^{2^j}$ no estado $\ket{\psi_1}$ obtemos: [adicionar o circuito $U^{2^j}$]
-$$\ket{\psi_2}= \frac{1}{\sqrt{2^t}}\sum_{j=0}^{2^{t}-1}\ket{j}\otimes\ket{x^j}$$ onde $x$ assume valores de $\ket{0}$ a $\ket{2^t-1}$. [entender melhor essa parte pg 49].
-Teremos portanto os termos:
-$$\ket{0}\otimes\ket{1}, \ket{r}\otimes\ket{1}, \ket{2r}\otimes\ket{1}, ...,\ket{2^t-r}\otimes\ket{1}, $$
-uma vez que estamos trabalhando no grupo $Z_N$ e a potência modular é definida por $a^n=a*a*...*a$ (n vezes). O primeiro ket de cada produto tensorial tem esses valores porque trata-se de uma função periódica de período (ou resto) r. [entender melhor]. Note que como ainda não foi realizada a medição então todos os estados de $\ket{\psi_2}$ são equiprováveis.
-Rearranjando o estado $\ket{\psi_2}$ obtemos:
+Aplicando as portas $U^{2^j}$ no estado $\ket{\psi_1}$ obtemos:
+$$\ket{\psi_2}= \frac{1}{\sqrt{2^t}}\sum_{j=0}^{2^{t}-1}\ket{j}\otimes\ket{x^j}$$ Agora, conforme [ref. III], usamos o fato de que estamos trabalhando no grupo $Z_N$ e uma função periódica de período $r$ para encontrarmos termos do tipo abaixo na somatória:
+$$\ket{0}\otimes\ket{1}, \ket{r}\otimes\ket{1}, \ket{2r}\otimes\ket{1}, ...,\ket{2^t-r}\otimes\ket{1}$$ Dessa forma, rearranjando o estado $\ket{\psi_2}$, obtemos [ref. III]:
 $$\ket{\psi_2}=\frac{1}{2^{\frac{t}{2}}}\sum_{b=0}^{r-1}(\sum_{a=0}^{\frac{2^t}{r}-1}\ket{ar+b})\otimes\ket{x^b}$$
+Note que todos os estados de $\ket{\psi_2}$ são equiprováveis.
 Realizando uma medição e supondo, sem perda de generalidade, que o resultado tenha sido $\ket{x^{b_1}}$ teremos como estado atual:
 $$\ket{\psi_3}=\sqrt{\frac{r}{2^t}}(\sum_{a=0}^{\frac{2^t}{r}-1}\ket{ar+b_1})\otimes\ket{x^{b_1}}$$
-Para descobrir o valor de $a$ aplicaremos o $TFQ^*$ no primeiro registrador onde * denota o hermitiano da aplicação. Obtemos, conforme (refIII pag50):
+Para descobrir o valor de $a$ aplicaremos o $TFQ^*$ no primeiro registrador (onde * denota o hermitiano da aplicação). Aplicando a matriz no estado $\ket{\psi_3}$ obtemos:
 $$\ket{\psi_4}=\frac{1}{\sqrt{r}}(\sum_{k=0}^{r-1}e^{-2\pi ikb_1/r}\ket{\frac{k2^t}{r}})\otimes\ket{x^{b_1}}$$
-E pronto. Podemos realizar a medição na base computacional. Obtendo $\ket{0}$ quando k=0 não teremos informação sobre o sistema mas se o resultado da medição for $\ket{\frac{k2^t}{r}}$ por algum k>0, dividimos por $2^t$ e teremos duas possibilidades: mdc(k,r)=1 ou mdc(k,r) é diferente de 1. No primeiro caso fazemos $x^r = 1 mod N$ e temos a ordem. No segundo caso o denominador será um d que é um fator de r e nesse caso o algoritmo falha.
+Podemos enfim realizar a medição na base computacional. Obtendo $\ket{0}$ quando k=0 não teremos informação sobre o sistema mas se o resultado da medição for $\ket{\frac{k2^t}{r}}$ por algum k>0, dividimos por $2^t$ e teremos duas possibilidades: MDC(k,r)=1 ou MDC(k,r) é diferente de 1. No primeiro caso fazemos $x^r = 1 mod N$ e temos a ordem. No segundo caso o denominador será um d que é um fator de r e nesse caso o algoritmo falha.
 ##### Caso Geral
-Os valores de t e L não mudam. O circuito que implementa a busca de ordem no caso geral é:
+Os valores de t e L não mudam. O circuito que implementa a busca de ordem no caso geral ainda é:
 ![busca-de-ordem-caso-geral](/assets/images/shor-algorithm/figura4.2_dissertacao.png)
 Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010)
 A sequência de estados fica:
@@ -189,7 +186,7 @@ Na referência II temos uma analise mais detalhada deste resultado.
 
 #### Busca de ordem de um número e a fatoração de números inteiros
 
-Sabendo a ordem $r$ de um número $x \in Z_\N$, fica fácil de achar o divisor do número N. Aqui daremos um exemplo prático de como isso acontece.
+Sabendo a ordem $r$ de um número $x \in Z_N$, fica fácil achar o divisor do número N. Aqui daremos um exemplo prático de como isso acontece.
 
 ##### Exemplo (ref. II)
 
@@ -207,7 +204,7 @@ Nesse caso, $t=[log_221^2]+1=9$ (o valor exato é $9.78463...$ mas consideramos 
 A porta $U: C^{2^5} \rightarrow C^{2^5} $ definida para $\ket{y}$ será: $$U\ket{y}=\ket{(2y)mod21}$$ O estado inicial será:
 $$\ket{\psi_0}=\ket{00...01}=\ket{0}\otimes \ket{0}\otimes \ket{0}\otimes \ket{0}\otimes \ket{0}\otimes \ket{0}\otimes\ket{0}\otimes \ket{0}\otimes \ket{0}\otimes \ket{1}$$ Aplicando Hadamard nos 9 qbits do primeiro registrador: $$\ket{\psi_1}=\frac{1}{\sqrt{2^9}}\sum_{j=0}^{511}\ket{j}\otimes \ket{1}$$ Aplicando as portas $U^{2^j}$ onde $j$ vai de 0 até 8 obtemos: $$\ket{\psi_2}=\frac{1}{\sqrt{512}}\sum_{j=0}^{511}\ket{j}\otimes \ket{2^j mod21}=$$ $$\frac{1}{\sqrt{512}}(\ket{0} \ket{1}+\ket{1} \ket{2}+\ket{2} \ket{4}+\ket{3} \ket{8}+\ket{4} \ket{16}+\ket{5} \ket{11}+ \\\ket{6} \ket{1}+\ket{7} \ket{2}+\ket{8} \ket{4}+\ket{9} \ket{8}+\ket{10} \ket{16}+\ket{11} \ket{11}+\\ \ket{12} \ket{1}+\ket{13} \ket{2}+\ket{14} \ket{4}+\ket{15} \ket{8}+\ket{16} \ket{16}+\ket{17} \ket{11}+\\...\\ +\ket{510} \ket{1}+\ket{511} \ket{2})$$ Agrupando os termos: $$=\frac{1}{\sqrt{512}}((\ket{0}+\ket{6} +\ket{12}+\ket{18}+\ket{24}+...+\ket{510})\ket{1}+ \\ (\ket{1}+\ket{7}+\ket{13}+\ket{19}+\ket{25}+...+\ket{511})\ket{2}+\\ (\ket{2}+\ket{8}+\ket{14}+\ket{20}+\ket{26}+...+\ket{506})\ket{4}+\\  (\ket{3}+\ket{9}+\ket{15}+\ket{21}+\ket{27}+...+\ket{507})\ket{8}+\\ (\ket{4}+\ket{10}+\ket{16}+\ket{22}+\ket{28}+...+\ket{508})\ket{16}+\\  (\ket{5}+\ket{11}+\ket{17}+\ket{23}+\ket{29}+...+\ket{509})\ket{11})$$ Note que visualizando dessa forma, fica claro que podemos decompor o estado atual como uma combinação dos estados {$\ket{1}, \ket{2}, \ket{4}, \ket{8}, \ket{16}, \ket{11}$}. 
 O próximo passo, seguindo a figura lá de cima é realizar uma medição no sistema do segundo registrador. Suponha que o resultado da medição seja $\ket{2}$. Daí o sistema passa a ser descrito pelo estado: $$\ket{\psi_3}=\frac{1}{\sqrt{86}}(\ket{1}+\ket{7}+\ket{13}+\ket{19}+\ket{25}+...+\ket{511})\otimes \ket{2}\\=\frac{1}{\sqrt{86}}\sum_{a=0}^{85}\ket{6a+1}\otimes \ket{2}$$ onde o termo $\sqrt{86}$ foi construido para normalização do estado.
-Aplicando a Transformada de Fourier Inversa obtemos: $$\ket{\psi_4}=\frac{1}{\sqrt{512}}\frac{1}{\sqrt{86}}\sum_{j=0}^{511}([\sum_{a=0}^{85}e^{\frac{-2\pi ij6a}{512}}]e^{\frac{-2\pi ij}{512}})\ket{2}$$ Encontrando, por fim, a probabilidade de encontrar um estado $\ket{j}$ (tiramos o modulo ao quadrado): $$P(j)=\frac{1}{512*86}|\sum_{a=0}^{85}e^{\frac{-2\pi i6ja}{512}}|^2$$ Podemos mostrar que esse resultado é igual a: $$\frac{1}{512*86}\frac{1-cos(\frac{86\pi 3j}{128})}{1-cos(\frac{3\pi j}{128})}$$ que tem máximo global em $\frac{512k}{6}$ com $k$ entre 0 e 5. Será a partir desse $k$ que encontraremos a ordem $r$ de 2.
+Aplicando a Transformada de Fourier Inversa obtemos: $$\ket{\psi_4}=\frac{1}{\sqrt{512}}\frac{1}{\sqrt{86}}\sum_{j=0}^{511}([\sum_{a=0}^{85}e^{\frac{-2\pi ij6a}{512}}]e^{\frac{-2\pi ij}{512}})\ket{2}$$ Encontrando, por fim, a probabilidade de encontrar um estado $\ket{j}$ (tiramos o modulo ao quadrado): $$P(j)=\frac{1}{512*86}|\sum_{a=0}^{85}e^{\frac{-2\pi i6ja}{512}}|^2$$ $$=\frac{1}{512*86}\frac{1-cos(\frac{86\pi 3j}{128})}{1-cos(\frac{3\pi j}{128})}$$ que tem máximo global em $\frac{512k}{6}$ com $k$ entre 0 e 5. Será a partir desse $k$ que encontraremos a ordem $r$ de 2.
 O próximo passo é medirmos agora na base canônica. Suponha que seja retornado o valor $j=85$. Dividindo por 512 ainda não teremos 6 no denominador.
 Usemos o algoritmo de frações continuadas para achar convergentes menores que 21:
 $$\frac{85}{512}=\frac{1}{\frac{512}{85}}=\frac{1}{6+\frac{2}{85}}=\frac{1}{6+\frac{1}{42+\frac{1}{2}}}$$ Disso temos que os candidatos (convergentes) são: $\frac{1}{6}$, $\frac{42}{253}$ e $\frac{85}{512}$. Testemos $\frac{1}{6}$: Selecionando o denominador e calculando $2^6=1mod21$ encontramos o valor de $r$ como $r=6$.
