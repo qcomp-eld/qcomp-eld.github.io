@@ -7,12 +7,8 @@ categories: teoria computacao-quântica educativo
 usemathjax: true
 ---
 
-### O que é?
-Algoritmo de decomposição de um número em produtos de números primos. Útil para achar decomposições não triviais em produto de números compostos utilizados em criptografia.
-
-### Por que estudar?
-Os algoritmos utilizados atualmente para fatorar números inteiros o fazem em tempo superpolinomial.
-O algoritmo de Shor implementado em um computador quântico pode quebrar criptografias baseadas em chave pública (e.g. RSA) em tempo polinomial. Há de se pontuar que fenomenos de quantum noise ou quantum-decoherence interferem, naturalmente, na execução deste algoritmo. Atualmente o problema em utilizar este algoritmo é devido a limitações de hardware nas operações que usam computação quântica.
+O algoritmo de Shor é um algoritmo de decomposição de um número em produtos de números primos. É útil para achar decomposições não triviais em produto de números compostos utilizados em criptografia. Os algoritmos utilizados atualmente para fatorar números inteiros o fazem em tempo superpolinomial.
+O algoritmo de Shor implementado em um computador quântico pode quebrar criptografias baseadas em chave pública (e.g. RSA) em tempo polinomial. Há de se pontuar que fenômenos de quantum noise ou quantum-decoherence interferem, naturalmente, na execução deste algoritmo. Atualmente o problema em utilizar este algoritmo é devido a limitações de hardware nas operações que usam computação quântica.
 
 ### Como funciona?
 Dado um número $$ N $$ natural, queremos escrevê-lo como 
