@@ -63,7 +63,7 @@ $$
 $$
 
 Onde $$ \omega=e^{\frac{2\pi i}{N}} $$.
-Em mecânica quântica, substituimos os vetores do tipo $$ (x_0, x_1, ..., x_{N-1}) $$ da base canônica por kets do tipo $$ \sum_{j=0}^{N-1}x_j\ket{j} $$. Isto é, as coordenadas (ou amplitudes) continuam as mesmas (existe a bijeção) e a base canônica de $$ C^{N} $$ é escrita como kets $$ \ket{0} $$, $$ \ket{1}$,...,$\ket{N-1} $$. Por exemplo, em N=3: 
+Em mecânica quântica, substituimos os vetores do tipo $$ (x_0, x_1, ..., x_{N-1}) $$ da base canônica por kets do tipo $$ \sum_{j=0}^{N-1}x_j\ket{j} $$. Isto é, as coordenadas (ou amplitudes) continuam as mesmas (existe a bijeção) e a base canônica de $$ C^{N} $$ é escrita como kets $$ \ket{0} $$, $$ \ket{1} $$,...,$$ \ket{N-1} $$. Por exemplo, em N=3: 
 
 $$
 (1,0,0)^{t} \rightarrow 1\ket{0}+0\ket{1}+0\ket{2} = \ket{0}
@@ -145,13 +145,21 @@ $$
 Em Python, importando o modulo qiskit, a implementação do circuito fica:
 
 qc = QuantumCircuit(3)
+
 qc.h(2)
+
 qc.cp(pi/2,1,2)
+
 qc.cp(pi/4,0,2)
+
 qc.h(1)
+
 qc.cp(pi/2,0,1)
+
 qc.h(0)
+
 qc.swap(0,2)
+
 
 ![Circuito-TFQ-n3](/assets/images/shor-algorithm/n3tfq.png)
 Fonte: [qiskit](https://qiskit.org/textbook/ch-algorithms/quantum-fourier-transform.html#8.-Qiskit-Implementation)
@@ -159,6 +167,7 @@ Como o qbit de entrada padrão é $$ \ket{0} $$ o circuito nos retorna o valor e
 A implementação no quantum composer da IBM fica:
 ![Circuito-TFQ-n3-ibm](/assets/images/shor-algorithm/quantumcomposertfq.png)
 Fonte: Autor
+
 Note que as probabilidades estão coerentes com o esperado teórico.
 
 
@@ -171,7 +180,7 @@ Z_2 = {\overline{0}, \overline{1}}
 $$
 
 É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 na divisão por 2. Isto é, $$ \overline{0} $$ representa os números pares enquanto $$ \overline{1} $$ os impares. 
-Pode-se definir (ref. I) operações de adição e multiplicação nesse conjunto de forma que $$ Z_n = \overline{0}, \overline{1}, ..., \overline{n-1} $$ seja um grupo. A adição pode ser tal que $$ \overline{a}+\overline{b}=\overline{a+b} $$ e a multiplicação, não obstante, pode ser $$ \overline{a}*\overline{b}=\overline{a*b} $$. Note que é extremamente conveniente a forma que definimos essas operações. De fato, para somar ou multiplicar os elementos do grupo bastar somar e multiplicar da forma usual e os elementos neutros serão os usuais.
+Pode-se definir (ref. I) operações de adição e multiplicação nesse conjunto de forma que $$ Z_n = \overline{0}, \overline{1}, ..., \overline{n-1} $$ seja um grupo. A adição pode ser tal que $$ \overline{a}+\overline{b}= \overline{a+b} $$ e a multiplicação, não obstante, pode ser $$ \overline{a}*\overline{b}= \overline{a*b} $$. Note que é extremamente conveniente a forma que definimos essas operações. De fato, para somar ou multiplicar os elementos do grupo bastar somar e multiplicar da forma usual e os elementos neutros serão os usuais.
 Definimos também a ordem de um número $$ a $$ como o menor inteiro k tal que $$ a^{k}=e $$ onde $$ e $$ denota o elemento neutro do grupo com respeito a operação de multiplicação
 Outra notação mais importante ainda é a de $$ A (mod N) $$. Esta representa o resto da divisão de A por N (em Python usamos: A%N)
 Nesta notação, a ordem ou período de um número inteiro A é o menor inteiro $$ r $$ tal que $$ A^r(modN)=1 $$
@@ -196,8 +205,11 @@ Utilizaremos o algoritmo de Euclides (apêndice V) para computar os termos $$ a_
 Achemos, por exemplo, o MDC entre 69 e 15:
 
 $$ 69=4*15+9 $$
+
 $$ 15=1*9+6 $$
+
 $$ 9=1*6+3 $$
+
 $$ 6=2*3+0 $$
 
 Note que podemos expressar, a partir da primeira linha acima dividida por 15, a fração $$ \frac{69}{15} $$ como:
@@ -237,6 +249,7 @@ O primeiro registrador deve possuir $$ t=[log_2N^2+1] $$ qbits no estado $$ \ket
 
 ![busca-de-ordem-caso-simples](/assets/images/shor-algorithm/figura4.1_dissertacao.png)
 Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010) 
+
 OBS.: Aqui os gates representados por $$ x^{2^j} $$ são exatamente iguais aos gates $$ U^{2^j} $$ abordados no apêndice II sendo apenas uma questão de notação.
 
 Começamos por $$ \ket{\psi_0} = \ket{0...00} \otimes \ket{1} $$ o estado inicial conforme o circuito criado.
@@ -252,7 +265,7 @@ $$
 \ket{\psi_2}= \frac{1}{\sqrt{2^t}}\sum_{j=0}^{2^{t}-1}\ket{j}\otimes\ket{x^j}
 $$ 
 
-Agora, conforme [ref. III], usamos o fato de que estamos trabalhando no grupo $$ Z_N $$ e uma função periódica de período $r$ para encontrarmos termos do tipo abaixo na somatória:
+Agora, conforme [ref. III], usamos o fato de que estamos trabalhando no grupo $$ Z_N $$ e uma função periódica de período $$ r $$ para encontrarmos termos do tipo abaixo na somatória:
 
 $$
 \ket{0}\otimes\ket{1}, \ket{r}\otimes\ket{1}, \ket{2r}\otimes\ket{1}, ...,\ket{2^t-r}\otimes\ket{1}
@@ -283,6 +296,7 @@ Enfim realizamos a medição na base computacional. Obtendo $$ \ket{0} $$ quando
 Os valores de t e L não mudam. O circuito que implementa a busca de ordem no caso geral ainda é:
 ![busca-de-ordem-caso-geral](/assets/images/shor-algorithm/figura4.2_dissertacao.png)
 Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010)
+
 A sequência de estados fica:
 
 $$
@@ -332,8 +346,16 @@ Sabendo a ordem $$ r $$ de um número $$ x \in Z_N $$, fica fácil achar o divis
 ##### Exemplo (ref. II)
 
 Vamos fatorar o número 21 utilizando o algoritmo segundo a refII:
-$$ \textbf{Passo 1} $$: Pode-se usar o algoritmo de primality testing para verificar que N não é primo. Trata-se de um número composto por $$ 3*7 $$       
-$$ \textbf{Passo 2} $$: Como 21 não é primo ignoramos essa etapa.
+$$
+\textbf{Passo 1} :
+$$ 
+Pode-se usar o algoritmo de primality testing para verificar que N não é primo. Trata-se de um número composto por $$ 3*7 $$  
+
+$$ 
+\textbf{Passo 2} :
+$$: 
+Como 21 não é primo ignoramos essa etapa.
+
 $$ \textbf{Passo 3} $$: 21 Não é par. Ignoramos essa etapa.
 $$ \textbf{Passo 4} $$: Utilizando o algoritmo descrito no apêndice IV descobrimos que não existe $$ a $$ e $$ b $$ inteiros positivos para os quais $$ 21=a^b $$.
 $$ \textbf{Passo 5} $$: Escolhemos $$ 2 \in $$ [$$ 1, 20 $$] um número qualquer entre $$ 1 $$ e $$ 20 $$.
