@@ -473,7 +473,7 @@ def is_prime(n: int) -> bool:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for i in range(5, limit+1, 6):
 
            if n%i==0 or n%(i+2)==0:
-           
+
                 return False      
 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return True
@@ -483,38 +483,132 @@ Existem outros algoritmos mais sofisticados para n grande.
 
 ## Apêndice II (gate U)
 Este gate é comumente conhecido como quantum phase estimation. Trata-se de um operador unitário (pode-se provar isso) definido por:
-$$U\ket{y}\equiv \ket{(ay) modN}$$
-Isto é, $U$ transforma um ket $\ket{y}$ em um ket que guarda o resto da operação $\frac{ay}{N}$.
+
+$$
+U\ket{y}\equiv \ket{(ay) modN}
+$$
+
+Isto é, $$ U $$ transforma um ket $$ \ket{y} $$ em um ket que guarda o resto da operação $$ \frac{ay}{N} $$.
+
 Exemplos:
-1. Tomando N=2 e A=25: $$U\ket{1}=\ket{25mod2}=\ket{1}$$ Logo, neste caso, $r=1$ uma vez que $\ket{25mod2}=\ket{25^1mod2}$
-2. Tomando N=35 e A=3: $$U\ket{1}=\ket{3 mod35}=\ket{3}$$ 
-Uma vez que o algoritmo da divisão nos retorna $3=(35*0)+3$ onde 0 é o resultado da divisão $\frac{3}{35}$.
-Neste caso teriamos também: $$U^2\ket{1}=U\circ U\ket{1}=U\ket{3}=\ket{3*3mod35}=\ket{3^2mod35}=\ket{9}$$ $$U^3\ket{1}=U\circ U^2\ket{1}=U\ket{9}=\ket{9*3mod35}=\ket{3^3mod35}=\ket{27}$$ $$\vdots$$ $$U^{r-1}\ket{1}=\ket{12}$$ $$U^r\ket{1}=U\circ U^{r-1}\ket{1}=U\ket{12}=\ket{3^{12}mod35}=\ket{1}$$ daonde temos que $r=12$
+1. Tomando N=2 e A=25: 
 
-Chegar ao estado $\ket{1}$ após aplicações sucessivas de $U$ não é coincidência. Por construção, iniciando em $\ket{1}$ chegaremos novamente em $\ket{1}$ após r aplicações de $U$. Daí o nome de período da função.
+$$
+U\ket{1}=\ket{25mod2}=\ket{1}
+$$ 
 
-Seja $\ket{x_s}$ o estado definido por: $$\ket{x_s}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}e^{\frac{-2\pi sik}{r}}\ket{A^kmodN}$$ Onde $0\leq s\leq r-1 \in \N$.  Note que este está dentro do espaço de estados por ser combinação linear de autovetores de U. O termo de fase $e^{\frac{-2\pi sik}{r}}$ aparece porque estamos interessados em estados cuja fase difere do estado $\ket{x}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}\ket{A^kmodN}$ o qual nos retorna como autovalor 1 (ref V). O fator $r$ é acrescentado porque é útil associarmos o período da função com cada coeficiente. O termo $s$ é acrescentado para generalizar essa diferença de fase e garantir a unicidade de cada autoestado para cada valor de s.
-Aplicando U, pode-se mostrar (ref V) que: $$U\ket{x_s}=e^{\frac{2\pi si}{r}}\ket{x_s}$$ que tem autovalores $e^{\frac{2\pi si}{r}}$.
-Não obstante, ainda teremos que (ref V) $$\frac{1}{\sqrt{r}}\sum_{s=0}^{r-1}\ket{x_s}=\ket{1}$$ Daí, temos que $\ket{1}$ é uma superposição desses estados. Realizando QPE (apêndice III) em U usando o estado $\ket{1}$ mediremos a fase $\phi = \frac{s}{r}$. Usamos o algoritmo de frações continuadas em $\phi$ para achar $r$. O circuito que implementa isso é:
+Logo, neste caso, $$ r=1 $$ uma vez que $$ \ket{25mod2}=\ket{25^1mod2} $$
+
+2. Tomando N=35 e A=3: 
+
+$$
+U\ket{1}=\ket{3 mod35}=\ket{3}
+$$ 
+
+Uma vez que o algoritmo da divisão nos retorna $$ 3=(35*0)+3 $$ onde 0 é o resultado da divisão $$ \frac{3}{35} $$.
+
+Neste caso teriamos também: 
+
+$$
+U^2\ket{1}=U\circ U\ket{1}=U\ket{3}=\ket{3*3mod35}=\ket{3^2mod35}=\ket{9}
+$$
+
+$$
+U^3\ket{1}=U\circ U^2\ket{1}=U\ket{9}=\ket{9*3mod35}=\ket{3^3mod35}=\ket{27}
+$$
+
+$$
+\vdots
+$$ 
+
+$$
+U^{r-1}\ket{1}=\ket{12}
+$$ 
+
+$$
+U^r\ket{1}=U\circ U^{r-1}\ket{1}=U\ket{12}=\ket{3^{12}mod35}=\ket{1}
+$$ daonde temos que $$ r=12 $$
+
+Chegar ao estado $$ \ket{1} $$ após aplicações sucessivas de $$ U $$ não é coincidência. Por construção, iniciando em $$ \ket{1} $$ chegaremos novamente em $$ \ket{1} $$ após $$ r $$ aplicações de $$ U $$. Daí o nome de período da função.
+
+Seja $$ \ket{x_s} $$ o estado definido por: 
+
+$$
+\ket{x_s}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}e^{\frac{-2\pi sik}{r}}\ket{A^kmodN}
+$$ 
+
+Onde $$ 0\leq s\leq r-1 \in \N $$.  Note que este está dentro do espaço de estados por ser combinação linear de autovetores de U. O termo de fase $$ e^{\frac{-2\pi sik}{r}} $$ aparece porque estamos interessados em estados cuja fase difere do estado $$ \ket{x}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}\ket{A^kmodN} $$ o qual nos retorna como autovalor 1 (ref V). O fator $$ r $$ é acrescentado porque é útil associarmos o período da função com cada coeficiente. O termo $$ s $$ é acrescentado para generalizar essa diferença de fase e garantir a unicidade de cada autoestado para cada valor de $$ s $$.
+Aplicando U, pode-se mostrar (ref V) que: 
+
+$$
+U\ket{x_s}=e^{\frac{2\pi si}{r}}\ket{x_s}
+$$
+que tem autovalores $$ e^{\frac{2\pi si}{r}} $$.
+
+Não obstante, ainda teremos que (ref V) 
+
+$$
+\frac{1}{\sqrt{r}}\sum_{s=0}^{r-1}\ket{x_s}=\ket{1}
+$$ 
+
+Daí, temos que $$ \ket{1} $$ é uma superposição desses estados. Realizando QPE (apêndice III) em U usando o estado $$ \ket{1} $$ mediremos a fase $$ \phi = \frac{s}{r} $$. Usamos o algoritmo de frações continuadas em $$ \phi $$ para achar $$ r $$. O circuito que implementa isso é:
 
 ![frac_cont_gate](/assets/images/shor-algorithm/shor_circuit_1.svg)
 Fonte: [Qiskit-Algoritmo Shor](https://qiskit.org/textbook/ch-algorithms/shor.html)
 
 ## Apêndice III (aplicação do gate U)
-Dado um operador unitário $U$, queremos estimar um ângulo para o qual $U\ket{\psi}=e^{2\pi i\theta}\ket{\psi}$.
-Começamos com dois conjuntos de qbits. O primeiro conjunto terá qbits configurados para estarem em $\ket{0}$ e o segundo conjunto para o estado $\ket{\psi}$ de forma que nosso estado inicial seja representado por $$\ket{\psi_0}=\ket{0}\otimes\ket{0}\otimes...\otimes\ket{0}\otimes\ket{\psi}$$ onde temos, por exemplo, n vezes o produto tensorial entre os $\ket{0}$. Aplicamos, após isso, n portas de Hadamard (isto é, $H\otimes H\otimes... \otimes H\otimes I$). Teremos, portanto:
-$$\ket{\psi_1}=\frac{1}{2^{n/2}}(\ket{0}+\ket{1})^{\otimes n}\otimes\ket{\psi}$$
-Definimos o gate unitário de controle $CU$ que aplica $U$ no estado $\ket{\psi_i}$ se e só se o bit de controle for $\ket{1}$.
-Como $U\ket{\psi}=e^{2\pi i\theta}\ket{\psi}$ então:
-$$U^{2^j}\ket{\psi}=U^{2^j-1}U\ket{\psi}=U^{2^j-1}e^{2\pi i\theta}\ket{\psi}=...=e^{2\pi i2^j\theta}\ket{\psi}$$ com $0\leq j\leq n-1$. Aplicando os $n$ $CU^{2^j}$ no primeiro conjunto de qbits pode-se mostrar que:
-$$\ket{\psi_2}=\frac{1}{2^{n/2}}\sum_{k=0}^{2^n-1}e^{2\pi i\theta k}\ket{k}\otimes \ket{\psi}$$ Aplicamos agora a transformada inversa de fourier quântica em todos os qbits do primeiro conjunto, conforme mostrado la em cima, obtemos:
-$$\frac{1}{2^{n/2}}\sum_{k=0}^{2^n-1}e^{2\pi i\theta k}\ket{k}\otimes \ket{\psi}\rightarrow \ket{\psi_3}=\frac{1}{2^n}\sum_{x=0}^{2^n-1}\sum_{k=0}^{2^n-1}e^{\frac{-2\pi i k}{2^n}(x-2^n\theta)}\ket{x}\otimes\ket{\psi}$$ Por fim, a expressão acima tem pico perto de $x=2^n\theta$. Se $2^n\theta\in\N$ teremos que uma medição na base computacional nos da a fase no registrador auxiliar com alta probabilidade:$$\ket{\psi_4}=\ket{2^n\theta}\otimes\ket{\psi}$$ se não, a probabilidade de acerto é aproximadamente $40%$ [fonte1 refV ]. Estas operações podem ser representadas pela figura abaixo
+Dado um operador unitário $$ U $$, queremos estimar um ângulo para o qual $$ U\ket{\psi}=e^{2\pi i\theta}\ket{\psi} $$.
+Começamos com dois conjuntos de qbits. O primeiro conjunto terá qbits configurados para estarem em $$ \ket{0} $$ e o segundo conjunto para o estado $$ \ket{\psi} $$ de forma que nosso estado inicial seja representado por
+
+$$
+\ket{\psi_0}=\ket{0}\otimes\ket{0}\otimes...\otimes\ket{0}\otimes\ket{\psi}
+$$ 
+
+onde temos, por exemplo, n vezes o produto tensorial entre os $$ \ket{0} $$. Aplicamos, após isso, n portas de Hadamard (isto é, $$ H\otimes H\otimes... \otimes H\otimes I $$). Teremos, portanto:
+
+$$
+\ket{\psi_1}=\frac{1}{2^{n/2}}(\ket{0}+\ket{1})^{\otimes n}\otimes\ket{\psi}
+$$
+
+Definimos o gate unitário de controle $$ CU $$ que aplica $$ U $$ no estado $$ \ket{\psi_i} $$ se e só se o bit de controle for $$ \ket{1} $$.
+Como $$ U\ket{\psi}=e^{2\pi i\theta}\ket{\psi} $$ então:
+
+$$
+U^{2^j}\ket{\psi}=U^{2^j-1}U\ket{\psi}=U^{2^j-1}e^{2\pi i\theta}\ket{\psi}=...=e^{2\pi i2^j\theta}\ket{\psi}
+$$ 
+
+com $$ 0\leq j\leq n-1 $$. Aplicando os $$ n $$ $$ CU^{2^j} $$ no primeiro conjunto de qbits pode-se mostrar que:
+
+$$
+\ket{\psi_2}=\frac{1}{2^{n/2}}\sum_{k=0}^{2^n-1}e^{2\pi i\theta k}\ket{k}\otimes \ket{\psi}
+$$ 
+
+Aplicamos agora a transformada inversa de fourier quântica em todos os qbits do primeiro conjunto, conforme mostrado la em cima, obtemos:
+
+$$
+\frac{1}{2^{n/2}}\sum_{k=0}^{2^n-1}e^{2\pi i\theta k}\ket{k}\otimes \ket{\psi}\rightarrow \ket{\psi_3}=\frac{1}{2^n}\sum_{x=0}^{2^n-1}\sum_{k=0}^{2^n-1}e^{\frac{-2\pi i k}{2^n}(x-2^n\theta)}\ket{x}\otimes\ket{\psi}
+$$ 
+
+Por fim, a expressão acima tem pico perto de $$ x=2^n\theta $$. Se $$ 2^n\theta\in N $$ teremos que uma medição na base computacional nos da a fase no registrador auxiliar com alta probabilidade:
+
+$$
+\ket{\psi_4}=\ket{2^n\theta}\otimes\ket{\psi}
+$$ 
+
+se não, a probabilidade de acerto é aproximadamente $$ 40% $$ [fonte1 refV ]. Estas operações podem ser representadas pela figura abaixo
+
 ![QPErepresentatio](/assets/images/shor-algorithm/qpe_tex_qz.png)
 Fonte: [Qiskit-Quantum Phase Estimation](https://qiskit.org/textbook/ch-algorithms/quantum-phase-estimation.html)
 
-## Apêndice IV (algoritmo $N=a^b$)
-Suponha que N possa ser escrito como $N=a^b$ com $a$,$b$ inteiros.
-$$N=a^b \implies log_2N = b*log_2a \implies L>b*log_2a$$ Onde $L=[log_2N+1]$ é a quantidade de bits para representar o número $N$. 
+## Apêndice IV (algoritmo $$ N=a^b $$)
+Suponha que N possa ser escrito como $$ N=a^b $$ com $$ a $$, $$ b $$ inteiros.
+
+$$
+N=a^b \implies log_2N = b*log_2a \implies L>b*log_2a
+$$ 
+
+Onde $$ L=[log_2N+1] $$ é a quantidade de bits para representar o número $$ N $$. 
+
 1. Escolha i = 2
 2. Defina $x=\frac{log_2N}{i}$
 3. Encontre os dois inteiros mais próximos de $2^x$: $u_1$ e $u_2$
