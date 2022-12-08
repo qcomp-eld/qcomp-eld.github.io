@@ -346,22 +346,46 @@ Sabendo a ordem $$ r $$ de um número $$ x \in Z_N $$, fica fácil achar o divis
 ##### Exemplo (ref. II)
 
 Vamos fatorar o número 21 utilizando o algoritmo segundo a refII:
+
 $$
-\textbf{Passo 1} :
-$$ 
+\textbf{Passo 1}
+$$:
 Pode-se usar o algoritmo de primality testing para verificar que N não é primo. Trata-se de um número composto por $$ 3*7 $$  
 
 $$ 
-\textbf{Passo 2} :
+\textbf{Passo 2}
 $$: 
 Como 21 não é primo ignoramos essa etapa.
 
-$$ \textbf{Passo 3} $$: 21 Não é par. Ignoramos essa etapa.
-$$ \textbf{Passo 4} $$: Utilizando o algoritmo descrito no apêndice IV descobrimos que não existe $$ a $$ e $$ b $$ inteiros positivos para os quais $$ 21=a^b $$.
-$$ \textbf{Passo 5} $$: Escolhemos $$ 2 \in $$ [$$ 1, 20 $$] um número qualquer entre $$ 1 $$ e $$ 20 $$.
-$$ \textbf{Passo 6} $$: Daí, $$ K $$=MDC(2,21)=1.
-$$ \textbf{Passo 7} $$: Não ocorre. Ignoramos.
-$$ \textbf{Passo 8} $$: Executamos a rotina X para encontrar o período ou ordem do número 2. Isto é, $$ r $$ tal que $$ 2^r=1(mod21) $$.
+$$ 
+\textbf{Passo 3} 
+$$: 
+21 Não é par. Ignoramos essa etapa.
+
+$$ 
+\textbf{Passo 4} 
+$$: 
+Utilizando o algoritmo descrito no apêndice IV descobrimos que não existe $$ a $$ e $$ b $$ inteiros positivos para os quais $$ 21=a^b $$.
+
+$$ 
+\textbf{Passo 5} 
+$$: 
+Escolhemos $$ 2 \in $$ [$$ 1, 20 $$] um número qualquer entre $$ 1 $$ e $$ 20 $$.
+
+$$
+\textbf{Passo 6} 
+$$: 
+Daí, $$ K $$=MDC(2,21)=1.
+
+$$ 
+\textbf{Passo 7} 
+$$: 
+Não ocorre. Ignoramos.
+
+$$ 
+\textbf{Passo 8} 
+$$: 
+Executamos a rotina X para encontrar o período ou ordem do número 2. Isto é, $$ r $$ tal que $$ 2^r=1(mod21) $$.
 Nesse caso, $$ t=[log_221^2]+1=9 $$ (o valor exato é $$ 9.78463... $$ mas consideramos apenas o primeiro digito) e portanto teremos 9 qbits iniciados no estado $$ \ket{0} $$ no primeiro registrador. Como $$ L=[log_221+1]=5 $$, o estado do segundo registrador será $$ \ket{1}=\ket{00001} $$
 
 A porta $$ U: C^{2^5} \rightarrow C^{2^5} $$ definida para $$ \ket{y} $$ será: 
