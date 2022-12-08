@@ -15,29 +15,29 @@ Os algoritmos utilizados atualmente para fatorar números inteiros o fazem em te
 O algoritmo de Shor implementado em um computador quântico pode quebrar criptografias baseadas em chave pública (e.g. RSA) em tempo polinomial. Há de se pontuar que fenomenos de quantum noise ou quantum-decoherence interferem, naturalmente, na execução deste algoritmo. Atualmente o problema em utilizar este algoritmo é devido a limitações de hardware nas operações que usam computação quântica.
 
 ### Como funciona?
-Dado um número N, queremos escrevê-lo como 
+Dado um número $$ N $$ natural, queremos escrevê-lo como 
 
 $$ 
 N=k_1^{e_1}k_2^{e_2}k_3^{e_3}...k_m^{e_m}
 $$ 
 
 onde $$ k_i \in N $$ é um número primo e $$ e_j \in N $$ com $$ 0<i,j<m+1 $$.
-Este problema é equivalente ao problema de encontrar um número divisor não trivial de N entre 1 e N. De fato, achando um número-produto poderiamos executar novamente o algoritmo para encontrar outro número até que N esteja completamente decomposto:
+Este problema é equivalente ao problema de encontrar um número divisor não trivial de $$ N $$ entre $$ 1 $$ e $$ N $$. De fato, achando um número-produto poderiamos executar novamente o algoritmo para encontrar outro número até que $$ N $$ esteja completamente decomposto:
 Seja $$ N $$ nosso número. Encontrando um divisor primo $$ A $$ teriamos: $$ N_0=N=A*k_1*...*k_n $$. Daí, basta achar $$ N_1=k_1*...*k_n $$ e assim sucessivamente.
 O algoritmo é composto por duas etapas. A etapa clássica - mais simples e de fácil implementação - e a etapa onde precisaremos de computação quântica - mais sofisticada.
 Um algoritmo que resolve nosso problema pode ser resumido assim:
 
 Dado $$ N $$, um número natural a ser fatorado em produtos, 
 1. Descobrir se $$ N $$ é primo ou composto: usar primality-testing (apêndice I).
-2. Se $$ N $$ for primo então a única decomposição possível é a trivial: 1 e $$ N $$. Acabou.
+2. Se $$ N $$ for primo então a única decomposição possível é a trivial: $$ 1 $$ e $$ N $$. Acabou.
 3. Se $$ N $$ for par então repita o algoritmo com $$ N/2 $$
 4. Use o algoritmo do apêndice IV para verificar se existem $$ a $$ e $$ b $$ tais que $$ N=a^b $$. Retornar $$ a $$ caso positivo.
 5. Se não, escolha $$ A \in N $$ qualquer tal que $$ 1<A<N $$
-6. Encontre o MDC (MAIOR divisor comum) entre A e N. Seja $$ K $$ este número, isto é, $$ K=MDC(A,N) $$
+6. Encontre o MDC (MAIOR divisor comum) entre $$ A $$ e $$ N $$. Seja $$ K $$ este número, isto é, $$ K=MDC(A,N) $$
 7. Se K&ne;1 então encontramos um fator não trivial. Acabou.
-8. Se K=1, então execute a rotina X para encontrar o período r da função $$ f(x)=A^{x}(mod N) $$. Note que isso significa que r é o menor inteiro positivo que satisfaz $$ A^{r}=1(mod N) $$
-9. Se r é impar ou $$ A^{r/2}=-1(mod N) $$ então volte para o passo 1.
-10. Se não, $$ MDC(A^{r/2}+1,N) $$ ou $$ MDC(A^{r/2}-1,N) $$ devem ser fatores não triviais de N. Se não forem, então o algoritmo falhou.
+8. Se K=1, então execute a rotina X para encontrar o período $$ r $$ da função $$ f(x)=A^{x}(mod N) $$. Note que isso significa que $$ r $$ é o menor inteiro positivo que satisfaz $$ A^{r}=1(mod N) $$
+9. Se $$ r $$ é impar ou $$ A^{r/2}=-1(mod N) $$ então volte para o passo 1.
+10. Se não, $$ MDC(A^{r/2}+1,N) $$ ou $$ MDC(A^{r/2}-1,N) $$ devem ser fatores não triviais de $$ N $$. Se não forem, então o algoritmo falhou.
 
 Com exceção da etapa 8, a qual usa computação quântica, utilizamos apenas rotinas clássicas. Por isso, focaremos nessa etapa que alguns autores chamam de algoritmo de Shor (ao invés de todo o processo).
 
@@ -63,6 +63,7 @@ $$
 $$
 
 Onde $$ \omega=e^{\frac{2\pi i}{N}} $$.
+
 Em mecânica quântica, substituimos os vetores do tipo $$ (x_0, x_1, ..., x_{N-1}) $$ da base canônica por kets do tipo $$ \sum_{j=0}^{N-1}x_j\ket{j} $$. Isto é, as coordenadas (ou amplitudes) continuam as mesmas (existe a bijeção) e a base canônica de $$ C^{N} $$ é escrita como kets $$ \ket{0} $$, $$ \ket{1} $$,...,$$ \ket{N-1} $$. Por exemplo, em N=3: 
 
 $$
@@ -83,10 +84,12 @@ $$
 $$ 
 
 Onde $$ 0.j_1j_2...j_n = \frac{j_1}{2}+\frac{j_2}{4}+...+\frac{j_n}{2^n} $$ com $$ j_k=0 $$ ou $$ 1 $$
+
 Aqui fica claro que o circuito que implementa essa transformação para um estado $$ \ket{j}=\ket{j_1j_2j_3...j_n} $$ é: 
 
 ![Circuito-TFQ-2n](/assets/images/shor-algorithm/figura3.1_dissertacao.png)
 Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010)
+
 Onde H representa o gate de Hadamard e $$ R_k $$ um gate de controle definido por:
 
 $$
@@ -109,6 +112,7 @@ $$
 $$
 
 Onde $$ \tau=e^{\frac{-2\pi i}{N}} $$.
+
 O circuito que executa a operação inversa da TQF é:
 ![Circuito-TFQ-2n-inversa](/assets/images/shor-algorithm/tqfinversa.png)
 Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010)
@@ -163,6 +167,7 @@ qc.swap(0,2)
 
 ![Circuito-TFQ-n3](/assets/images/shor-algorithm/n3tfq.png)
 Fonte: [qiskit](https://qiskit.org/textbook/ch-algorithms/quantum-fourier-transform.html#8.-Qiskit-Implementation)
+
 Como o qbit de entrada padrão é $$ \ket{0} $$ o circuito nos retorna o valor esperado. 
 A implementação no quantum composer da IBM fica:
 ![Circuito-TFQ-n3-ibm](/assets/images/shor-algorithm/quantumcomposertfq.png)
@@ -341,7 +346,7 @@ Na referência II temos uma analise mais detalhada de quando o algoritmo falha, 
 
 #### Busca de ordem de um número e a fatoração de números inteiros
 
-Sabendo a ordem $$ r $$ de um número $$ x \in Z_N $$, fica fácil achar o divisor do número N. Aqui daremos um exemplo prático de como isso acontece.
+Sabendo a ordem $$ r $$ de um número $$ x \in Z_N $$, fica fácil achar o divisor do número N. Aqui daremos um exemplo prático de como isso acontece utilizando os passos descritos no começo do artigo.
 
 ##### Exemplo
 
@@ -598,7 +603,7 @@ $$
 \ket{\psi_4}=\ket{2^n\theta}\otimes\ket{\psi}
 $$ 
 
-se não, a probabilidade de acerto é aproximadamente $$ 40% $$ [fonte1 refV ]. Estas operações podem ser representadas pela figura abaixo
+se não, a probabilidade de acerto é aproximadamente $$ 40  $$ por cento [refV]. Estas operações podem ser representadas pela figura abaixo
 
 ![QPErepresentatio](/assets/images/shor-algorithm/qpe_tex_qz.png)
 Fonte: [Qiskit-Quantum Phase Estimation](https://qiskit.org/textbook/ch-algorithms/quantum-phase-estimation.html)
@@ -647,9 +652,13 @@ Logo, MDC(9,6)=3
 
 ## Referências
 I. QFT, Period Finding & Shor's Algorithm [https://courses.edx.org/c4x/BerkeleyX/CS191x/asset/chap5.pdf]
+
 II. Algoritmo de Shor e sua aplicação à fatoração de números inteiros, Adriana Xavier Freitas, UFGM. Dissertação de Mestrado com orientação de Marcelo Terra Cunha
+
 III. Marcelo Terra Cunha - Curso de mecânica quântica para matemáticos em formação
+
 IV. Shor's Algorithm do Qiskit [https://qiskit.org/textbook/ch-algorithms/shor.html] visitado em 07/12/2022.
+
 V. Quantum Computation and Quantum Information - Michael A. Nielsen (2000)
 
 
