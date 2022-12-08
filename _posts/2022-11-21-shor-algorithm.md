@@ -7,21 +7,23 @@ categories: teoria computacao-quântica educativo
 usemathjax: true
 ---
 
-## O que é?
-Algoritmo de decomposição de um número em produtos de números primos. Útil para achar decomposições não triviais em produto de números compostos utilizados em criptografia
-## Por que estudar?
+### O que é?
+Algoritmo de decomposição de um número em produtos de números primos. Útil para achar decomposições não triviais em produto de números compostos utilizados em criptografia.
+
+### Por que estudar?
 Os algoritmos utilizados atualmente para fatorar números inteiros o fazem em tempo superpolinomial.
 O algoritmo de Shor implementado em um computador quântico pode quebrar criptografias baseadas em chave pública (e.g. RSA) em tempo polinomial. Há de se pontuar que fenomenos de quantum noise ou quantum-decoherence interferem, naturalmente, na execução deste algoritmo. Atualmente o problema em utilizar este algoritmo é devido a limitações de hardware nas operações que usam computação quântica.
-## Como funciona?
+
+### Como funciona?
 Dado um número N, queremos escrevê-lo como 
 
 $$ 
 N=k_1^{e_1}k_2^{e_2}k_3^{e_3}...k_m^{e_m}
 $$ 
 
-onde $$ k_i \in \N $$ é um número primo e $$ e_j \in \N $$ com $$ 0<i,j<m+1 $$
+onde $$ k_i \in N $$ é um número primo e $$ e_j \in N $$ com $$ 0<i,j<m+1 $$.
 Este problema é equivalente ao problema de encontrar um número divisor não trivial de N entre 1 e N. De fato, achando um número-produto poderiamos executar novamente o algoritmo para encontrar outro número até que N esteja completamente decomposto:
-Seja $N$ nosso número. Encontrando um divisor primo $A$ teriamos: $N_0=N=A*k_1*...*k_n$. Daí, basta achar $N_1=k_1*...*k_n$ e assim sucessivamente.
+Seja $$ N $$ nosso número. Encontrando um divisor primo $$ A $$ teriamos: $$ N_0=N=A*k_1*...*k_n $$. Daí, basta achar $$ N_1=k_1*...*k_n $$ e assim sucessivamente.
 O algoritmo é composto por duas etapas. A etapa clássica - mais simples e de fácil implementação - e a etapa onde precisaremos de computação quântica - mais sofisticada.
 Um algoritmo que resolve nosso problema pode ser resumido assim:
 
