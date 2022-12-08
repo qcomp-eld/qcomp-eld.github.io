@@ -343,9 +343,9 @@ Na referência II temos uma analise mais detalhada de quando o algoritmo falha, 
 
 Sabendo a ordem $$ r $$ de um número $$ x \in Z_N $$, fica fácil achar o divisor do número N. Aqui daremos um exemplo prático de como isso acontece.
 
-##### Exemplo (ref. II)
+##### Exemplo
 
-Vamos fatorar o número 21 utilizando o algoritmo segundo a refII:
+Vamos fatorar o número 21 utilizando o algoritmo utilizando a refII:
 
 $$
 \textbf{Passo 1}
@@ -375,7 +375,7 @@ Escolhemos $$ 2 \in $$ [$$ 1, 20 $$] um número qualquer entre $$ 1 $$ e $$ 20 $
 $$
 \textbf{Passo 6} 
 $$: 
-Daí, $$ K $$=MDC(2,21)=1.
+Temos que $$ K $$=MDC(2,21)=1.
 
 $$ 
 \textbf{Passo 7} 
@@ -459,14 +459,23 @@ Continuando com o algoritmo, como $$ r=6 $$ é par e $$ 2^\frac{r}{2}=2^3=8 $$ q
 Algoritmo simples que usa o fato de todos os divisores de um número n serem menores ou iguais a n/2. Em Python, retornando True para primo e False para composto:
                                                            
 def is_prime(n: int) -> bool:
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if n<=3:
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return n>1            
+
+          return n>1
+
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if n%2 == 0 or n%3 == 0:
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False
+
+          return False
+
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit = int(n**0.5)
+
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for i in range(5, limit+1, 6):
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if n%i==0 or n%(i+2)==0:
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return False                
+
+           if n%i==0 or n%(i+2)==0:
+           
+                return False      
+
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return True
 
 Existem outros algoritmos mais sofisticados para n grande.
