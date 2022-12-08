@@ -15,70 +15,105 @@ Algoritmo de decomposição de um número em produtos de números primos. Útil 
 Os algoritmos utilizados atualmente para fatorar números inteiros o fazem em tempo superpolinomial.
 O algoritmo de Shor implementado em um computador quântico pode quebrar criptografias baseadas em chave pública (e.g. RSA) em tempo polinomial. Há de se pontuar que fenomenos de quantum noise ou quantum-decoherence interferem, naturalmente, na execução deste algoritmo. Atualmente o problema em utilizar este algoritmo é devido a limitações de hardware nas operações que usam computação quântica.
 ## Como funciona?
-Dado um número N, queremos escrevê-lo como $$N=k_1^{e_1}k_2^{e_2}k_3^{e_3}...k_m^{e_m}$$ onde $k_i \in \N$ é um número primo e $e_j \in \N$ com $0<i,j<m+1$
+Dado um número N, queremos escrevê-lo como 
+
+$$ N=k_1^{e_1}k_2^{e_2}k_3^{e_3}...k_m^{e_m} $$ 
+
+onde $$k_i \in \N$$ é um número primo e $$e_j \in \N$$ com $$0<i,j<m+1$$
 Este problema é equivalente ao problema de encontrar um número divisor não trivial de N entre 1 e N. De fato, achando um número-produto poderiamos executar novamente o algoritmo para encontrar outro número até que N esteja completamente decomposto:
-Seja $N$ nosso número. Encontrando um divisor primo A teriamos: $N_0=N=A*k_1*...*k_n$. Daí, basta achar $N_1=k_1*...*k_n$ e assim sucessivamente.
+Seja $$N$$ nosso número. Encontrando um divisor primo $$A$$ teriamos: $$N_0=N=A*k_1*...*k_n$$. Daí, basta achar $$N_1=k_1*...*k_n$$ e assim sucessivamente.
 O algoritmo é composto por duas etapas. A etapa clássica - mais simples e de fácil implementação - e a etapa onde precisaremos de computação quântica - mais sofisticada.
 Um algoritmo que resolve nosso problema pode ser resumido assim:
 
-Dado $N$, um número natural a ser fatorado em produtos, 
-1. Descobrir se $N$ é primo ou composto: usar primality-testing (apêndice I).
-2. Se $N$ for primo então a única decomposição possível é a trivial: 1 e $N$. Acabou
-3. Se $N$ for par então repita o algoritmo com $N/2$
-4. Use o algoritmo do apêndice IV para verificar se existem $a$ e $b$ tais que $N=a^b$. Retornar $a$ caso positivo.
-5. Se não, escolha $A \in \N$ qualquer tal que $1<A<N$
-6. Encontre o MDC (MAIOR divisor comum) entre A e N. Seja K este número, isto é, $K=MDC(A,N)$
+Dado $$N$$, um número natural a ser fatorado em produtos, 
+1. Descobrir se $$N$$ é primo ou composto: usar primality-testing (apêndice I).
+2. Se $$N$$ for primo então a única decomposição possível é a trivial: 1 e $$N$$. Acabou
+3. Se $$N$$ for par então repita o algoritmo com $$N/2$$
+4. Use o algoritmo do apêndice IV para verificar se existem $$a$$ e $$b$$ tais que $$N=a^b$$. Retornar $$a$$ caso positivo.
+5. Se não, escolha $$A \in \N$$ qualquer tal que $$1<A<N$$
+6. Encontre o MDC (MAIOR divisor comum) entre A e N. Seja $$K$$ este número, isto é, $$K=MDC(A,N)$$
 7. Se K&ne;1 então encontramos um fator não trivial. Acabou.
-8. Se K=1, então execute a rotina X para encontrar o período r da função $f(x)=A^{x}(mod N)$. Note que isso significa que r é o menor inteiro positivo que satisfaz $A^{r}=1(mod N)$
-9. Se r é impar ou $A^{r/2}=-1(mod N)$ então volte para o passo 1.
-10. Se não, $MDC(A^{r/2}+1,N)$ ou $MDC(A^{r/2}-1,N)$ devem ser fatores não triviais de N. Se não forem, então o algoritmo falhou.
+8. Se K=1, então execute a rotina X para encontrar o período r da função $$f(x)=A^{x}(mod N)$$. Note que isso significa que r é o menor inteiro positivo que satisfaz $$A^{r}=1(mod N)$$
+9. Se r é impar ou $$A^{r/2}=-1(mod N)$$ então volte para o passo 1.
+10. Se não, $$MDC(A^{r/2}+1,N)$$ ou $$MDC(A^{r/2}-1,N)$$ devem ser fatores não triviais de N. Se não forem, então o algoritmo falhou.
 
 Com exceção da etapa 8, a qual usa computação quântica, utilizamos apenas rotinas clássicas. Por isso, focaremos nessa etapa que alguns autores chamam de algoritmo de Shor (ao invés de todo o processo).
 
 ### Rotina X:
 Antes de começar, introduziremos alguns conceitos importantes para a construção dessa rotina. Estes são: Transformada de Fourier quântica, aritmética modular, algoritmo de Euclides e de frações continuadas. Outras ferramentas importantes para simplificar o algoritmo estarão disponiveis na seção de apêndice.
 #### 1. TFQ (Transformada de Fourier Quântica)
-A Transformada de Fourier Discreta é um operador linear definido de $C^{N}$ para $C^{N}$ levando $(x_0, x_1, ..., x_{N-1})$ para $(y_0, y_1, ..., y_{N-1})$ tal que:
-$$y_k = \frac{1}{\sqrt{N}}\sum_{j=0}^{N-1}x_je^{\frac{2\pi ijk}{N}}$$
-Por ser um operador linear unitário (provado em ref. II) este tem representação matricial. Na base canônica de $C^{N}$, esta é:
-$$\frac{1}{\sqrt{N}}\left(\begin{matrix}
+A Transformada de Fourier Discreta é um operador linear definido de $$C^{N}$$ para $$C^{N}$$ levando $$(x_0, x_1, ..., x_{N-1})$$ para $$(y_0, y_1, ..., y_{N-1})$$ tal que:
+
+$$ y_k = \frac{1}{\sqrt{N}}\sum_{j=0}^{N-1}x_je^{\frac{2\pi ijk}{N}} $$
+
+Por ser um operador linear unitário (provado em ref. II) este tem representação matricial. Na base canônica de $$C^{N}$$, esta é:
+
+$$
+\frac{1}{\sqrt{N}}\left(\begin{matrix}
 1&1&1&...&1\\
 1&\omega&\omega^2&...&\omega^{N-1}\\
 1&\omega^2&\omega^4&...&\omega^{N-2}\\
 ...&...&...&...&...\\
 1&\omega^{N-1}&\omega^{N-2}&...&\omega
-\end{matrix}\right)$$
-Onde $\omega=e^{\frac{2\pi i}{N}}$.
-Em mecânica quântica, substituimos os vetores do tipo $(x_0, x_1, ..., x_{N-1})$ da base canônica por kets do tipo $\sum_{j=0}^{N-1}x_j\ket{j}$. Isto é, as coordenadas (ou amplitudes) continuam as mesmas (existe a bijeção) e a base canônica de $C^{N}$ é escrita como kets $\ket{0}$, $\ket{1}$,...,$\ket{N-1}$. Por exemplo, em N=3: $$(1,0,0)^{t} \rightarrow 1\ket{0}+0\ket{1}+0\ket{2} = \ket{0}$$
+\end{matrix}\right)
+$$
 
-A justificativa teórica da construção do circuito que executa a TFQ para qualquer valor de N é um pouco complicada. Ao invés disso trabalharemos com o caso $N=2^n$ que é conveniente uma vez que o número N de entrada será representado por bits. 
-Substituindo $N=2^{n}$ com a base ${\ket{0},..., \ket{2^{n}-1}}$ na expressão da transformada de fourier discreta encontramos que a TFQ age num ket $\ket{j} $ de forma:
-$$\ket{j}\rightarrow 1/(2^{n/2})\sum_{k=0}^{2^{n}-1}e^{2\pi ijk/(2^{n})}\ket{k}$$ Pode-se mostrar ainda que a TFQ transforma o ket $\ket{j}$ de forma que (ref. III pg39):
-$$\ket{j}\rightarrow (\ket{0}+e^{2\pi i0.j_n}\ket{1})\otimes(\ket{0}+e^{2\pi i0.j_{n-1}j_n}\ket{1})\otimes...\otimes(\ket{0}+e^{2\pi i0.j_1j_2...j_n}\ket{1})$$ Onde $0.j_1j_2...j_n = \frac{j_1}{2}+\frac{j_2}{4}+...+\frac{j_n}{2^n}$  com $j_k=0$ ou $1$
-Aqui fica claro que o circuito que implementa essa transformação para um estado $\ket{j}=\ket{j_1j_2j_3...j_n}$ é: 
+Onde $$\omega=e^{\frac{2\pi i}{N}}$$.
+Em mecânica quântica, substituimos os vetores do tipo $$(x_0, x_1, ..., x_{N-1})$$ da base canônica por kets do tipo $$\sum_{j=0}^{N-1}x_j\ket{j}$$. Isto é, as coordenadas (ou amplitudes) continuam as mesmas (existe a bijeção) e a base canônica de $$C^{N}$$ é escrita como kets $$\ket{0}$$, $$\ket{1}$$,...,$$\ket{N-1}$$. Por exemplo, em N=3: 
+
+$$
+(1,0,0)^{t} \rightarrow 1\ket{0}+0\ket{1}+0\ket{2} = \ket{0}
+$$
+
+A justificativa teórica da construção do circuito que executa a TFQ para qualquer valor de N é um pouco complicada. Ao invés disso trabalharemos com o caso $$N=2^n$$ que é conveniente uma vez que o número N de entrada será representado por bits. 
+Substituindo $$N=2^{n}$$ com a base $${\ket{0},..., \ket{2^{n}-1}}$$ na expressão da transformada de fourier discreta encontramos que a TFQ age num ket $$\ket{j}$$ de forma:
+
+$$
+\ket{j}\rightarrow 1/(2^{n/2})\sum_{k=0}^{2^{n}-1}e^{2\pi ijk/(2^{n})}\ket{k}
+$$ 
+
+Pode-se mostrar ainda que a TFQ transforma o ket $$\ket{j}$$ de forma que (ref. III pg39):
+
+$$
+\ket{j}\rightarrow (\ket{0}+e^{2\pi i0.j_n}\ket{1})\otimes(\ket{0}+e^{2\pi i0.j_{n-1}j_n}\ket{1})\otimes...\otimes(\ket{0}+e^{2\pi i0.j_1j_2...j_n}\ket{1})
+$$ 
+
+Onde $$0.j_1j_2...j_n = \frac{j_1}{2}+\frac{j_2}{4}+...+\frac{j_n}{2^n}$$ com $$j_k=0$$ ou $$1$$
+Aqui fica claro que o circuito que implementa essa transformação para um estado $$\ket{j}=\ket{j_1j_2j_3...j_n}$$ é: 
 
 ![Circuito-TFQ-2n](/assets/images/shor-algorithm/figura3.1_dissertacao.png)
 Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010)
-Onde H representa o gate de Hadamard e $R_k$ um gate de controle definido por:
-$$\left(\begin{matrix}
+Onde H representa o gate de Hadamard e $$R_k$$ um gate de controle definido por:
+
+$$
+\left(\begin{matrix}
 1&0\\
 0&e^{\frac{2\pi i}{2^k}}
-\end{matrix}\right)$$
+\end{matrix}\right)
+$$
+
 A matriz inversa da matriz de representação (numa base ortonormal) também terá muita importância. Como a matriz da TFQ é unitária então a matriz hermitiana será igual a inversa. Logo esta é:
-$$\left(\begin{matrix}
+
+$$
+\left(\begin{matrix}
 1&1&1&...&1\\
 1&\tau&\tau^2&...&\tau^{N-1}\\
 1&\tau^2&\tau^3&...&\tau^{N-2}\\
 ...&...&...&...&...\\
 1&\tau^{N-1}&\tau^{N-2}&...&\tau\\
-\end{matrix}\right)$$Onde $\tau=e^{\frac{-2\pi i}{N}}$.
+\end{matrix}\right)
+$$
+
+Onde $$\tau=e^{\frac{-2\pi i}{N}}$$.
 O circuito que executa a operação inversa da TQF é:
 ![Circuito-TFQ-2n-inversa](/assets/images/shor-algorithm/tqfinversa.png)
 Fonte: [Dissertação de mestrado](https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf) (2010)
 
 ##### Exemplo da TFQ em n=3
-Neste caso a TFQ é um operador unitário que leva $C^8$ em $C^8$ e a matriz que o representa na base {$\ket{ijk}$} com $i,j,k=0$ ou $1$ é:
-$$\frac{1}{\sqrt{8}}\left(\begin{matrix}
+Neste caso a TFQ é um operador unitário que leva $$C^8$$ em $$C^8$$ e a matriz que o representa na base {$$\ket{ijk}$$} com $$i,j,k=0$$ ou $$1$$ é:
+
+$$
+\frac{1}{\sqrt{8}}\left(\begin{matrix}
 1&1&1&1&1&1&1&1\\
 1&\omega&\omega^2&\omega^3&\omega^4&\omega^5&\omega^6&\omega^7\\
 1&\omega^2&\omega^4&\omega^6&1&\omega^2&\omega^4&\omega^6\\
@@ -87,10 +122,23 @@ $$\frac{1}{\sqrt{8}}\left(\begin{matrix}
 1&\omega^5&\omega^2&\omega^7&\omega^4&\omega&\omega^6&\omega^3\\
 1&\omega^6&\omega^4&\omega^2&1&\omega^6&\omega^4&\omega^2\\
 1&\omega^7&\omega^6&\omega^5&\omega^4&\omega^3&\omega^2&\omega
-\end{matrix}\right)$$ Onde $\omega=e^{\frac{2\pi i}{8}}$.
-Aplicando a TFQ as coordenadas de $\ket{000}$ obtemos o vetor: $$\frac{1}{\sqrt{8}}(1 1 1 1 1 1 1 1)^t=\frac{1}{\sqrt{8}}\sum_{i,j,k=0,1}^{}\ket{i,j,k}$$.
-Ou seja, a TFQ transforma o ket $\ket{000}$:
-$$\ket{000} \rightarrow^{TFQ} \frac{1}{\sqrt{8}}(\ket{000}+\ket{001}+\ket{010}+\ket{100}+\ket{110}+\ket{101}+\ket{011}+\ket{111})$$ Em Python, importando o modulo qiskit, a implementação do circuito fica:
+\end{matrix}\right)
+$$ 
+
+Onde $$\omega=e^{\frac{2\pi i}{8}}$$.
+Aplicando a TFQ as coordenadas de $$\ket{000}$$ obtemos o vetor: 
+
+$$
+\frac{1}{\sqrt{8}}(1 1 1 1 1 1 1 1)^t=\frac{1}{\sqrt{8}}\sum_{i,j,k=0,1}^{}\ket{i,j,k}
+$$
+
+Ou seja, a TFQ transforma o ket $$\ket{000}$$ em:
+
+$$
+\ket{000} \rightarrow^{TFQ} \frac{1}{\sqrt{8}}(\ket{000}+\ket{001}+\ket{010}+\ket{100}+\ket{110}+\ket{101}+\ket{011}+\ket{111})
+$$ 
+
+Em Python, importando o modulo qiskit, a implementação do circuito fica:
 
 qc = QuantumCircuit(3)
 qc.h(2)
@@ -113,30 +161,67 @@ Note que as probabilidades estão coerentes com o esperado teórico.
 
 #### 2. Grupo $Z_N$ e aritmética modular      
 Será apresentado algumas notações importantes para o entendimento do algoritmo:
-$$Z_2 = {\overline{0}, \overline{1}} $$
-É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 na divisão por 2. Isto é, $\overline{0}$ representa os números pares enquanto $\overline{1}$ os impares. 
-Pode-se definir (ref. I) operações de adição e multiplicação nesse conjunto de forma que $Z_n = \overline{0}, \overline{1}, ..., \overline{n-1}$ seja um grupo. A adição pode ser tal que $\overline{a}+\overline{b}=\overline{a+b}$ e a multiplicação, não obstante, pode ser $\overline{a}*\overline{b}=\overline{a*b}$. Note que é extremamente conveniente a forma que definimos essas operações. De fato, para somar ou multiplicar os elementos do grupo bastar somar e multiplicar da forma usual e os elementos neutros serão os usuais.
-Definimos também a ordem de um número $a$ como o menor inteiro k tal que $a^{k}=e$ onde $e$ denota o elemento neutro do grupo com respeito a operação de multiplicação
-Outra notação mais importante ainda é a de $A (mod N)$. Esta representa o resto da divisão de A por N (em Python usamos: A%N)
-Nesta notação, a ordem ou período de um número inteiro A é o menor inteiro $r$ tal que $A^r(modN)=1$ 
-Por fim, definimos a congruência modular no conjunto $Z_N$ como $a \equiv b\mod N$ quando $\overline{a}=\overline{b}$.
+
+$$
+Z_2 = {\overline{0}, \overline{1}}
+$$
+
+É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 na divisão por 2. Isto é, $$\overline{0}$$ representa os números pares enquanto $$\overline{1}$$ os impares. 
+Pode-se definir (ref. I) operações de adição e multiplicação nesse conjunto de forma que $$Z_n = \overline{0}, \overline{1}, ..., \overline{n-1}$$ seja um grupo. A adição pode ser tal que $$\overline{a}+\overline{b}=\overline{a+b}$$ e a multiplicação, não obstante, pode ser $$\overline{a}*\overline{b}=\overline{a*b}$$. Note que é extremamente conveniente a forma que definimos essas operações. De fato, para somar ou multiplicar os elementos do grupo bastar somar e multiplicar da forma usual e os elementos neutros serão os usuais.
+Definimos também a ordem de um número $$a$$ como o menor inteiro k tal que $$a^{k}=e$$ onde $$e$$ denota o elemento neutro do grupo com respeito a operação de multiplicação
+Outra notação mais importante ainda é a de $$A (mod N)$$. Esta representa o resto da divisão de A por N (em Python usamos: A%N)
+Nesta notação, a ordem ou período de um número inteiro A é o menor inteiro $$r$$ tal que $$A^r(modN)=1$$ 
+Por fim, definimos a congruência modular no conjunto $$Z_N$$ como $$a \equiv b\mod N$$ quando $$\overline{a}=\overline{b}$$.
+
 #### 3. Algoritmo de frações continuadas
 A teoria geral de frações continuadas é vasta em conteúdo. Neste artigo abordaremos apenas uma aplicação para um caso particular onde é útil para o algoritmo de Shor.
-Queremos expressar um certo número racional $k=\frac{a}{b}$ como combinações de frações dentro de frações conhecidas como frações continuadas ou contínuas.
-Uma fração continuada é uma expressão do tipo: $$a_0 + \frac{b_1}{a_1+\frac{b_2}{a_2+\frac{b_3}{a_3+...}}}$$
-Nosso caso particular será quando a fração em questão é finita e $b_1=b_2=...=1$. Nesse caso teremos:
-$$a_0 + \frac{1}{a_1+\frac{1}{a_2+\frac{1}{...+\frac{1}{a_m}}}}$$
-Utilizaremos o algoritmo de Euclides (apêndice V) para computar os termos $a_i$. Achemos, por exemplo, o MDC entre 69 e 15:
+Queremos expressar um certo número racional $$k=\frac{a}{b}$$ como combinações de frações dentro de frações conhecidas como frações continuadas ou contínuas.
+Uma fração continuada é uma expressão do tipo: 
 
-$69=4*15+9$
-$15=1*9+6$
-$9=1*6+3$
-$6=2*3+0$
+$$
+a_0 + \frac{b_1}{a_1+\frac{b_2}{a_2+\frac{b_3}{a_3+...}}}
+$$
 
-Note que podemos expressar, a partir da primeira linha acima dividida por 15, a fração $\frac{69}{15}$ como:
-$$\frac{69}{15}=4+\frac{9}{15}=4+\frac{1}{\frac{15}{9}}$$ Utilizando a segunda linha dividido por 9:
-$$\frac{69}{15}=4+\frac{1}{1+\frac{6}{9}}=4+\frac{1}{1+\frac{1}{\frac{9}{6}}}$$ Realizando a mesma operação para a terceira e quarta linha encontramos, por fim:
-$$\frac{69}{15}=4+\frac{1}{1+\frac{1}{1+\frac{1}{2}}}$$ Este algoritmo terá fundamental importância para acharmos os termos convergentes de uma fração resultante do algoritmo de Shor.
+Nosso caso particular será quando a fração em questão é finita e $$b_1=b_2=...=1$$. Nesse caso teremos:
+
+$$
+a_0 + \frac{1}{a_1+\frac{1}{a_2+\frac{1}{...+\frac{1}{a_m}}}}
+$$
+
+Utilizaremos o algoritmo de Euclides (apêndice V) para computar os termos $$a_i$$. Achemos, por exemplo, o MDC entre 69 e 15:
+
+$$
+69=4*15+9
+$$
+$$
+15=1*9+6
+$$
+$$
+9=1*6+3
+$$
+$$
+6=2*3+0
+$$
+
+Note que podemos expressar, a partir da primeira linha acima dividida por 15, a fração $$\frac{69}{15}$$ como:
+
+$$
+\frac{69}{15}=4+\frac{9}{15}=4+\frac{1}{\frac{15}{9}}
+$$ 
+
+Utilizando a segunda linha dividido por 9:
+
+$$
+\frac{69}{15}=4+\frac{1}{1+\frac{6}{9}}=4+\frac{1}{1+\frac{1}{\frac{9}{6}}}
+$$ 
+
+Realizando a mesma operação para a terceira e quarta linha encontramos, por fim:
+
+$$
+\frac{69}{15}=4+\frac{1}{1+\frac{1}{1+\frac{1}{2}}}
+$$ 
+
+Este algoritmo terá fundamental importância para acharmos os termos convergentes de uma fração resultante do algoritmo de Shor.
 
 ### Algoritmo para a Rotina X
 A rotina X é basicamente um algoritmo quântico de busca de ordem $r$ de um número $x \in Z_{N}$. Tendo este, é fácil achar um fator primo para a decomposição.
