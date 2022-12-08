@@ -527,7 +527,9 @@ $$
 
 $$
 U^r\ket{1}=U\circ U^{r-1}\ket{1}=U\ket{12}=\ket{3^{12}mod35}=\ket{1}
-$$ daonde temos que $$ r=12 $$
+$$ 
+
+daonde temos que $$ r=12 $$
 
 Chegar ao estado $$ \ket{1} $$ após aplicações sucessivas de $$ U $$ não é coincidência. Por construção, iniciando em $$ \ket{1} $$ chegaremos novamente em $$ \ket{1} $$ após $$ r $$ aplicações de $$ U $$. Daí o nome de período da função.
 
@@ -537,12 +539,13 @@ $$
 \ket{x_s}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}e^{\frac{-2\pi sik}{r}}\ket{A^kmodN}
 $$ 
 
-Onde $$ 0\leq s\leq r-1 \in \N $$.  Note que este está dentro do espaço de estados por ser combinação linear de autovetores de U. O termo de fase $$ e^{\frac{-2\pi sik}{r}} $$ aparece porque estamos interessados em estados cuja fase difere do estado $$ \ket{x}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}\ket{A^kmodN} $$ o qual nos retorna como autovalor 1 (ref V). O fator $$ r $$ é acrescentado porque é útil associarmos o período da função com cada coeficiente. O termo $$ s $$ é acrescentado para generalizar essa diferença de fase e garantir a unicidade de cada autoestado para cada valor de $$ s $$.
+Onde $$ 0\leq s\leq r-1 \in N $$.  Note que este está dentro do espaço de estados por ser combinação linear de autovetores de U. O termo de fase $$ e^{\frac{-2\pi sik}{r}} $$ aparece porque estamos interessados em estados cuja fase difere do estado $$ \ket{x}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}\ket{A^kmodN} $$ o qual nos retorna como autovalor 1 (ref V). O fator $$ r $$ é acrescentado porque é útil associarmos o período da função com cada coeficiente. O termo $$ s $$ é acrescentado para generalizar essa diferença de fase e garantir a unicidade de cada autoestado para cada valor de $$ s $$.
 Aplicando U, pode-se mostrar (ref V) que: 
 
 $$
 U\ket{x_s}=e^{\frac{2\pi si}{r}}\ket{x_s}
 $$
+
 que tem autovalores $$ e^{\frac{2\pi si}{r}} $$.
 
 Não obstante, ainda teremos que (ref V) 
@@ -610,34 +613,35 @@ $$
 Onde $$ L=[log_2N+1] $$ é a quantidade de bits para representar o número $$ N $$. 
 
 1. Escolha i = 2
-2. Defina $x=\frac{log_2N}{i}$
-3. Encontre os dois inteiros mais próximos de $2^x$: $u_1$ e $u_2$
-4. Compute $u_1^i$ e $u_2^i$. Se um dos resultados for igual a $N$ então retorne o par ($i$,$u_j$) tal que $u_j^i=N$. Se não, i=i+1 e retorne a 1.
+2. Defina $$ x=\frac{log_2N}{i} $$
+3. Encontre os dois inteiros mais próximos de $$ 2^x $$: $$ u_1 $$ e $$ u_2 $$
+4. Compute $$ u_1^i $$ e $$ u_2^i $$. Se um dos resultados for igual a $$ N $$ então retorne o par ($$ i $$,$$ u_j $$) tal que $$ u_j^i=N $$. Se não, i=i+1 e retorne a 1.
 
-Note que o algoritmo é de simples implementação. Tua complexidade é $O(L^4)$ conforme mostrado na refII.
+Note que o algoritmo é de simples implementação. Tua complexidade é $$ O(L^4) $$ conforme mostrado na refII.
 
 ##### Exemplo:
 Seja N=9. 
 
-Iniciando por i=2 temos $x=\frac{log_29}{2}=1.58496...\approx1.585$. 
-Daí, $2^{1.585}\approx3$ e portanto $u_1=3$ e $u_2=4$.
-Calculamos $u_1^2=9$ e $u_2^2=16$. Retornamos portanto o par (2, $u_1=3$) = ($a$, $b$). 
+Iniciando por i=2 temos $$ x=\frac{log_29}{2}=1.58496...\approx1.585 $$. 
+Daí, $$ 2^{1.585}\approx3 $$ e portanto $$ u_1=3 $$ e $$ u_2=4 $$.
+Calculamos $$ u_1^2=9 $$ e $$ u_2^2=16 $$. Retornamos portanto o par ($$ 2 $$, $$ u_1=3 $$) = ($$ a $$, $$ b $$). 
 
 ## Apêndice V (algoritmo de Euclides)
 Este algoritmo serve para encontrar o maior divisor comum (MDC) entre dois números naturais. 
-Sejam $a$ e $b$ dois números inteiros positivos dados. 
-1. Defina $c_1=a$, $d_1=b$ e $i=1$
-2. Divida $c_i$ por $d_i$ e retorne $r_i$ o resto dessa divisão
-3. Se $r_i=0$ retorne $d_i$. 
-Se não, $c_{i+1}=d_i$ enquanto $d_{i+1}=r_i$ e, por fim, i=i+1.
+Sejam $$ a $$ e $$ b $$ dois números inteiros positivos dados. 
+1. Defina $$ c_1=a $$, $$ d_1=b $$ e $$ i=1 $$
+2. Divida $$ c_i $$ por $$ d_i $$ e retorne $$ r_i $$ o resto dessa divisão
+3. Se $$ r_i=0 $$ retorne $$ d_i $$. 
+Se não, $$ c_{i+1}=d_i $$ enquanto $$ d_{i+1}=r_i $$ e, por fim, i=i+1.
+
 ##### Exemplo:
-Seja $a=348$ e $b=156$.
+Seja $$ a=348 $$ e $$ b=156 $$.
 Primeira iteração:
-$r_1=36$ pois $348=156*2+36$ (algoritmo da divisão).
+$$ r_1=36 $$ pois $$ 348=156*2+36 $$ (algoritmo da divisão).
 Segunda iteração:
-$c_2=156$, $d_2=36$ e $r_2=12$ pois $156=36*4+12$
+$$ c_2=156 $$, $$ d_2=36 $$ e $$ r_2=12 $$ pois $$ 156=36*4+12 $$
 Terceira iteração:
-$c_3=36$, $d_3=12$ e $r_3=0$ pois $36=12*3+0$
+$$ c_3=36 $$, $$ d_3=12 $$ e $$ r_3=0 $$ pois $$ 36=12*3+0 $$
 
 Logo, MDC(9,6)=3
 
