@@ -21,30 +21,30 @@ $$
 N=k_1^{e_1}k_2^{e_2}k_3^{e_3}...k_m^{e_m}
 $$ 
 
-onde $$ k_i \in N $$ é um número primo e $$ e_j \in N $$ com $$ 0<i,j<m+1 $$
+onde $$ k_i \in N $$ é um número primo e $$ e_j \in N $$ com $$ 0<i,j<m+1 $$.
 Este problema é equivalente ao problema de encontrar um número divisor não trivial de N entre 1 e N. De fato, achando um número-produto poderiamos executar novamente o algoritmo para encontrar outro número até que N esteja completamente decomposto:
 Seja $$ N $$ nosso número. Encontrando um divisor primo $$ A $$ teriamos: $$ N_0=N=A*k_1*...*k_n $$. Daí, basta achar $$ N_1=k_1*...*k_n $$ e assim sucessivamente.
 O algoritmo é composto por duas etapas. A etapa clássica - mais simples e de fácil implementação - e a etapa onde precisaremos de computação quântica - mais sofisticada.
 Um algoritmo que resolve nosso problema pode ser resumido assim:
 
-Dado $N$, um número natural a ser fatorado em produtos, 
-1. Descobrir se $N$ é primo ou composto: usar primality-testing (apêndice I).
-2. Se $N$ for primo então a única decomposição possível é a trivial: 1 e $N$. Acabou
-3. Se $N$ for par então repita o algoritmo com $N/2$
-4. Use o algoritmo do apêndice IV para verificar se existem $a$ e $b$ tais que $N=a^b$. Retornar $a$ caso positivo.
-5. Se não, escolha $A \in \N$ qualquer tal que $1<A<N$
-6. Encontre o MDC (MAIOR divisor comum) entre A e N. Seja $K$ este número, isto é, $K=MDC(A,N)$
+Dado $$ N $$, um número natural a ser fatorado em produtos, 
+1. Descobrir se $$ N $$ é primo ou composto: usar primality-testing (apêndice I).
+2. Se $$ N $$ for primo então a única decomposição possível é a trivial: 1 e $$ N $$. Acabou.
+3. Se $$ N $$ for par então repita o algoritmo com $$ N/2 $$
+4. Use o algoritmo do apêndice IV para verificar se existem $$ a $$ e $$ b $$ tais que $$ N=a^b $$. Retornar $$ a $$ caso positivo.
+5. Se não, escolha $$ A \in N $$ qualquer tal que $$ 1<A<N $$
+6. Encontre o MDC (MAIOR divisor comum) entre A e N. Seja $$ K $$ este número, isto é, $$ K=MDC(A,N) $$
 7. Se K&ne;1 então encontramos um fator não trivial. Acabou.
-8. Se K=1, então execute a rotina X para encontrar o período r da função $f(x)=A^{x}(mod N)$. Note que isso significa que r é o menor inteiro positivo que satisfaz $A^{r}=1(mod N)$
-9. Se r é impar ou $A^{r/2}=-1(mod N)$ então volte para o passo 1.
-10. Se não, $MDC(A^{r/2}+1,N)$ ou $MDC(A^{r/2}-1,N)$ devem ser fatores não triviais de N. Se não forem, então o algoritmo falhou.
+8. Se K=1, então execute a rotina X para encontrar o período r da função $$ f(x)=A^{x}(mod N) $$. Note que isso significa que r é o menor inteiro positivo que satisfaz $$ A^{r}=1(mod N) $$
+9. Se r é impar ou $$ A^{r/2}=-1(mod N) $$ então volte para o passo 1.
+10. Se não, $$ MDC(A^{r/2}+1,N) $$ ou $$ MDC(A^{r/2}-1,N) $$ devem ser fatores não triviais de N. Se não forem, então o algoritmo falhou.
 
 Com exceção da etapa 8, a qual usa computação quântica, utilizamos apenas rotinas clássicas. Por isso, focaremos nessa etapa que alguns autores chamam de algoritmo de Shor (ao invés de todo o processo).
 
 ### Rotina X:
 Antes de começar, introduziremos alguns conceitos importantes para a construção dessa rotina. Estes são: Transformada de Fourier quântica, aritmética modular, algoritmo de Euclides e de frações continuadas. Outras ferramentas importantes para simplificar o algoritmo estarão disponiveis na seção de apêndice.
 #### 1. TFQ (Transformada de Fourier Quântica)
-A Transformada de Fourier Discreta é um operador linear definido de $C^{N}$ para $C^{N}$ levando $(x_0, x_1, ..., x_{N-1})$ para $(y_0, y_1, ..., y_{N-1})$ tal que:
+A Transformada de Fourier Discreta é um operador linear definido de $$ C^{N} $$ para $$ C^{N} $$ levando $$ (x_0, x_1, ..., x_{N-1}) $$ para $$ (y_0, y_1, ..., y_{N-1}) $$ tal que:
 
 $$ 
 y_k = \frac{1}{\sqrt{N}}\sum_{j=0}^{N-1}x_je^{\frac{2\pi ijk}{N}} 
