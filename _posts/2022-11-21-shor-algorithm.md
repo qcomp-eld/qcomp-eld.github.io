@@ -163,7 +163,7 @@ Realizando uma medição e supondo, sem perda de generalidade, que o resultado t
 $$\ket{\psi_3}=\sqrt{\frac{r}{2^t}}(\sum_{a=0}^{\frac{2^t}{r}-1}\ket{ar+b_1})\otimes\ket{x^{b_1}}$$
 Para descobrir o valor de $a$ aplicaremos o $TFQ^*$ no primeiro registrador (onde * denota o hermitiano da aplicação). Aplicando a matriz no estado $\ket{\psi_3}$ obtemos:
 $$\ket{\psi_4}=\frac{1}{\sqrt{r}}(\sum_{k=0}^{r-1}e^{-2\pi ikb_1/r}\ket{\frac{k2^t}{r}})\otimes\ket{x^{b_1}}$$
-Podemos enfim realizar a medição na base computacional. Obtendo $\ket{0}$ quando k=0 não teremos informação sobre o sistema mas se o resultado da medição for $\ket{\frac{k2^t}{r}}$ por algum k>0, dividimos por $2^t$ e teremos duas possibilidades: MDC(k,r)=1 ou MDC(k,r) é diferente de 1. No primeiro caso fazemos $x^r = 1 mod N$ e temos a ordem. No segundo caso o denominador será um d que é um fator de r e nesse caso o algoritmo falha.
+Enfim realizamos a medição na base computacional. Obtendo $\ket{0}$ quando k=0 não teremos informação sobre o sistema mas se o resultado da medição for $\ket{\frac{k_12^t}{r}}$ por algum $k_1>0$, dividimos por $2^t$ e teremos duas possibilidades: MDC(k,r)=1 ou MDC(k,r) é diferente de 1. No primeiro caso fazemos $x^r = 1 mod N$ e temos a ordem. No segundo caso o denominador será um d que é um fator de r e nesse caso o algoritmo falha.
 ##### Caso Geral
 Os valores de t e L não mudam. O circuito que implementa a busca de ordem no caso geral ainda é:
 ![busca-de-ordem-caso-geral](/assets/images/shor-algorithm/figura4.2_dissertacao.png)
@@ -175,13 +175,14 @@ $$\ket{\psi_2}=\frac{1}{2^{\frac{t}{2}}}\sum_{j=0}^{2^t-1}\ket{j}\otimes\ket{x^j
 $$\ket{\psi_3}=\frac{1}{2^{t}}\sum_{j,k}^{2^t-1}e^{\frac{-2\pi ikj}{2^t}}\ket{k}\otimes\ket{x^j}$$
 $$\ket{\psi_4}=\ket{c}\otimes\ket{\alpha_c}$$
 com $\ket{c}\in \ket{0}, \ket{1},..., \ket{2^t-1}$ e $\ket{\alpha_c}$ vem da decomposição de $\ket{\psi_3}$ em relação à base computacional do primeiro registrador. 
-Por fim, encontrar r dependerá de probabilidade. Nem sempre este algoritmo nos retornará a resposta correta. Para aumentar esta probabilidade fazemos $r=\frac{c}{2^t}$. O algoritmo de frações contínuas resolve o problema. A probabilidade de obter um estado $\ket{c}\ket{x^k}$ na base computacional é:
+Por fim, encontrar r dependerá de probabilidade. Nem sempre este algoritmo nos retornará a resposta correta. Para aumentar esta probabilidade fazemos $r=\frac{c}{2^t}$. O algoritmo de frações contínuas nos retornará ele. 
+A probabilidade de obter um estado $\ket{c}\ket{x^k}$ na base computacional é:
 $$|\frac{1}{q}\sum_{j:x^j\equiv x^k}^{}e^{\frac{-2\pi ijc}{q}}|^2$$
 onde $j:x^j\equiv x^k$ significa todos os j para os quais $x^j\equiv x^k modN$ e $q=2^t$. Pode-se (ref III) mostrar que isso é equivalente a uma expressão do tipo: 
 $$|\frac{1}{q}(\frac{1-e^{-2\pi i\alpha (rc)_q/q}}{1-e^{-2\pi i (rc)_q/q}})|$$ onde $\alpha = \frac{q-\beta}{r}$ com sendo o resto da divisão de q por r.
-Na referência II temos uma analise mais detalhada deste resultado.
+Na referência II temos uma analise mais detalhada de quando o algoritmo falha, quando da certo e quando nos retorna nenhuma informação útil.
 
-[Faltou detalhar melhor quando o algoritmo falha, quando não retorna informação util e quando da certo]
+
 
 
 #### Busca de ordem de um número e a fatoração de números inteiros
@@ -304,7 +305,7 @@ IV. Shor's Algorithm do Qiskit [https://qiskit.org/textbook/ch-algorithms/shor.h
 V. Quantum Computation and Quantum Information - Michael A. Nielsen (2000)
 
 
-# Futuro
+### Futuro
 * Complexidade dos algoritmos apresentados
 * Implementação (usando bibliotecas prontas) e comparação entre algoritmo clássico nos casos em que N é grande.
 * Explicar/entender melhor quando o algoritmo falha e quando não retorna nada de útil.
