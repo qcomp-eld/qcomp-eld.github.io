@@ -409,15 +409,24 @@ Aplicando as portas $$ U^{2^j} $$ onde $$ j $$ vai de 0 até 8 obtemos:
 $$
 \ket{\psi_2}=\frac{1}{\sqrt{512}}\sum_{j=0}^{511}\ket{j}\otimes \ket{2^j mod21}=
 $$ 
+
 $$
 \frac{1}{\sqrt{512}}(\ket{0} \ket{1}+\ket{1} \ket{2}+\ket{2} \ket{4}+\ket{3} \ket{8}+\ket{4} \ket{16}+\ket{5} \ket{11}+ 
+$$
 
+$$
 \ket{6} \ket{1}+\ket{7} \ket{2}+\ket{8} \ket{4}+\ket{9} \ket{8}+\ket{10} \ket{16}+\ket{11} \ket{11}+
+$$
 
+$$
 \ket{12} \ket{1}+\ket{13} \ket{2}+\ket{14} \ket{4}+\ket{15} \ket{8}+\ket{16} \ket{16}+\ket{17} \ket{11}+
+$$
 
+$$
 ...
+$$
 
+$$
 +\ket{510} \ket{1}+\ket{511} \ket{2})
 $$ 
 
