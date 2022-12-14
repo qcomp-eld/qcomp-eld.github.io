@@ -431,9 +431,31 @@ $$
 $$ 
 
 Agrupando os termos: 
+
 $$
-=\frac{1}{\sqrt{512}}((\ket{0}+\ket{6} +\ket{12}+\ket{18}+\ket{24}+...+\ket{510})\ket{1}+ \\ (\ket{1}+\ket{7}+\ket{13}+\ket{19}+\ket{25}+...+\ket{511})\ket{2}+\\ (\ket{2}+\ket{8}+\ket{14}+\ket{20}+\ket{26}+...+\ket{506})\ket{4}+\\  (\ket{3}+\ket{9}+\ket{15}+\ket{21}+\ket{27}+...+\ket{507})\ket{8}+\\ (\ket{4}+\ket{10}+\ket{16}+\ket{22}+\ket{28}+...+\ket{508})\ket{16}+\\  (\ket{5}+\ket{11}+\ket{17}+\ket{23}+\ket{29}+...+\ket{509})\ket{11})
+=\frac{1}{\sqrt{512}}((\ket{0}+\ket{6} +\ket{12}+\ket{18}+\ket{24}+...+\ket{510})\ket{1}+ 
+$$
+
+$$
+(\ket{1}+\ket{7}+\ket{13}+\ket{19}+\ket{25}+...+\ket{511})\ket{2}+
+$$
+
+$$
+(\ket{2}+\ket{8}+\ket{14}+\ket{20}+\ket{26}+...+\ket{506})\ket{4}+
+$$
+
+$$
+(\ket{3}+\ket{9}+\ket{15}+\ket{21}+\ket{27}+...+\ket{507})\ket{8}+
+$$
+
+$$
+(\ket{4}+\ket{10}+\ket{16}+\ket{22}+\ket{28}+...+\ket{508})\ket{16}+
+$$
+
+$$
+(\ket{5}+\ket{11}+\ket{17}+\ket{23}+\ket{29}+...+\ket{509})\ket{11})
 $$ 
+
 Note que visualizando dessa forma, fica claro que podemos decompor o estado atual como uma combinação dos estados {$$ \ket{1}, \ket{2}, \ket{4}, \ket{8}, \ket{16}, \ket{11} $$}. 
 O próximo passo, seguindo a figura lá de cima é realizar uma medição no sistema do segundo registrador. Suponha que o resultado da medição seja $$ \ket{2} $$. Daí o sistema passa a ser descrito pelo estado:
 
