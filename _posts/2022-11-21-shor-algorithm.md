@@ -11,13 +11,13 @@ O algoritmo de Shor é um algoritmo de decomposição de um número em produtos 
 O algoritmo de Shor implementado em um computador quântico pode quebrar criptografias baseadas em chave pública (e.g. RSA) em tempo polinomial. Há de se pontuar que fenômenos de quantum noise ou quantum-decoherence interferem, naturalmente, na execução deste algoritmo. Atualmente o problema em utilizar este algoritmo é devido a limitações de hardware nas operações que usam computação quântica.
 
 ### Como funciona?
-Dado um número $$ N $$ natural, queremos escrevê-lo como 
+Dado um número $$ N \in \mathbb{N}$$, queremos escrevê-lo como 
 
 $$ 
 N=k_1^{e_1}k_2^{e_2}k_3^{e_3}...k_m^{e_m}
 $$ 
 
-onde $$ k_i \in N $$ é um número primo e $$ e_j \in N $$ com $$ 0<i,j<m+1 $$.
+onde $$ k_i \in \mathbb{N}$$ é um número primo e $$ e_j \in \mathbb{N} $$ com $$ 0<i,j<m+1 $$.
 Este problema é equivalente ao problema de encontrar um número divisor não trivial de $$ N $$ entre $$ 1 $$ e $$ N $$. De fato, achando um número-produto poderiamos executar novamente o algoritmo para encontrar outro número até que $$ N $$ esteja completamente decomposto:
 Seja $$ N $$ nosso número. Encontrando um divisor primo $$ A $$ teriamos: $$ N_0=N=A*k_1*...*k_n $$. Daí, basta achar $$ N_1=k_1*...*k_n $$ e assim sucessivamente.
 O algoritmo é composto por duas etapas. A etapa clássica - mais simples e de fácil implementação - e a etapa onde precisaremos de computação quântica - mais sofisticada.
@@ -28,7 +28,7 @@ Dado $$ N $$, um número natural a ser fatorado em produtos,
 2. Se $$ N $$ for primo então a única decomposição possível é a trivial: $$ 1 $$ e $$ N $$. Acabou.
 3. Se $$ N $$ for par então repita o algoritmo com $$ N/2 $$
 4. Use o algoritmo do apêndice IV para verificar se existem $$ a $$ e $$ b $$ tais que $$ N=a^b $$. Retornar $$ a $$ caso positivo.
-5. Se não, escolha $$ A \in N $$ qualquer tal que $$ 1<A<N $$
+5. Se não, escolha $$ A \in \mathbb{N} $$ qualquer tal que $$ 1<A<N $$
 6. Encontre o MDC (MAIOR divisor comum) entre $$ A $$ e $$ N $$. Seja $$ K $$ este número, isto é, $$ K=MDC(A,N) $$
 7. Se K&ne;1 então encontramos um fator não trivial. Acabou.
 8. Se K=1, então execute a rotina X para encontrar o período $$ r $$ da função $$ f(x)=A^{x}(mod N) $$. Note que isso significa que $$ r $$ é o menor inteiro positivo que satisfaz $$ A^{r}=1(mod N) $$
@@ -143,7 +143,7 @@ $$
 $$ 
 
 Em Python, importando o modulo qiskit, a implementação do circuito fica:
-
+``` python
 qc = QuantumCircuit(3)
 
 qc.h(2)
@@ -159,15 +159,13 @@ qc.cp(pi/2,0,1)
 qc.h(0)
 
 qc.swap(0,2)
-
-
-![Circuito-TFQ-n3](/assets/images/shor-algorithm/n3tfq.png)
-Fonte: [qiskit](https://qiskit.org/textbook/ch-algorithms/quantum-fourier-transform.html#8.-Qiskit-Implementation)
+```
 
 Como o qbit de entrada padrão é $$ \ket{0} $$ o circuito nos retorna o valor esperado. 
 A implementação no quantum composer da IBM fica:
 ![Circuito-TFQ-n3-ibm](/assets/images/shor-algorithm/quantumcomposertfq.png)
 Fonte: Autor
+
 
 Note que as probabilidades estão coerentes com o esperado teórico.
 
@@ -180,7 +178,7 @@ $$
 Z_2 = {\overline{0}, \overline{1}}
 $$
 
-É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 na divisão por 2. Isto é, $$ \overline{0} $$ representa os números pares enquanto $$ \overline{1} $$ os impares. 
+É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 de resto na divisão por 2. Isto é, $$ \overline{0} $$ representa os números pares enquanto $$ \overline{1} $$ os impares. 
 Pode-se definir (ref. I) operações de adição e multiplicação nesse conjunto de forma que $$ Z_n = \overline{0}, \overline{1}, ..., \overline{n-1} $$ seja um grupo. A adição pode ser tal que $$ \overline{a}+\overline{b}= \overline{a+b} $$ e a multiplicação, não obstante, pode ser $$ \overline{a}*\overline{b}= \overline{a*b} $$. Note que é extremamente conveniente a forma que definimos essas operações. De fato, para somar ou multiplicar os elementos do grupo bastar somar e multiplicar da forma usual e os elementos neutros serão os usuais.
 Definimos também a ordem de um número $$ a $$ como o menor inteiro k tal que $$ a^{k}=e $$ onde $$ e $$ denota o elemento neutro do grupo com respeito a operação de multiplicação
 Outra notação mais importante ainda é a de $$ A (mod N) $$. Esta representa o resto da divisão de A por N (em Python usamos: A%N)
@@ -458,26 +456,24 @@ Continuando com o algoritmo, como $$ r=6 $$ é par e $$ 2^\frac{r}{2}=2^3=8 $$ q
                 
 ## Apêndice I (primality-testing algorithm):
 Algoritmo simples que usa o fato de todos os divisores de um número n serem menores ou iguais a n/2. Em Python, retornando True para primo e False para composto:
-                                                           
+
+```
 def is_prime(n: int) -> bool:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if n<=3:
+if n<=3:
+        return n>1
 
-          return n>1
+if n%2 == 0 or n%3 == 0:
+        return False
 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if n%2 == 0 or n%3 == 0:
+limit = int(n**0.5)
 
-          return False
-
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit = int(n**0.5)
-
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for i in range(5, limit+1, 6):
-
+for i in range(5, limit+1, 6):
            if n%i==0 or n%(i+2)==0:
-
                 return False      
 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return True
+return True
+```
 
 Existem outros algoritmos mais sofisticados para n grande.
     
@@ -540,7 +536,7 @@ $$
 \ket{x_s}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}e^{\frac{-2\pi sik}{r}}\ket{A^kmodN}
 $$ 
 
-Onde $$ 0\leq s\leq r-1 \in N $$.  Note que este está dentro do espaço de estados por ser combinação linear de autovetores de U. O termo de fase $$ e^{\frac{-2\pi sik}{r}} $$ aparece porque estamos interessados em estados cuja fase difere do estado $$ \ket{x}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}\ket{A^kmodN} $$ o qual nos retorna como autovalor 1 (ref V). O fator $$ r $$ é acrescentado porque é útil associarmos o período da função com cada coeficiente. O termo $$ s $$ é acrescentado para generalizar essa diferença de fase e garantir a unicidade de cada autoestado para cada valor de $$ s $$.
+Onde $$ 0\leq s\leq r-1 \in \mathbb{N} $$.  Note que este está dentro do espaço de estados por ser combinação linear de autovetores de U. O termo de fase $$ e^{\frac{-2\pi sik}{r}} $$ aparece porque estamos interessados em estados cuja fase difere do estado $$ \ket{x}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}\ket{A^kmodN} $$ o qual nos retorna como autovalor 1 (ref V). O fator $$ r $$ é acrescentado porque é útil associarmos o período da função com cada coeficiente. O termo $$ s $$ é acrescentado para generalizar essa diferença de fase e garantir a unicidade de cada autoestado para cada valor de $$ s $$.
 Aplicando U, pode-se mostrar (ref V) que: 
 
 $$
