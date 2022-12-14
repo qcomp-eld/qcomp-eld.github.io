@@ -38,7 +38,7 @@ Dado $$ N $$, um número natural a ser fatorado em produtos,
 Com exceção da etapa 8, a qual usa computação quântica, utilizamos apenas rotinas clássicas. Por isso, focaremos nessa etapa que alguns autores chamam de algoritmo de Shor (ao invés de todo o processo).
 
 ### Rotina X:
-Antes de começar, introduziremos alguns conceitos importantes para a construção dessa rotina. Estes são: Transformada de Fourier quântica, aritmética modular, algoritmo de Euclides e de frações continuadas. Outras ferramentas importantes para simplificar o algoritmo estarão disponiveis na seção de apêndice.
+Antes de começar, introduziremos alguns conceitos importantes para a construção dessa rotina. Estes são: Transformada de Fourier quântica, aritmética modular, algoritmo de Euclides e de frações continuadas. Outras ferramentas importantes para simplificar o algoritmo estarão disponiveis na seção de apêndices.
 #### 1. TFQ (Transformada de Fourier Quântica)
 A Transformada de Fourier Discreta é um operador linear definido de $$ C^{N} $$ para $$ C^{N} $$ levando $$ (x_0, x_1, ..., x_{N-1}) $$ para $$ (y_0, y_1, ..., y_{N-1}) $$ tal que:
 
@@ -179,10 +179,10 @@ Z_2 = {\overline{0}, \overline{1}}
 $$
 
 É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 de resto na divisão por 2. Isto é, $$ \overline{0} $$ representa os números pares enquanto $$ \overline{1} $$ os impares. 
-Pode-se definir (ref. I) operações de adição e multiplicação nesse conjunto de forma que $$ Z_n = \overline{0}, \overline{1}, ..., \overline{n-1} $$ seja um grupo. A adição pode ser tal que $$ \overline{a}+\overline{b}= \overline{a+b} $$ e a multiplicação, não obstante, pode ser $$ \overline{a}*\overline{b}= \overline{a*b} $$. Note que é extremamente conveniente a forma que definimos essas operações. De fato, para somar ou multiplicar os elementos do grupo bastar somar e multiplicar da forma usual e os elementos neutros serão os usuais.
-Definimos também a ordem de um número $$ a $$ como o menor inteiro k tal que $$ a^{k}=e $$ onde $$ e $$ denota o elemento neutro do grupo com respeito a operação de multiplicação
-Outra notação mais importante ainda é a de $$ A (mod N) $$. Esta representa o resto da divisão de A por N (em Python usamos: A%N)
-Nesta notação, a ordem ou período de um número inteiro A é o menor inteiro $$ r $$ tal que $$ A^r(modN)=1 $$
+Pode-se definir (ref. I) operações de adição e multiplicação nesse conjunto de forma que $$ Z_n = \overline{0}, \overline{1}, ..., \overline{n-1} $$ seja um grupo. A adição pode ser tal que $$ \overline{a}+\overline{b}= \overline{a+b} $$ e a multiplicação, não obstante, pode ser $$ \overline{a}*\overline{b}= \overline{a*b} $$. Note que é extremamente conveniente a forma que definimos essas operações. De fato, para somar ou multiplicar os elementos do grupo basta somar e multiplicar da forma usual e os elementos neutros serão os usuais.
+Definimos também a ordem de um número $$ a $$ como o menor inteiro k tal que $$ a^{k}=e $$ onde $$ e $$ denota o elemento neutro do grupo com respeito a operação de multiplicação.
+Outra notação mais importante ainda é a de $$ A (mod N) $$. Esta representa o resto da divisão de A por N (em Python usamos: A%N).
+Nesta notação, a ordem ou período de um número inteiro A é o menor inteiro $$ r $$ tal que $$ A^r(modN)=1 $$.
 Por fim, definimos a congruência modular no conjunto $$ Z_N $$ como $$ a \equiv b\mod N $$ quando $$ \overline{a}=\overline{b} $$.
 
 #### 3. Algoritmo de frações continuadas
@@ -289,7 +289,7 @@ $$
 \ket{\psi_4}=\frac{1}{\sqrt{r}}(\sum_{k=0}^{r-1}e^{-2\pi ikb_1/r}\ket{\frac{k2^t}{r}})\otimes\ket{x^{b_1}}
 $$
 
-Enfim realizamos a medição na base computacional. Obtendo $$ \ket{0} $$ quando k=0 não teremos informação sobre o sistema mas se o resultado da medição for $$ \ket{\frac{k_12^t}{r}} $$ por algum $$ k_1>0 $$, dividimos por $$ 2^t $$ e teremos duas possibilidades: MDC(k,r)=1 ou MDC(k,r) é diferente de 1. No primeiro caso fazemos $$ x^r = 1 mod N $$ e temos a ordem. No segundo caso o denominador será um d que é um fator de r e nesse caso o algoritmo falha.
+Enfim, realizamos a medição na base computacional. Obtendo $$ \ket{0} $$ quando k=0 não teremos informação sobre o sistema, mas, se o resultado da medição for $$ \ket{\frac{k_12^t}{r}} $$ por algum $$ k_1>0 $$, dividimos por $$ 2^t $$ e teremos duas possibilidades: MDC(k,r)=1 ou MDC(k,r) é diferente de 1. No primeiro caso fazemos $$ x^r = 1 mod N $$ e temos a ordem. No segundo caso o denominador será um d, que é um fator de r e nesse caso o algoritmo falha.
 
 ##### Caso Geral
 Os valores de t e L não mudam. O circuito que implementa a busca de ordem no caso geral ainda é:
@@ -318,7 +318,7 @@ $$
 \ket{\psi_4}=\ket{c}\otimes\ket{\alpha_c}
 $$
 
-com $$ \ket{c}\in \ket{0}, \ket{1},..., \ket{2^t-1} $$ e $$ \ket{\alpha_c} $$ vem da decomposição de $$ \ket{\psi_3} $$ em relação à base computacional do primeiro registrador. 
+com $$ \ket{c}\in \ket{0}, \ket{1},..., \ket{2^t-1} $$ e $$ \ket{\alpha_c} $$ vindo da decomposição de $$ \ket{\psi_3} $$ em relação à base computacional do primeiro registrador. 
 Por fim, encontrar r dependerá de probabilidade. Nem sempre este algoritmo nos retornará a resposta correta. Para aumentar esta probabilidade fazemos $$ r=\frac{c}{2^t} $$. O algoritmo de frações contínuas nos retornará ele. 
 A probabilidade de obter um estado $$ \ket{c}\ket{x^k} $$ na base computacional é:
 
@@ -332,7 +332,7 @@ $$
 |\frac{1}{q}(\frac{1-e^{-2\pi i\alpha (rc)_q/q}}{1-e^{-2\pi i (rc)_q/q}})|
 $$ 
 
-onde $$ \alpha = \frac{q-\beta}{r} $$ com sendo o resto da divisão de q por r.
+onde $$ \alpha = \frac{q-\beta}{r} $$ com $$ \beta $$ sendo o resto da divisão de q por r.
 Na referência II temos uma analise mais detalhada de quando o algoritmo falha, quando da certo e quando nos retorna nenhuma informação útil.
 
 
