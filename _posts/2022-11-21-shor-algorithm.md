@@ -369,7 +369,7 @@ Utilizando o algoritmo descrito no apêndice IV descobrimos que não existe $$ a
 $$ 
 \textbf{Passo 5} 
 $$: 
-Escolhemos $$ 2 \in $$ [$$ 1, 20 $$] um número qualquer entre $$ 1 $$ e $$ 20 $$.
+Escolhemos $$ 2 \in \mathbb{N} $$ [$$ 1, 20 $$] um número qualquer entre $$ 1 $$ e $$ 20 $$.
 
 $$
 \textbf{Passo 6} 
@@ -410,8 +410,17 @@ $$
 \ket{\psi_2}=\frac{1}{\sqrt{512}}\sum_{j=0}^{511}\ket{j}\otimes \ket{2^j mod21}=
 $$ 
 $$
-\frac{1}{\sqrt{512}}(\ket{0} \ket{1}+\ket{1} \ket{2}+\ket{2} \ket{4}+\ket{3} \ket{8}+\ket{4} \ket{16}+\ket{5} \ket{11}+ \\\ket{6} \ket{1}+\ket{7} \ket{2}+\ket{8} \ket{4}+\ket{9} \ket{8}+\ket{10} \ket{16}+\ket{11} \ket{11}+\\ \ket{12} \ket{1}+\ket{13} \ket{2}+\ket{14} \ket{4}+\ket{15} \ket{8}+\ket{16} \ket{16}+\ket{17} \ket{11}+\\...\\ +\ket{510} \ket{1}+\ket{511} \ket{2})
+\frac{1}{\sqrt{512}}(\ket{0} \ket{1}+\ket{1} \ket{2}+\ket{2} \ket{4}+\ket{3} \ket{8}+\ket{4} \ket{16}+\ket{5} \ket{11}+ 
+
+\ket{6} \ket{1}+\ket{7} \ket{2}+\ket{8} \ket{4}+\ket{9} \ket{8}+\ket{10} \ket{16}+\ket{11} \ket{11}+
+
+\ket{12} \ket{1}+\ket{13} \ket{2}+\ket{14} \ket{4}+\ket{15} \ket{8}+\ket{16} \ket{16}+\ket{17} \ket{11}+
+
+...
+
++\ket{510} \ket{1}+\ket{511} \ket{2})
 $$ 
+
 Agrupando os termos: 
 $$
 =\frac{1}{\sqrt{512}}((\ket{0}+\ket{6} +\ket{12}+\ket{18}+\ket{24}+...+\ket{510})\ket{1}+ \\ (\ket{1}+\ket{7}+\ket{13}+\ket{19}+\ket{25}+...+\ket{511})\ket{2}+\\ (\ket{2}+\ket{8}+\ket{14}+\ket{20}+\ket{26}+...+\ket{506})\ket{4}+\\  (\ket{3}+\ket{9}+\ket{15}+\ket{21}+\ket{27}+...+\ket{507})\ket{8}+\\ (\ket{4}+\ket{10}+\ket{16}+\ket{22}+\ket{28}+...+\ket{508})\ket{16}+\\  (\ket{5}+\ket{11}+\ket{17}+\ket{23}+\ket{29}+...+\ket{509})\ket{11})
