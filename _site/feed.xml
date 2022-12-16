@@ -5,9 +5,1587 @@
     <description>Grupo de Estudos de Computação Quântica</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 12 Jul 2022 14:31:41 -0300</pubDate>
-    <lastBuildDate>Tue, 12 Jul 2022 14:31:41 -0300</lastBuildDate>
-    <generator>Jekyll v4.2.2</generator>
+    <pubDate>Fri, 16 Dec 2022 15:37:19 -0300</pubDate>
+    <lastBuildDate>Fri, 16 Dec 2022 15:37:19 -0300</lastBuildDate>
+    <generator>Jekyll v4.3.1</generator>
+    
+      <item>
+        <title>Algoritmo de Shor</title>
+        <description>&lt;p&gt;O algoritmo de Shor é um algoritmo de decomposição de um número em produtos de números primos. É útil para achar decomposições não triviais em produto de números compostos utilizados em criptografia. Os algoritmos utilizados atualmente para fatorar números inteiros o fazem em tempo superpolinomial.
+O algoritmo de Shor implementado em um computador quântico pode quebrar criptografias baseadas em chave pública (e.g. RSA) em tempo polinomial. Há de se pontuar que fenômenos de quantum noise ou quantum-decoherence interferem, naturalmente, na execução deste algoritmo. Atualmente o problema em utilizar este algoritmo é devido a limitações de hardware nas operações que usam computação quântica.&lt;/p&gt;
+
+&lt;h3 id=&quot;como-funciona&quot;&gt;Como funciona?&lt;/h3&gt;
+&lt;p&gt;Dado um número \(N \in \mathbb{N}\), queremos escrevê-lo como&lt;/p&gt;
+
+\[N=k_1^{e_1}k_2^{e_2}k_3^{e_3}...k_m^{e_m}\]
+
+&lt;p&gt;onde \(k_i \in \mathbb{N}\) é um número primo e \(e_j \in \mathbb{N}\) com \(0&amp;lt;i,j&amp;lt;m+1\).
+Este problema é equivalente ao problema de encontrar um número divisor não trivial de \(N\) entre \(1\) e \(N\). De fato, achando um número-produto poderiamos executar novamente o algoritmo para encontrar outro número até que \(N\) esteja completamente decomposto:
+Seja \(N\) nosso número. Encontrando um divisor primo \(A\) teriamos: \(N_0=N=A*k_1*...*k_n\). Daí, basta achar \(N_1=k_1*...*k_n\) e assim sucessivamente.
+O algoritmo é composto por duas etapas. A etapa clássica - mais simples e de fácil implementação - e a etapa onde precisaremos de computação quântica - mais sofisticada.
+Um algoritmo que resolve nosso problema pode ser resumido assim:&lt;/p&gt;
+
+&lt;p&gt;Dado \(N\), um número natural a ser fatorado em produtos,&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Descobrir se \(N\) é primo ou composto: usar primality-testing (apêndice I).&lt;/li&gt;
+  &lt;li&gt;Se \(N\) for primo então a única decomposição possível é a trivial: \(1\) e \(N\). Acabou.&lt;/li&gt;
+  &lt;li&gt;Se \(N\) for par então repita o algoritmo com \(N/2\)&lt;/li&gt;
+  &lt;li&gt;Use o algoritmo do apêndice IV para verificar se existem \(a\) e \(b\) tais que \(N=a^b\). Retornar \(a\) caso positivo.&lt;/li&gt;
+  &lt;li&gt;Se não, escolha \(A \in \mathbb{N}\) qualquer tal que \(1&amp;lt;A&amp;lt;N\)&lt;/li&gt;
+  &lt;li&gt;Encontre o MDC (MAIOR divisor comum) entre \(A\) e \(N\). Seja \(K\) este número, isto é, \(K=MDC(A,N)\)&lt;/li&gt;
+  &lt;li&gt;Se K≠1 então encontramos um fator não trivial. Acabou.&lt;/li&gt;
+  &lt;li&gt;Se K=1, então execute a rotina X para encontrar o período \(r\) da função \(f(x)=A^{x}(mod N)\). Note que isso significa que \(r\) é o menor inteiro positivo que satisfaz \(A^{r}=1(mod N)\)&lt;/li&gt;
+  &lt;li&gt;Se \(r\) é impar ou \(A^{r/2}=-1(mod N)\) então volte para o passo 1.&lt;/li&gt;
+  &lt;li&gt;Se não, \(MDC(A^{r/2}+1,N)\) ou \(MDC(A^{r/2}-1,N)\) devem ser fatores não triviais de \(N\). Se não forem, então o algoritmo falhou.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Com exceção da etapa 8, a qual usa computação quântica, utilizamos apenas rotinas clássicas. Por isso, focaremos nessa etapa que alguns autores chamam de algoritmo de Shor (ao invés de todo o processo).&lt;/p&gt;
+
+&lt;h3 id=&quot;rotina-x&quot;&gt;Rotina X:&lt;/h3&gt;
+&lt;p&gt;Antes de começar, introduziremos alguns conceitos importantes para a construção dessa rotina. Estes são: Transformada de Fourier quântica, aritmética modular, algoritmo de Euclides e de frações continuadas. Outras ferramentas importantes para simplificar o algoritmo estarão disponiveis na seção de apêndices.&lt;/p&gt;
+&lt;h4 id=&quot;1-tfq-transformada-de-fourier-quântica&quot;&gt;1. TFQ (Transformada de Fourier Quântica)&lt;/h4&gt;
+&lt;p&gt;A Transformada de Fourier Discreta é um operador linear definido de \(C^{N}\) para \(C^{N}\) levando \((x_0, x_1, ..., x_{N-1})\) para \((y_0, y_1, ..., y_{N-1})\) tal que:&lt;/p&gt;
+
+\[y_k = \frac{1}{\sqrt{N}}\sum_{j=0}^{N-1}x_je^{\frac{2\pi ijk}{N}}\]
+
+&lt;p&gt;Por ser um operador linear unitário (provado em ref. II) este tem representação matricial. Na base canônica de \(C^{N}\), esta é:&lt;/p&gt;
+
+\[\frac{1}{\sqrt{N}}\left(\begin{matrix}
+1&amp;amp;1&amp;amp;1&amp;amp;...&amp;amp;1\\
+1&amp;amp;\omega&amp;amp;\omega^2&amp;amp;...&amp;amp;\omega^{N-1}\\
+1&amp;amp;\omega^2&amp;amp;\omega^4&amp;amp;...&amp;amp;\omega^{N-2}\\
+...&amp;amp;...&amp;amp;...&amp;amp;...&amp;amp;...\\
+1&amp;amp;\omega^{N-1}&amp;amp;\omega^{N-2}&amp;amp;...&amp;amp;\omega
+\end{matrix}\right)\]
+
+&lt;p&gt;Onde \(\omega=e^{\frac{2\pi i}{N}}\).&lt;/p&gt;
+
+&lt;p&gt;Em mecânica quântica, substituimos os vetores do tipo \((x_0, x_1, ..., x_{N-1})\) da base canônica por kets do tipo \(\sum_{j=0}^{N-1}x_j\ket{j}\). Isto é, as coordenadas (ou amplitudes) continuam as mesmas (existe a bijeção) e a base canônica de \(C^{N}\) é escrita como kets \(\ket{0}\), \(\ket{1}\),…,\(\ket{N-1}\). Por exemplo, em N=3:&lt;/p&gt;
+
+\[(1,0,0)^{t} \rightarrow 1\ket{0}+0\ket{1}+0\ket{2} = \ket{0}\]
+
+&lt;p&gt;A justificativa teórica da construção do circuito que executa a TFQ para qualquer valor de N é um pouco complicada. Ao invés disso trabalharemos com o caso \(N=2^n\) que é conveniente uma vez que o número N de entrada será representado por bits. 
+Substituindo \(N=2^{n}\) com a base \({\ket{0},..., \ket{2^{n}-1}}\) na expressão da transformada de fourier discreta encontramos que a TFQ age num ket \(\ket{j}\) de forma:&lt;/p&gt;
+
+\[\ket{j}\rightarrow 1/(2^{n/2})\sum_{k=0}^{2^{n}-1}e^{2\pi ijk/(2^{n})}\ket{k}\]
+
+&lt;p&gt;Pode-se mostrar ainda que a TFQ transforma o ket \(\ket{j}\) de forma que (ref. III pg39):&lt;/p&gt;
+
+\[\ket{j}\rightarrow (\ket{0}+e^{2\pi i0.j_n}\ket{1})\otimes(\ket{0}+e^{2\pi i0.j_{n-1}j_n}\ket{1})\otimes...\otimes(\ket{0}+e^{2\pi i0.j_1j_2...j_n}\ket{1})\]
+
+&lt;p&gt;Onde \(0.j_1j_2...j_n = \frac{j_1}{2}+\frac{j_2}{4}+...+\frac{j_n}{2^n}\) com \(j_k=0\) ou \(1\)&lt;/p&gt;
+
+&lt;p&gt;Aqui fica claro que o circuito que implementa essa transformação para um estado \(\ket{j}=\ket{j_1j_2j_3...j_n}\) é:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/shor-algorithm/figura3.1_dissertacao.png&quot; alt=&quot;Circuito-TFQ-2n&quot; /&gt;
+Fonte: &lt;a href=&quot;https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf&quot;&gt;Dissertação de mestrado&lt;/a&gt; (2010)&lt;/p&gt;
+
+&lt;p&gt;Onde H representa o gate de Hadamard e \(R_k\) um gate de controle definido por:&lt;/p&gt;
+
+\[\left(\begin{matrix}
+1&amp;amp;0\\
+0&amp;amp;e^{\frac{2\pi i}{2^k}}
+\end{matrix}\right)\]
+
+&lt;p&gt;A matriz inversa da matriz de representação (numa base ortonormal) também terá muita importância. Como a matriz da TFQ é unitária então a matriz hermitiana será igual a inversa. Logo esta é:&lt;/p&gt;
+
+\[\left(\begin{matrix}
+1&amp;amp;1&amp;amp;1&amp;amp;...&amp;amp;1\\
+1&amp;amp;\tau&amp;amp;\tau^2&amp;amp;...&amp;amp;\tau^{N-1}\\
+1&amp;amp;\tau^2&amp;amp;\tau^3&amp;amp;...&amp;amp;\tau^{N-2}\\
+...&amp;amp;...&amp;amp;...&amp;amp;...&amp;amp;...\\
+1&amp;amp;\tau^{N-1}&amp;amp;\tau^{N-2}&amp;amp;...&amp;amp;\tau\\
+\end{matrix}\right)\]
+
+&lt;p&gt;Onde \(\tau=e^{\frac{-2\pi i}{N}}\).&lt;/p&gt;
+
+&lt;p&gt;O circuito que executa a operação inversa da TQF é:
+&lt;img src=&quot;/assets/images/shor-algorithm/tqfinversa.png&quot; alt=&quot;Circuito-TFQ-2n-inversa&quot; /&gt;
+Fonte: &lt;a href=&quot;https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf&quot;&gt;Dissertação de mestrado&lt;/a&gt; (2010)&lt;/p&gt;
+
+&lt;h5 id=&quot;exemplo-da-tfq-em-n3&quot;&gt;Exemplo da TFQ em n=3&lt;/h5&gt;
+&lt;p&gt;Neste caso a TFQ é um operador unitário que leva \(C^8\) em \(C^8\) e a matriz que o representa na base {\(\ket{ijk}\)} com \(i,j,k=0\) ou \(1\) é:&lt;/p&gt;
+
+\[\frac{1}{\sqrt{8}}\left(\begin{matrix}
+1&amp;amp;1&amp;amp;1&amp;amp;1&amp;amp;1&amp;amp;1&amp;amp;1&amp;amp;1\\
+1&amp;amp;\omega&amp;amp;\omega^2&amp;amp;\omega^3&amp;amp;\omega^4&amp;amp;\omega^5&amp;amp;\omega^6&amp;amp;\omega^7\\
+1&amp;amp;\omega^2&amp;amp;\omega^4&amp;amp;\omega^6&amp;amp;1&amp;amp;\omega^2&amp;amp;\omega^4&amp;amp;\omega^6\\
+1&amp;amp;\omega^3&amp;amp;\omega^6&amp;amp;\omega&amp;amp;\omega^4&amp;amp;\omega^7&amp;amp;\omega^2&amp;amp;\omega^5\\
+1&amp;amp;\omega^4&amp;amp;1&amp;amp;\omega^4&amp;amp;1&amp;amp;\omega^4&amp;amp;1&amp;amp;\omega^4\\
+1&amp;amp;\omega^5&amp;amp;\omega^2&amp;amp;\omega^7&amp;amp;\omega^4&amp;amp;\omega&amp;amp;\omega^6&amp;amp;\omega^3\\
+1&amp;amp;\omega^6&amp;amp;\omega^4&amp;amp;\omega^2&amp;amp;1&amp;amp;\omega^6&amp;amp;\omega^4&amp;amp;\omega^2\\
+1&amp;amp;\omega^7&amp;amp;\omega^6&amp;amp;\omega^5&amp;amp;\omega^4&amp;amp;\omega^3&amp;amp;\omega^2&amp;amp;\omega
+\end{matrix}\right)\]
+
+&lt;p&gt;Onde \(\omega=e^{\frac{2\pi i}{8}}\).
+Aplicando a TFQ as coordenadas de \(\ket{000}\) obtemos o vetor:&lt;/p&gt;
+
+\[\frac{1}{\sqrt{8}}(1 1 1 1 1 1 1 1)^t=\frac{1}{\sqrt{8}}\sum_{i,j,k=0,1}^{}\ket{i,j,k}\]
+
+&lt;p&gt;Ou seja, a TFQ transforma o ket \(\ket{000}\) em:&lt;/p&gt;
+
+\[\ket{000} \rightarrow^{TFQ} \frac{1}{\sqrt{8}}(\ket{000}+\ket{001}+\ket{010}+\ket{100}+\ket{110}+\ket{101}+\ket{011}+\ket{111})\]
+
+&lt;p&gt;Em Python, importando o modulo qiskit, a implementação do circuito fica:&lt;/p&gt;
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;qc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;QuantumCircuit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;qc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;qc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;qc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;qc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;qc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;qc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;h&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;qc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;swap&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Como o qbit de entrada padrão é \(\ket{0}\) o circuito nos retorna o valor esperado. 
+A implementação no quantum composer da IBM fica:
+&lt;img src=&quot;/assets/images/shor-algorithm/quantumcomposertfq.png&quot; alt=&quot;Circuito-TFQ-n3-ibm&quot; /&gt;
+Fonte: Autor&lt;/p&gt;
+
+&lt;p&gt;Note que as probabilidades estão coerentes com o esperado teórico.&lt;/p&gt;
+
+&lt;h4 id=&quot;2-grupo-z_n-e-aritmética-modular&quot;&gt;2. Grupo \(Z_N\) e aritmética modular&lt;/h4&gt;
+&lt;p&gt;Será apresentado algumas notações importantes para o entendimento do algoritmo:&lt;/p&gt;
+
+\[Z_2 = {\overline{0}, \overline{1}}\]
+
+&lt;p&gt;É, por exemplo, o conjunto de todos os números os quais resultam 0 ou 1 de resto na divisão por 2. Isto é, \(\overline{0}\) representa os números pares enquanto \(\overline{1}\) os impares. 
+Pode-se definir (ref. I) operações de adição e multiplicação nesse conjunto de forma que \(Z_n = \overline{0}, \overline{1}, ..., \overline{n-1}\) seja um grupo. A adição pode ser tal que \(\overline{a}+\overline{b}= \overline{a+b}\) e a multiplicação, não obstante, pode ser \(\overline{a}*\overline{b}= \overline{a*b}\). Note que é extremamente conveniente a forma que definimos essas operações. De fato, para somar ou multiplicar os elementos do grupo basta somar e multiplicar da forma usual e os elementos neutros serão os usuais.
+Definimos também a ordem de um número \(a\) como o menor inteiro k tal que \(a^{k}=e\) onde \(e\) denota o elemento neutro do grupo com respeito a operação de multiplicação.
+Outra notação mais importante ainda é a de \(A (mod N)\). Esta representa o resto da divisão de A por N (em Python usamos: A%N).
+Nesta notação, a ordem ou período de um número inteiro A é o menor inteiro \(r\) tal que \(A^r(modN)=1\).
+Por fim, definimos a congruência modular no conjunto \(Z_N\) como \(a \equiv b\mod N\) quando \(\overline{a}=\overline{b}\).&lt;/p&gt;
+
+&lt;h4 id=&quot;3-algoritmo-de-frações-continuadas&quot;&gt;3. Algoritmo de frações continuadas&lt;/h4&gt;
+&lt;p&gt;A teoria geral de frações continuadas é vasta em conteúdo. Neste artigo abordaremos apenas uma aplicação para um caso particular onde é útil para o algoritmo de Shor.
+Queremos expressar um certo número racional \(k=\frac{a}{b}\) como combinações de frações dentro de frações conhecidas como frações continuadas ou contínuas.
+Uma fração continuada é uma expressão do tipo:&lt;/p&gt;
+
+\[a_0 + \frac{b_1}{a_1+\frac{b_2}{a_2+\frac{b_3}{a_3+...}}}\]
+
+&lt;p&gt;Nosso caso particular será quando a fração em questão é finita e \(b_1=b_2=...=1\). Nesse caso teremos:&lt;/p&gt;
+
+\[a_0 + \frac{1}{a_1+\frac{1}{a_2+\frac{1}{...+\frac{1}{a_m}}}}\]
+
+&lt;p&gt;Utilizaremos o algoritmo de Euclides (apêndice V) para computar os termos \(a_i\).
+Achemos, por exemplo, o MDC entre 69 e 15:&lt;/p&gt;
+
+\[69=4*15+9\]
+
+\[15=1*9+6\]
+
+\[9=1*6+3\]
+
+\[6=2*3+0\]
+
+&lt;p&gt;Note que podemos expressar, a partir da primeira linha acima dividida por 15, a fração \(\frac{69}{15}\) como:&lt;/p&gt;
+
+\[\frac{69}{15}=4+\frac{9}{15}=4+\frac{1}{\frac{15}{9}}\]
+
+&lt;p&gt;Utilizando a segunda linha dividido por 9:&lt;/p&gt;
+
+\[\frac{69}{15}=4+\frac{1}{1+\frac{6}{9}}=4+\frac{1}{1+\frac{1}{\frac{9}{6}}}\]
+
+&lt;p&gt;Realizando a mesma operação para a terceira e quarta linha encontramos, por fim:&lt;/p&gt;
+
+\[\frac{69}{15}=4+\frac{1}{1+\frac{1}{1+\frac{1}{2}}}\]
+
+&lt;p&gt;Este algoritmo terá fundamental importância para acharmos os termos convergentes de uma fração resultante do algoritmo de Shor.&lt;/p&gt;
+
+&lt;h3 id=&quot;algoritmo-para-a-rotina-x&quot;&gt;Algoritmo para a Rotina X&lt;/h3&gt;
+&lt;p&gt;A rotina X é basicamente um algoritmo quântico de busca de ordem \(r\) de um número \(x \in Z_{N}\). Tendo este, é fácil achar um fator primo para a decomposição.
+Utilizaremos operador unitário (provado em ref. III pg46) definido por \(U:C^{n}\rightarrow C^{n}\) tal que:&lt;/p&gt;
+
+\[U\ket{k}=\ket{xk modN}\]
+
+&lt;p&gt;Este circuito será de importância fundamental para o funcionamento do algoritmo. Sua construção está no apêndice II. 
+Comecemos pelo caso em que \(r\) pode ser reescrito como \(2^s\) e depois iremos para o caso geral.&lt;/p&gt;
+
+&lt;h5 id=&quot;circuito-da-busca-de-ordem-no-caso-em-que-a-ordem-r-de-um-elemento-x-de-z_n-pode-ser-escrita-como-r--2s&quot;&gt;Circuito da busca de ordem no caso em que a ordem r de um elemento x de \(Z_N\) pode ser escrita como \(r = 2^{s}\)&lt;/h5&gt;
+
+&lt;p&gt;O primeiro registrador deve possuir \(t=[log_2N^2+1]\) qbits no estado \(\ket{0}\) e o segundo registrador estará no estado \(\ket{00...01}=\ket{1}\). A quantidade de zeros do estado do segundo registrador será \(L-1=log_2N\). Note que o valor de L é a quantidade de bits necessária para representar o número \(N\) em notação binária. O circuito que implementa [ref. II] nossa busca pela ordem \(r=2^s\) é:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/shor-algorithm/figura4.1_dissertacao.png&quot; alt=&quot;busca-de-ordem-caso-simples&quot; /&gt;
+Fonte: &lt;a href=&quot;https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf&quot;&gt;Dissertação de mestrado&lt;/a&gt; (2010)&lt;/p&gt;
+
+&lt;p&gt;OBS.: Aqui os gates representados por \(x^{2^j}\) são exatamente iguais aos gates \(U^{2^j}\) abordados no apêndice II sendo apenas uma questão de notação.&lt;/p&gt;
+
+&lt;p&gt;Começamos por \(\ket{\psi_0} = \ket{0...00} \otimes \ket{1}\) o estado inicial conforme o circuito criado.
+Aplicamos as portas de Hadamard nos qbits do primeiro registrador resultando em&lt;/p&gt;
+
+\[\ket{\psi_1} = \frac{1}{\sqrt{2^t}}\sum_{j=0}^{2^{t}-1}\ket{j}\otimes\ket{1}\]
+
+&lt;p&gt;Aplicando as portas \(U^{2^j}\) no estado \(\ket{\psi_1}\) obtemos:&lt;/p&gt;
+
+\[\ket{\psi_2}= \frac{1}{\sqrt{2^t}}\sum_{j=0}^{2^{t}-1}\ket{j}\otimes\ket{x^j}\]
+
+&lt;p&gt;Agora, conforme [ref. III], usamos o fato de que estamos trabalhando no grupo \(Z_N\) e uma função periódica de período \(r\) para encontrarmos termos do tipo abaixo na somatória:&lt;/p&gt;
+
+\[\ket{0}\otimes\ket{1}, \ket{r}\otimes\ket{1}, \ket{2r}\otimes\ket{1}, ...,\ket{2^t-r}\otimes\ket{1}\]
+
+&lt;p&gt;Dessa forma, rearranjando o estado \(\ket{\psi_2}\), obtemos [ref. III]:&lt;/p&gt;
+
+\[\ket{\psi_2}=\frac{1}{2^{\frac{t}{2}}}\sum_{b=0}^{r-1}(\sum_{a=0}^{\frac{2^t}{r}-1}\ket{ar+b})\otimes\ket{x^b}\]
+
+&lt;p&gt;Note que todos os estados de \(\ket{\psi_2}\) são equiprováveis.
+Realizando uma medição e supondo, sem perda de generalidade, que o resultado tenha sido \(\ket{x^{b_1}}\) teremos como estado atual:&lt;/p&gt;
+
+\[\ket{\psi_3}=\sqrt{\frac{r}{2^t}}(\sum_{a=0}^{\frac{2^t}{r}-1}\ket{ar+b_1})\otimes\ket{x^{b_1}}\]
+
+&lt;p&gt;Para descobrir o valor de \(a\) aplicaremos o \(TFQ^*\) no primeiro registrador (onde * denota o hermitiano da aplicação). Aplicando a matriz no estado \(\ket{\psi_3}\) obtemos:&lt;/p&gt;
+
+\[\ket{\psi_4}=\frac{1}{\sqrt{r}}(\sum_{k=0}^{r-1}e^{-2\pi ikb_1/r}\ket{\frac{k2^t}{r}})\otimes\ket{x^{b_1}}\]
+
+&lt;p&gt;Enfim, realizamos a medição na base computacional. Obtendo \(\ket{0}\) quando k=0 não teremos informação sobre o sistema, mas, se o resultado da medição for \(\ket{\frac{k_12^t}{r}}\) por algum \(k_1&amp;gt;0\), dividimos por \(2^t\) e teremos duas possibilidades: MDC(k,r)=1 ou MDC(k,r) é diferente de 1. No primeiro caso fazemos \(x^r = 1 mod N\) e temos a ordem. No segundo caso o denominador será um d, que é um fator de r e nesse caso o algoritmo falha.&lt;/p&gt;
+
+&lt;h5 id=&quot;caso-geral&quot;&gt;Caso Geral&lt;/h5&gt;
+&lt;p&gt;Os valores de t e L não mudam. O circuito que implementa a busca de ordem no caso geral ainda é:
+&lt;img src=&quot;/assets/images/shor-algorithm/figura4.2_dissertacao.png&quot; alt=&quot;busca-de-ordem-caso-geral&quot; /&gt;
+Fonte: &lt;a href=&quot;https://repositorio.ufmg.br/bitstream/1843/EABA-85FJXP/1/dissertacao_adrianaxavier.pdf&quot;&gt;Dissertação de mestrado&lt;/a&gt; (2010)&lt;/p&gt;
+
+&lt;p&gt;A sequência de estados fica:&lt;/p&gt;
+
+\[\ket{\psi_0}=\ket{0}\otimes\ket{1}\]
+
+\[\ket{\psi_1}=\frac{1}{2^{\frac{t}{2}}}\sum_{j=0}^{2^t-1}\ket{j}\otimes\ket{1}\]
+
+\[\ket{\psi_2}=\frac{1}{2^{\frac{t}{2}}}\sum_{j=0}^{2^t-1}\ket{j}\otimes\ket{x^j}\]
+
+\[\ket{\psi_3}=\frac{1}{2^{t}}\sum_{j,k}^{2^t-1}e^{\frac{-2\pi ikj}{2^t}}\ket{k}\otimes\ket{x^j}\]
+
+\[\ket{\psi_4}=\ket{c}\otimes\ket{\alpha_c}\]
+
+&lt;p&gt;com \(\ket{c}\in \ket{0}, \ket{1},..., \ket{2^t-1}\) e \(\ket{\alpha_c}\) vindo da decomposição de \(\ket{\psi_3}\) em relação à base computacional do primeiro registrador. 
+Por fim, encontrar r dependerá de probabilidade. Nem sempre este algoritmo nos retornará a resposta correta. Para aumentar esta probabilidade fazemos \(r=\frac{c}{2^t}\). O algoritmo de frações contínuas nos retornará ele. 
+A probabilidade de obter um estado \(\ket{c}\ket{x^k}\) na base computacional é:&lt;/p&gt;
+
+\[|\frac{1}{q}\sum_{j:x^j\equiv x^k}^{}e^{\frac{-2\pi ijc}{q}}|^2\]
+
+&lt;p&gt;onde \(j:x^j\equiv x^k\) significa todos os j para os quais \(x^j\equiv x^k modN\) e \(q=2^t\). Pode-se (ref III) mostrar que isso é equivalente a uma expressão do tipo:&lt;/p&gt;
+
+\[|\frac{1}{q}(\frac{1-e^{-2\pi i\alpha (rc)_q/q}}{1-e^{-2\pi i (rc)_q/q}})|\]
+
+&lt;p&gt;onde \(\alpha = \frac{q-\beta}{r}\) com \(\beta\) sendo o resto da divisão de q por r.
+Na referência II temos uma analise mais detalhada de quando o algoritmo falha, quando da certo e quando nos retorna nenhuma informação útil.&lt;/p&gt;
+
+&lt;h4 id=&quot;busca-de-ordem-de-um-número-e-a-fatoração-de-números-inteiros&quot;&gt;Busca de ordem de um número e a fatoração de números inteiros&lt;/h4&gt;
+
+&lt;p&gt;Sabendo a ordem \(r\) de um número \(x \in Z_N\), fica fácil achar o divisor do número N. Aqui daremos um exemplo prático de como isso acontece utilizando os passos descritos no começo do artigo.&lt;/p&gt;
+
+&lt;h5 id=&quot;exemplo&quot;&gt;Exemplo&lt;/h5&gt;
+
+&lt;p&gt;Vamos fatorar o número 21 utilizando o algoritmo utilizando a refII:&lt;/p&gt;
+
+&lt;p&gt;\(\textbf{Passo 1}\):
+Pode-se usar o algoritmo de primality testing para verificar que N não é primo. Trata-se de um número composto por \(3*7\)&lt;/p&gt;
+
+&lt;p&gt;\(\textbf{Passo 2}\): 
+Como 21 não é primo ignoramos essa etapa.&lt;/p&gt;
+
+&lt;p&gt;\(\textbf{Passo 3}\): 
+21 Não é par. Ignoramos essa etapa.&lt;/p&gt;
+
+&lt;p&gt;\(\textbf{Passo 4}\): 
+Utilizando o algoritmo descrito no apêndice IV descobrimos que não existe \(a\) e \(b\) inteiros positivos para os quais \(21=a^b\).&lt;/p&gt;
+
+&lt;p&gt;\(\textbf{Passo 5}\): 
+Escolhemos \(2 \in \mathbb{N}\) [\(1, 20\)] um número qualquer entre \(1\) e \(20\).&lt;/p&gt;
+
+&lt;p&gt;\(\textbf{Passo 6}\): 
+Temos que \(K\)=MDC(2,21)=1.&lt;/p&gt;
+
+&lt;p&gt;\(\textbf{Passo 7}\): 
+Não ocorre. Ignoramos.&lt;/p&gt;
+
+&lt;p&gt;\(\textbf{Passo 8}\): 
+Executamos a rotina X para encontrar o período ou ordem do número 2. Isto é, \(r\) tal que \(2^r=1(mod21)\).
+Nesse caso, \(t=[log_221^2]+1=9\) (o valor exato é \(9.78463...\) mas consideramos apenas o primeiro digito) e portanto teremos 9 qbits iniciados no estado \(\ket{0}\) no primeiro registrador. Como \(L=[log_221+1]=5\), o estado do segundo registrador será \(\ket{1}=\ket{00001}\)&lt;/p&gt;
+
+&lt;p&gt;A porta \(U: C^{2^5} \rightarrow C^{2^5}\) definida para \(\ket{y}\) será:&lt;/p&gt;
+
+\[U\ket{y}=\ket{(2y)mod21}\]
+
+&lt;p&gt;O estado inicial será:&lt;/p&gt;
+
+&lt;p&gt;\(\ket{\psi_0}=\ket{00...01}=\ket{0}\otimes \ket{0}\otimes \ket{0}\otimes \ket{0}\otimes \ket{0}\otimes \ket{0}\otimes\ket{0}\otimes \ket{0}\otimes \ket{0}\otimes \ket{1}\) 
+Aplicando Hadamard nos 9 qbits do primeiro registrador:&lt;/p&gt;
+
+\[\ket{\psi_1}=\frac{1}{\sqrt{2^9}}\sum_{j=0}^{511}\ket{j}\otimes \ket{1}\]
+
+&lt;p&gt;Aplicando as portas \(U^{2^j}\) onde \(j\) vai de 0 até 8 obtemos:&lt;/p&gt;
+
+\[\ket{\psi_2}=\frac{1}{\sqrt{512}}\sum_{j=0}^{511}\ket{j}\otimes \ket{2^j mod21}=\]
+
+\[\frac{1}{\sqrt{512}}(\ket{0} \ket{1}+\ket{1} \ket{2}+\ket{2} \ket{4}+\ket{3} \ket{8}+\ket{4} \ket{16}+\ket{5} \ket{11}+\]
+
+\[\ket{6} \ket{1}+\ket{7} \ket{2}+\ket{8} \ket{4}+\ket{9} \ket{8}+\ket{10} \ket{16}+\ket{11} \ket{11}+\]
+
+\[\ket{12} \ket{1}+\ket{13} \ket{2}+\ket{14} \ket{4}+\ket{15} \ket{8}+\ket{16} \ket{16}+\ket{17} \ket{11}+\]
+
+\[...\]
+
+\[+\ket{510} \ket{1}+\ket{511} \ket{2})\]
+
+&lt;p&gt;Agrupando os termos:&lt;/p&gt;
+
+\[=\frac{1}{\sqrt{512}}((\ket{0}+\ket{6} +\ket{12}+\ket{18}+\ket{24}+...+\ket{510})\ket{1}+\]
+
+\[(\ket{1}+\ket{7}+\ket{13}+\ket{19}+\ket{25}+...+\ket{511})\ket{2}+\]
+
+\[(\ket{2}+\ket{8}+\ket{14}+\ket{20}+\ket{26}+...+\ket{506})\ket{4}+\]
+
+\[(\ket{3}+\ket{9}+\ket{15}+\ket{21}+\ket{27}+...+\ket{507})\ket{8}+\]
+
+\[(\ket{4}+\ket{10}+\ket{16}+\ket{22}+\ket{28}+...+\ket{508})\ket{16}+\]
+
+\[(\ket{5}+\ket{11}+\ket{17}+\ket{23}+\ket{29}+...+\ket{509})\ket{11})\]
+
+&lt;p&gt;Note que visualizando dessa forma, fica claro que podemos decompor o estado atual como uma combinação dos estados {\(\ket{1}, \ket{2}, \ket{4}, \ket{8}, \ket{16}, \ket{11}\)}. 
+O próximo passo, seguindo a figura lá de cima é realizar uma medição no sistema do segundo registrador. Suponha que o resultado da medição seja \(\ket{2}\). Daí o sistema passa a ser descrito pelo estado:&lt;/p&gt;
+
+\[\ket{\psi_3}=\frac{1}{\sqrt{86}}(\ket{1}+\ket{7}+\ket{13}+\ket{19}+\ket{25}+...+\ket{511})\otimes \ket{2}\\=\frac{1}{\sqrt{86}}\sum_{a=0}^{85}\ket{6a+1}\otimes \ket{2}\]
+
+&lt;p&gt;onde o termo \(\sqrt{86}\) foi construido para normalização do estado.
+Aplicando a Transformada de Fourier Inversa obtemos:&lt;/p&gt;
+
+\[\ket{\psi_4}=\frac{1}{\sqrt{512}}\frac{1}{\sqrt{86}}\sum_{j=0}^{511}([\sum_{a=0}^{85}e^{\frac{-2\pi ij6a}{512}}]e^{\frac{-2\pi ij}{512}})\ket{2}\]
+
+&lt;p&gt;Encontrando, por fim, a probabilidade de encontrar um estado \(\ket{j}\) (tiramos o modulo ao quadrado):&lt;/p&gt;
+
+\[P(j)=\frac{1}{512*86}|\sum_{a=0}^{85}e^{\frac{-2\pi i6ja}{512}}|^2\]
+
+\[=\frac{1}{512*86}\frac{1-cos(\frac{86\pi 3j}{128})}{1-cos(\frac{3\pi j}{128})}\]
+
+&lt;p&gt;que tem máximo global em \(\frac{512k}{6}\) com \(k\) entre 0 e 5. Será a partir desse \(k\) que encontraremos a ordem \(r\) de 2.
+O próximo passo é medirmos agora na base canônica. Suponha que seja retornado o valor \(j=85\). Dividindo por 512 ainda não teremos 6 no denominador.
+Usemos o algoritmo de frações continuadas para achar convergentes menores que 21:&lt;/p&gt;
+
+\[\frac{85}{512}=\frac{1}{\frac{512}{85}}=\frac{1}{6+\frac{2}{85}}=\frac{1}{6+\frac{1}{42+\frac{1}{2}}}\]
+
+&lt;p&gt;Disso temos que os candidatos (convergentes) são: \(\frac{1}{6}\), \(\frac{42}{253}\) e \(\frac{85}{512}\). Testemos \(\frac{1}{6}\): Selecionando o denominador e calculando \(2^6=1mod21\) encontramos o valor de \(r\) como \(r=6\).
+Entretanto, por se tratar de um algoritmo probabilistico, poderiamos ter outros valores retornados. É possível que nosso algoritmo nos retorne um valor inútil ou pior ainda, falhe quando tivermos alguns resultados especificos. Por exemplo, se \(j=0\) e não 85, não teríamos nenhum resultado útil para os convergentes. Se \(j=171\) encontrariamos 3 candidatos que não nos fornece a ordem de 2.
+Continuando com o algoritmo, como \(r=6\) é par e \(2^\frac{r}{2}=2^3=8\) que é diferente de \(-1mod21\). Daí, calculamos MDC(\(2^3-1\), \(21\))=7 e MDC(\(2^3+1\), \(21\))=3. Encontramos assim dois fatores de 21 conforme queriamos.&lt;/p&gt;
+
+&lt;h2 id=&quot;apêndice-i-primality-testing-algorithm&quot;&gt;Apêndice I (primality-testing algorithm):&lt;/h2&gt;
+&lt;p&gt;Algoritmo simples que usa o fato de todos os divisores de um número n serem menores ou iguais a n/2. Em Python, retornando True para primo e False para composto:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def is_prime(n: int) -&amp;gt; bool:
+
+if n&amp;lt;=3:
+        return n&amp;gt;1
+
+if n%2 == 0 or n%3 == 0:
+        return False
+
+limit = int(n**0.5)
+
+for i in range(5, limit+1, 6):
+           if n%i==0 or n%(i+2)==0:
+                return False      
+
+return True
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Existem outros algoritmos mais sofisticados para n grande.&lt;/p&gt;
+
+&lt;h2 id=&quot;apêndice-ii-gate-u&quot;&gt;Apêndice II (gate U)&lt;/h2&gt;
+&lt;p&gt;Este gate é comumente conhecido como quantum phase estimation. Trata-se de um operador unitário (pode-se provar isso) definido por:&lt;/p&gt;
+
+\[U\ket{y}\equiv \ket{(ay) modN}\]
+
+&lt;p&gt;Isto é, \(U\) transforma um ket \(\ket{y}\) em um ket que guarda o resto da operação \(\frac{ay}{N}\).&lt;/p&gt;
+
+&lt;p&gt;Exemplos:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Tomando N=2 e A=25:&lt;/li&gt;
+&lt;/ol&gt;
+
+\[U\ket{1}=\ket{25mod2}=\ket{1}\]
+
+&lt;p&gt;Logo, neste caso, \(r=1\) uma vez que \(\ket{25mod2}=\ket{25^1mod2}\)&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Tomando N=35 e A=3:&lt;/li&gt;
+&lt;/ol&gt;
+
+\[U\ket{1}=\ket{3 mod35}=\ket{3}\]
+
+&lt;p&gt;Uma vez que o algoritmo da divisão nos retorna \(3=(35*0)+3\) onde 0 é o resultado da divisão \(\frac{3}{35}\).&lt;/p&gt;
+
+&lt;p&gt;Neste caso teriamos também:&lt;/p&gt;
+
+\[U^2\ket{1}=U\circ U\ket{1}=U\ket{3}=\ket{3*3mod35}=\ket{3^2mod35}=\ket{9}\]
+
+\[U^3\ket{1}=U\circ U^2\ket{1}=U\ket{9}=\ket{9*3mod35}=\ket{3^3mod35}=\ket{27}\]
+
+\[\vdots\]
+
+\[U^{r-1}\ket{1}=\ket{12}\]
+
+\[U^r\ket{1}=U\circ U^{r-1}\ket{1}=U\ket{12}=\ket{3^{12}mod35}=\ket{1}\]
+
+&lt;p&gt;daonde temos que \(r=12\)&lt;/p&gt;
+
+&lt;p&gt;Chegar ao estado \(\ket{1}\) após aplicações sucessivas de \(U\) não é coincidência. Por construção, iniciando em \(\ket{1}\) chegaremos novamente em \(\ket{1}\) após \(r\) aplicações de \(U\). Daí o nome de período da função.&lt;/p&gt;
+
+&lt;p&gt;Seja \(\ket{x_s}\) o estado definido por:&lt;/p&gt;
+
+\[\ket{x_s}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}e^{\frac{-2\pi sik}{r}}\ket{A^kmodN}\]
+
+&lt;p&gt;Onde \(0\leq s\leq r-1 \in \mathbb{N}\).  Note que este está dentro do espaço de estados por ser combinação linear de autovetores de U. O termo de fase \(e^{\frac{-2\pi sik}{r}}\) aparece porque estamos interessados em estados cuja fase difere do estado \(\ket{x}=\frac{1}{\sqrt{r}}\sum_{k=0}^{r-1}\ket{A^kmodN}\) o qual nos retorna como autovalor 1 (ref V). O fator \(r\) é acrescentado porque é útil associarmos o período da função com cada coeficiente. O termo \(s\) é acrescentado para generalizar essa diferença de fase e garantir a unicidade de cada autoestado para cada valor de \(s\).
+Aplicando U, pode-se mostrar (ref V) que:&lt;/p&gt;
+
+\[U\ket{x_s}=e^{\frac{2\pi si}{r}}\ket{x_s}\]
+
+&lt;p&gt;que tem autovalores \(e^{\frac{2\pi si}{r}}\).&lt;/p&gt;
+
+&lt;p&gt;Não obstante, ainda teremos que (ref V)&lt;/p&gt;
+
+\[\frac{1}{\sqrt{r}}\sum_{s=0}^{r-1}\ket{x_s}=\ket{1}\]
+
+&lt;p&gt;Daí, temos que \(\ket{1}\) é uma superposição desses estados. Realizando QPE (apêndice III) em U usando o estado \(\ket{1}\) mediremos a fase \(\phi = \frac{s}{r}\). Usamos o algoritmo de frações continuadas em \(\phi\) para achar \(r\). O circuito que implementa isso é:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/shor-algorithm/shor_circuit_1.svg&quot; alt=&quot;frac_cont_gate&quot; /&gt;
+Fonte: &lt;a href=&quot;https://qiskit.org/textbook/ch-algorithms/shor.html&quot;&gt;Qiskit-Algoritmo Shor&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;apêndice-iii-aplicação-do-gate-u&quot;&gt;Apêndice III (aplicação do gate U)&lt;/h2&gt;
+&lt;p&gt;Dado um operador unitário \(U\), queremos estimar um ângulo para o qual \(U\ket{\psi}=e^{2\pi i\theta}\ket{\psi}\).
+Começamos com dois conjuntos de qbits. O primeiro conjunto terá qbits configurados para estarem em \(\ket{0}\) e o segundo conjunto para o estado \(\ket{\psi}\) de forma que nosso estado inicial seja representado por&lt;/p&gt;
+
+\[\ket{\psi_0}=\ket{0}\otimes\ket{0}\otimes...\otimes\ket{0}\otimes\ket{\psi}\]
+
+&lt;p&gt;onde temos, por exemplo, n vezes o produto tensorial entre os \(\ket{0}\). Aplicamos, após isso, n portas de Hadamard (isto é, \(H\otimes H\otimes... \otimes H\otimes I\)). Teremos, portanto:&lt;/p&gt;
+
+\[\ket{\psi_1}=\frac{1}{2^{n/2}}(\ket{0}+\ket{1})^{\otimes n}\otimes\ket{\psi}\]
+
+&lt;p&gt;Definimos o gate unitário de controle \(CU\) que aplica \(U\) no estado \(\ket{\psi_i}\) se e só se o bit de controle for \(\ket{1}\).
+Como \(U\ket{\psi}=e^{2\pi i\theta}\ket{\psi}\) então:&lt;/p&gt;
+
+\[U^{2^j}\ket{\psi}=U^{2^j-1}U\ket{\psi}=U^{2^j-1}e^{2\pi i\theta}\ket{\psi}=...=e^{2\pi i2^j\theta}\ket{\psi}\]
+
+&lt;p&gt;com \(0\leq j\leq n-1\). Aplicando os \(n\) \(CU^{2^j}\) no primeiro conjunto de qbits pode-se mostrar que:&lt;/p&gt;
+
+\[\ket{\psi_2}=\frac{1}{2^{n/2}}\sum_{k=0}^{2^n-1}e^{2\pi i\theta k}\ket{k}\otimes \ket{\psi}\]
+
+&lt;p&gt;Aplicamos agora a transformada inversa de fourier quântica em todos os qbits do primeiro conjunto, conforme mostrado la em cima, obtemos:&lt;/p&gt;
+
+\[\frac{1}{2^{n/2}}\sum_{k=0}^{2^n-1}e^{2\pi i\theta k}\ket{k}\otimes \ket{\psi}\rightarrow \ket{\psi_3}=\frac{1}{2^n}\sum_{x=0}^{2^n-1}\sum_{k=0}^{2^n-1}e^{\frac{-2\pi i k}{2^n}(x-2^n\theta)}\ket{x}\otimes\ket{\psi}\]
+
+&lt;p&gt;Por fim, a expressão acima tem pico perto de \(x=2^n\theta\). Se \(2^n\theta\in N\) teremos que uma medição na base computacional nos da a fase no registrador auxiliar com alta probabilidade:&lt;/p&gt;
+
+\[\ket{\psi_4}=\ket{2^n\theta}\otimes\ket{\psi}\]
+
+&lt;p&gt;se não, a probabilidade de acerto é aproximadamente \(40\) por cento [refV]. Estas operações podem ser representadas pela figura abaixo&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/shor-algorithm/qpe_tex_qz.png&quot; alt=&quot;QPErepresentatio&quot; /&gt;
+Fonte: &lt;a href=&quot;https://qiskit.org/textbook/ch-algorithms/quantum-phase-estimation.html&quot;&gt;Qiskit-Quantum Phase Estimation&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;apêndice-iv-algoritmo-nab&quot;&gt;Apêndice IV (algoritmo \(N=a^b\))&lt;/h2&gt;
+&lt;p&gt;Suponha que N possa ser escrito como \(N=a^b\) com \(a\), \(b\) inteiros.&lt;/p&gt;
+
+\[N=a^b \implies log_2N = b*log_2a \implies L&amp;gt;b*log_2a\]
+
+&lt;p&gt;Onde \(L=[log_2N+1]\) é a quantidade de bits para representar o número \(N\).&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Escolha i = 2&lt;/li&gt;
+  &lt;li&gt;Defina \(x=\frac{log_2N}{i}\)&lt;/li&gt;
+  &lt;li&gt;Encontre os dois inteiros mais próximos de \(2^x\): \(u_1\) e \(u_2\)&lt;/li&gt;
+  &lt;li&gt;Compute \(u_1^i\) e \(u_2^i\). Se um dos resultados for igual a \(N\) então retorne o par (\(i\),\(u_j\)) tal que \(u_j^i=N\). Se não, i=i+1 e retorne a 1.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Note que o algoritmo é de simples implementação. Tua complexidade é \(O(L^4)\) conforme mostrado na refII.&lt;/p&gt;
+
+&lt;h5 id=&quot;exemplo-1&quot;&gt;Exemplo:&lt;/h5&gt;
+&lt;p&gt;Seja N=9.&lt;/p&gt;
+
+&lt;p&gt;Iniciando por i=2 temos \(x=\frac{log_29}{2}=1.58496...\approx1.585\). 
+Daí, \(2^{1.585}\approx3\) e portanto \(u_1=3\) e \(u_2=4\).
+Calculamos \(u_1^2=9\) e \(u_2^2=16\). Retornamos portanto o par (\(2\), \(u_1=3\)) = (\(a\), \(b\)).&lt;/p&gt;
+
+&lt;h2 id=&quot;apêndice-v-algoritmo-de-euclides&quot;&gt;Apêndice V (algoritmo de Euclides)&lt;/h2&gt;
+&lt;p&gt;Este algoritmo serve para encontrar o maior divisor comum (MDC) entre dois números naturais. 
+Sejam \(a\) e \(b\) dois números inteiros positivos dados.&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Defina \(c_1=a\), \(d_1=b\) e \(i=1\)&lt;/li&gt;
+  &lt;li&gt;Divida \(c_i\) por \(d_i\) e retorne \(r_i\) o resto dessa divisão&lt;/li&gt;
+  &lt;li&gt;Se \(r_i=0\) retorne \(d_i\). 
+Se não, \(c_{i+1}=d_i\) enquanto \(d_{i+1}=r_i\) e, por fim, i=i+1.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&quot;exemplo-2&quot;&gt;Exemplo:&lt;/h5&gt;
+&lt;p&gt;Seja \(a=348\) e \(b=156\).
+Primeira iteração:
+\(r_1=36\) pois \(348=156*2+36\) (algoritmo da divisão).
+Segunda iteração:
+\(c_2=156\), \(d_2=36\) e \(r_2=12\) pois \(156=36*4+12\)
+Terceira iteração:
+\(c_3=36\), \(d_3=12\) e \(r_3=0\) pois \(36=12*3+0\)&lt;/p&gt;
+
+&lt;p&gt;Logo, MDC(9,6)=3&lt;/p&gt;
+
+&lt;h2 id=&quot;referências&quot;&gt;Referências&lt;/h2&gt;
+&lt;p&gt;I. QFT, Period Finding &amp;amp; Shor’s Algorithm [https://courses.edx.org/c4x/BerkeleyX/CS191x/asset/chap5.pdf]&lt;/p&gt;
+
+&lt;p&gt;II. Algoritmo de Shor e sua aplicação à fatoração de números inteiros, Adriana Xavier Freitas, UFGM. Dissertação de Mestrado com orientação de Marcelo Terra Cunha&lt;/p&gt;
+
+&lt;p&gt;III. Marcelo Terra Cunha - Curso de mecânica quântica para matemáticos em formação&lt;/p&gt;
+
+&lt;p&gt;IV. Shor’s Algorithm do Qiskit [https://qiskit.org/textbook/ch-algorithms/shor.html] visitado em 07/12/2022.&lt;/p&gt;
+
+&lt;p&gt;V. Quantum Computation and Quantum Information - Michael A. Nielsen (2000)&lt;/p&gt;
+
+&lt;h3 id=&quot;futuro&quot;&gt;Futuro&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Complexidade dos algoritmos apresentados&lt;/li&gt;
+  &lt;li&gt;Implementação (usando bibliotecas prontas) e comparação entre algoritmo clássico nos casos em que N é grande.&lt;/li&gt;
+  &lt;li&gt;Explicar/entender melhor quando o algoritmo falha e quando não retorna nada de útil.&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Mon, 21 Nov 2022 04:30:00 -0300</pubDate>
+        <link>http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/11/21/shor-algorithm.html</link>
+        <guid isPermaLink="true">http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/11/21/shor-algorithm.html</guid>
+        
+        
+        <category>teoria</category>
+        
+        <category>computacao-quântica</category>
+        
+        <category>educativo</category>
+        
+      </item>
+    
+      <item>
+        <title>Lista de Operações do IBM Quantum Composer</title>
+        <description>&lt;p&gt;Até o presente momento, viemos utilizando com frequência os simuladores disponibilizados pela IBM para simulações e demonstrações durante os estudos de outros tópicos na área de computação quântica. Com o intuito de prover um entendimento maior sobre a ferramenta que tem se provado bem útil para os estudos na área, o presente artigo visa servir como um resumo de todas as operações disponibilizadas na ferramenta IBM Quantum Composer, com exemplos práticos. Para que dessa forma, possamos passar para uma abordagem mais prática no estudo, a partir do uso mais frequente de ferramentas de simulação como essa.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;o-ibm-quantum-composer&quot;&gt;O IBM Quantum Composer&lt;/h3&gt;
+&lt;p&gt;IBM Quantum Composer é uma ferramenta de simulação já utilizada diversas vezes aqui no blog de computação quântica do ELDORADO. A ferramenta disponibiliza uma visualização dos algoritmos em formato de circuitos quânticos, com a possibilidade de arrastar blocos de operações para serem aplicadas aos qubits. Além disso, diferentes métricas são colhidas diretamente sobre a saída do algoritmo implementado em tempo real, como: Seu gráfico de probabilidades de estado na saída e a representação visual do estado do sistema a partir de uma Bloch Sphere.
+Juntamente a tudo isso, a ferramenta ainda disponibiliza uma aba lateral, que permite visualizar o código gerado automaticamente ou fazer modificações no circuido gerado a partir de seu código. A visualização de código pode ser apresentada em duas linguagens: OPENQASM 2.0 e Qiskit (python).
+É importante ressaltar que a edição do circuito via código, no presente momento (27/09/2022), só é possível a partir da linguagem OPENQASM 2.0. Ao passar para a visualização do código em Qiskit, o editor se torna apenas-leitura e é possível apenas visualizar os códigos gerados automaticamente.&lt;/p&gt;
+
+&lt;h3 id=&quot;lista-de-operações-do-quantum-composer&quot;&gt;Lista de Operações do Quantum Composer&lt;/h3&gt;
+&lt;p&gt;Como pode-se visualizar na imagem abaixo, a ferramenta já conta com uma gama interessante de operações que podem ser aplicadas nos Qubits. Na documentação &lt;a href=&quot;https://quantum-computing.ibm.com/composer/docs/iqx/operations_glossary&quot;&gt;oficial da ferramenta&lt;/a&gt;, as operações permitidas são divididas em 5 classificações distintas, elas são: Operações clássicas, Operações de fase, Operações não unitárias e modificadores, Hadamard, Operações quânticas.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/All-operations-composer.png&quot; alt=&quot;Operações Quantum Composer&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;operações-clássicas&quot;&gt;Operações Clássicas&lt;/h4&gt;
+&lt;p&gt;Iniciaremos a revisão com as operações clássicas, que podem ser aplicadas a qubits sem necessáriamente estarem em um estado de superposição.&lt;/p&gt;
+&lt;h5 id=&quot;operação-not-pauli-x&quot;&gt;Operação NOT (Pauli X)&lt;/h5&gt;
+&lt;p&gt;A operação NOT, conhecida como porta X de Pauli, já abordada no artigo &lt;a href=&quot;/teoria/computacao-qu%C3%A2ntica/educativo/2022/05/24/portas-unicas.html&quot;&gt;portas quânticas iniciais&lt;/a&gt;, possui a capacidade de inverter o estado de um qubit, como demonstrado abaixo:&lt;/p&gt;
+
+&lt;p&gt;\(\ket{0} \rightarrow \ket{1}\)&lt;br /&gt;
+\(\ket{1} \rightarrow \ket{0}\)&lt;/p&gt;
+
+&lt;p&gt;Sua matriz de transferência está demonstrada abaixo:&lt;/p&gt;
+
+\[X = \left[ {\begin{array}{cc}
+0 &amp;amp; 1 \\
+1 &amp;amp; 0\\
+\end{array} } \right]\]
+
+&lt;p&gt;A operação NOT é a equivalência de uma operação RX para o ângulo \(\pi\) ou para ‘HZH’.&lt;/p&gt;
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referência da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/X-composer-description.png&quot; alt=&quot;Descrição X&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-cnot&quot;&gt;Operação CNOT&lt;/h5&gt;
+&lt;p&gt;A operação CNOT, ou Controlled-Not (Not controlado), também conhecida como CX, age em um par de qubits, sendo o primeiro deles admitido como qubit de ‘controle’ e o segundo como ‘alvo’. A operação consiste em aplicar uma lógica NOT ao qubit ‘alvo’ sempre que o qubit ‘controle’ estiver no estado \(\ket{1}\). Se o qubit ‘controle’ estiver em superposição, a operação CNOT gera entrelaçamento (entanglement) entre os qubits.&lt;/p&gt;
+
+&lt;p&gt;De forma simplificada, todos os circuitos unitários podem ser decompostos em operações simples em apenas um qubit e operações CNOT. Por conta do tempo de execução de uma operação CNOT ser muito maior do que o tempo necessário para execução de operações de apenas um qubit em hardwares reais, o custo de processamento de um circuito é geralmente medido pelo número de operações CNOT que ele contém.&lt;/p&gt;
+
+&lt;p&gt;A matriz de transferência da operação CNOT está apresentada abaixo:&lt;/p&gt;
+
+\[CX = \left[ {\begin{array}{cc}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 \\
+0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/CNOT-composer-description.png&quot; alt=&quot;Descrição CNOT&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-toffoli&quot;&gt;Operação Toffoli&lt;/h5&gt;
+&lt;p&gt;A operação Toffoli também é conhecida como: CNOT com duplo controle (CCX). Pois possue dois qubits ‘controle’ e apenas um qubit ‘alvo’. A operação aplica uma lógica NOT ao qubit ‘alvo’ apenas quando ambos os qubits ‘controle’ estiverem no estado \(\ket{1}\).&lt;/p&gt;
+
+&lt;p&gt;A operação Toffoli em conjunto com uma operação Hadamard é tida como uma operação universal para a computação quântica. Sua matriz de transferência está demonstrada abaixo:&lt;/p&gt;
+
+\[CCX = \left[ {\begin{array}{cc}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/Toffoli-composer-description.png&quot; alt=&quot;Descrição Toffoli&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-swap&quot;&gt;Operação SWAP&lt;/h5&gt;
+&lt;p&gt;A operação SWAP realizada a troca dos estados de dois qubits. Sua matriz de transferência pode ser visualizada abaixo:&lt;/p&gt;
+
+\[SWAP = \left[ {\begin{array}{cc}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\
+0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/SWAP-composer-description.png&quot; alt=&quot;Descrição SWAP&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-identidade&quot;&gt;Operação Identidade&lt;/h5&gt;
+&lt;p&gt;A operação identidade (também conhecida como ‘Porta I’), acaba por funcionar na realidade como a ausência de uma operação. A principal função da operação identidade é garantir que nada seja aplicado sobre um qubit durante uma unidade de tempo.
+Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/I-composer-description.png&quot; alt=&quot;Descrição I&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;operações-de-fase&quot;&gt;Operações de Fase&lt;/h4&gt;
+&lt;h5 id=&quot;operação-t&quot;&gt;Operação T&lt;/h5&gt;
+&lt;p&gt;A operação T é a equivalente à operação RZ para o ângulo \(\frac{\pi}{4}\). Acredita-se que computadores quânticos tolerantes a falhas irão compilar todos os programas quânticos para operações T e seu inverso, juntamente com operações Clifford (Clifford??).
+Sua matriz de transferência pode ser visualizada abaixo:&lt;/p&gt;
+
+\[T = \left[ {\begin{array}{cc}
+1 &amp;amp; 0 \\
+0 &amp;amp; e^{i\pi/4}\\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/T-composer-description.png&quot; alt=&quot;Descrição T&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-s&quot;&gt;Operação S&lt;/h5&gt;
+&lt;p&gt;A operação S aplica uma fase \(i\) para o estado \(\ket{1}\). É o equivalente a uma operação RZ para o ângulo \(\frac{\pi}{2}\). Perceba que: \(S=P(\frac{\pi}{2})\).
+A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[S = \left[ {\begin{array}{cc}
+1 &amp;amp;&amp;amp; 0 \\
+0 &amp;amp;&amp;amp; i \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/S-composer-description.png&quot; alt=&quot;Descrição S&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-z&quot;&gt;Operação Z&lt;/h5&gt;
+&lt;p&gt;A operação Z, também conhecida como porta Z de Pauli, opera como uma identidade no estado \(\ket{0}\) e multiplica o sinal do estado \(\ket{1}\) por \(-1\). Assim sendo, a operação é capaz de inverter os estados \(\ket{-}\) e \(\ket{+}\). Considerando os estados +/- como base, a operação Z age da mesma forma que a operação NOT sobre a base de estados 0/1.
+A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[Z = \left[ {\begin{array}{cc}
+1 &amp;amp;&amp;amp; 0 \\
+0 &amp;amp;&amp;amp; -1 \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/Z-composer-description.png&quot; alt=&quot;Descrição Z&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-t-dagger-hermitian&quot;&gt;Operação T-dagger (Hermitian)&lt;/h5&gt;
+&lt;p&gt;É a operação inversa da operação T. Conhecida como Tdg.
+A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[T^\dagger = \left[ {\begin{array}{cc}
+1 &amp;amp; 0 \\
+0 &amp;amp; e^{-i\pi/4}\\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/Tdg-composer-description.png&quot; alt=&quot;Descrição Tdg&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-s-dagger-hermitian&quot;&gt;Operação S-dagger (Hermitian)&lt;/h5&gt;
+&lt;p&gt;É a operação inversa da operação S. Conhecida como Sdg.
+A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[S^\dagger = \left[ {\begin{array}{cc}
+1 &amp;amp;&amp;amp; 0 \\
+0 &amp;amp;&amp;amp; -i \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/Sdg-composer-description.png&quot; alt=&quot;Descrição Sdg&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-fase&quot;&gt;Operação Fase&lt;/h5&gt;
+&lt;p&gt;A operação fase, chamada anteriormente de operação U1, aplica uma fase de \(e^{i\theta}\) para o estado \(\ket{1}\). Para certos valores de \(\theta\), é o equivalente a outras operações. Por exemplo:&lt;/p&gt;
+
+\[P(\pi) = Z \\
+P(\pi/2) = S \\
+P(\pi/4) = T\]
+
+&lt;p&gt;Assim como, uma fase global de \(e^{i\theta/2}\), é equivalente a uma aplicação de \(RZ(\theta)\).
+A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[P(\lambda) = \left[ {\begin{array}{cc}
+1 &amp;amp;&amp;amp; 0 \\
+0 &amp;amp;&amp;amp; e^{i\lambda} \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na ferramenta IBM Quantum Composer, o valor padrão para teta é \(\pi/2\).
+Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/P-composer-description.png&quot; alt=&quot;Descrição P&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-rz&quot;&gt;Operação RZ&lt;/h5&gt;
+&lt;p&gt;A operação RZ implementa \(exp(-i\frac{\theta}{2}Z)\). Na Bloch sphere, essa operação corresponde a rotacionar o estado do qubit no eixo-z pelo ângulo especificado.
+A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[RZ(\lambda) = exp\left(-i\frac{\lambda}{2}Z\right) = \left[ {\begin{array}{cc}
+e^{-i\frac{\lambda}{2}} &amp;amp;&amp;amp; 0 \\
+0 &amp;amp;&amp;amp; e^{i\frac{\lambda}{2}} \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/RZ-composer-description.png&quot; alt=&quot;Descrição RZ&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;operações-não-unitárias-e-modificadores&quot;&gt;Operações Não-unitárias e Modificadores&lt;/h4&gt;
+&lt;h5 id=&quot;operação-reset&quot;&gt;Operação Reset&lt;/h5&gt;
+&lt;p&gt;Retorna um qubit ao estado \(\ket{0}\), independente do estado antes da aplicação da operação.
+Não é uma operação reversível.&lt;/p&gt;
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/Reset-composer-description.png&quot; alt=&quot;Descrição Reset&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;medição&quot;&gt;Medição&lt;/h5&gt;
+&lt;p&gt;A operação de medição na base padrão, também conhecida como base Z ou base computacional. Pode ser usada para implementar qualquer tipo de medição quando combinada com outras operações. 
+Não é uma operação reversível.&lt;/p&gt;
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/Measure-composer-description.png&quot; alt=&quot;Descrição Medição&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;modificação-de-controle&quot;&gt;Modificação de Controle&lt;/h5&gt;
+&lt;p&gt;Um modificador de controle proporciona a uma outra operação a característica de controlar sua execução a partir de um outro qubit. O modificador de controle pode ser adicionado em outras operações dentro do IBM Quantum Composer, e quando é feito, é necessário selecionar qual será o qubit de controle. Quando o estado do qubit de controle for \(\ket{1}\), a operação que recebeu o modificador de controle será executada (em seu respectivo qubit).
+Caso o qubit de controle esteja em superposição, o resultado ocorre seguindo as regras de linearidade, gerando diferentes estados possíveis.&lt;/p&gt;
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/Control-composer-description.png&quot; alt=&quot;Descrição Controle&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-if&quot;&gt;Operação IF&lt;/h5&gt;
+&lt;p&gt;A operação IF permite que operações quânticas sejam aplicadas de forma condicional, dependendo do estado de um registrador clássico. Dessa forma é possível relacionar o valor de registradores clássicos ao longo da execução de algorítmos quânticos.&lt;/p&gt;
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/If-composer-description.png&quot; alt=&quot;Descrição IF&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;barreira&quot;&gt;Barreira&lt;/h5&gt;
+&lt;p&gt;Para fazer com que um programa quântico se torne mais eficiente, o compilador tentará combinar operações. A barreira é uma instrução para o compilador evitar fazer essas combinações. De forma adicional, acaba sendo útil para visualização do algorítmo.&lt;/p&gt;
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/Barrier-composer-description.png&quot; alt=&quot;Descrição Barreira&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;hadamard&quot;&gt;Hadamard&lt;/h4&gt;
+&lt;p&gt;A operação Hadamard, ou popularmente conhecida como H, rotaciona or estados \(\ket{0}\) e \(\ket{1}\) para \(\ket{+}\) e \(\ket{-}\), respectivamente. É extremamente útil para criar superposições. Se você possuir uma operação universal na computação clássica, ao adicionar uma operação Hadamard nela voce terá uma operação universal na computação quântica.&lt;/p&gt;
+
+&lt;p&gt;A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[H = \frac{1}{\sqrt{2}}\left[ {\begin{array}{cc}
+1 &amp;amp;&amp;amp; 1 \\
+1 &amp;amp;&amp;amp; -1 \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/H-composer-description.png&quot; alt=&quot;Descrição H&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;operações-quânticas&quot;&gt;Operações Quânticas&lt;/h4&gt;
+&lt;h5 id=&quot;operação-sqrtx-root-square-x&quot;&gt;Operação \(\sqrt{X}\) (root-square x)&lt;/h5&gt;
+&lt;p&gt;Também conhecida como operação raíz quadrada NOT. A operação implementa a raíz quadrada da operação X. Aplicando essa operação duas vezes em uma linha produz uma operação X padrão. Como a operação Hadamard, \(\sqrt{X}\) cria um estado de superposição igual ao de um qubit no estado \(\ket{0}\), porém com uma diferença relativa de fase. Em alguns hardwares, há uma operação (porta) nativa que pode ser implementada com um pulso de \(\pi/2\) ou X90.&lt;/p&gt;
+
+&lt;p&gt;A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[\sqrt{X} = \frac{1}{2}\left[ {\begin{array}{cc}
+1 + i &amp;amp;&amp;amp; 1 - i \\
+1 - i &amp;amp;&amp;amp; 1 + i \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/RootX-composer-description.png&quot; alt=&quot;Descrição Raíz X&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-sqrtxdagger-root-square-x-hermitian&quot;&gt;Operação \(\sqrt{X}^\dagger\) (root-square x hermitian)&lt;/h5&gt;
+&lt;p&gt;Também conhecida como SXdg. É a operação inversa à \(\sqrt{X}\). Aplicando essa operação duas vezes em uma linha, será produzida uma operação X padrão, já que a operação NOT é seu próprio inverso. Assim como a operação \(\sqrt{X}\), a presente operação pode ser utilizada para criar um estado de superposição igual, assim como, também está implementado de forma nativa em alguns hardwares a partir do uso de um pulso X90.&lt;/p&gt;
+
+&lt;p&gt;A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[\sqrt{X}^\dagger = \frac{1}{2}\left[ {\begin{array}{cc}
+1 - i &amp;amp;&amp;amp; 1 + i \\
+1 + i &amp;amp;&amp;amp; 1 - i \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/RootXdg-composer-description.png&quot; alt=&quot;Descrição Raíz X dg&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-y&quot;&gt;Operação Y&lt;/h5&gt;
+&lt;p&gt;A operação Y de Pauli é equivalente à operação RY para o ângulo \(\pi\). É equivalente a uma aplicação de operações X e Z até um fator de fase global.&lt;/p&gt;
+
+&lt;p&gt;A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[Y = \frac{1}{2}\left[ {\begin{array}{cc}
+0 &amp;amp;&amp;amp; -i \\
+i &amp;amp;&amp;amp; 0 \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/Y-composer-description.png&quot; alt=&quot;Descrição Y&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-rx&quot;&gt;Operação RX&lt;/h5&gt;
+&lt;p&gt;A operação RX implementa \(exp(-i\frac{\theta}{2}X)\). Na Bloch sphere, essa operação corresponde à rotacionar o estado de um qubit ao longo do eixo-x, a partir de um ângulo especificado.&lt;/p&gt;
+
+&lt;p&gt;A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[RX(\theta) = exp\left(-i\frac{\theta}{2}X\right) = \left[ {\begin{array}{cc}
+\cos{\frac{\theta}{2}} &amp;amp;&amp;amp; -i\sin{\frac{\theta}{2}} \\
+-i\sin{\frac{\theta}{2}} &amp;amp;&amp;amp; \cos{\frac{\theta}{2}} \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/RX-composer-description.png&quot; alt=&quot;Descrição RX&quot; /&gt;
+Na ferramenta IBM Quantum Composer, o ângulo padrão utilizado é \(\pi/2\). Assim como, esse mesmo ângulo foi usado na demonstração da imagem acima.&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-ry&quot;&gt;Operação RY&lt;/h5&gt;
+&lt;p&gt;A operação RY implementa \(exp(-i\frac{\theta}{2}Y)\). Na Bloch sphere, essa operação corresponde à rotacionar o estado de um qubit ao longo do eixo-y, a partir de um ângulo especificado.&lt;/p&gt;
+
+&lt;p&gt;A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[RY(\theta) = exp\left(-i\frac{\theta}{2}Y\right) = \left[ {\begin{array}{cc}
+\cos{\frac{\theta}{2}} &amp;amp;&amp;amp; -\sin{\frac{\theta}{2}} \\
+\sin{\frac{\theta}{2}} &amp;amp;&amp;amp; \cos{\frac{\theta}{2}} \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/RY-composer-description.png&quot; alt=&quot;Descrição RY&quot; /&gt;
+Na ferramenta IBM Quantum Composer, o ângulo padrão utilizado é \(\pi/2\). Assim como, esse mesmo ângulo foi usado na demonstração da imagem acima.&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-rxx&quot;&gt;Operação RXX&lt;/h5&gt;
+&lt;p&gt;A operação RXX implementa \(exp(-i\frac{\theta}{2}X\otimes X)\). A operação Mølmer–Sørensen, que é a operação nativa em sistemas de armadilha de íons, pode ser expressada como uma soma de operações RXX.&lt;/p&gt;
+
+&lt;p&gt;A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[RXX(\theta) = exp\left(-i\frac{\theta}{2}X \otimes X\right) = \left[ {\begin{array}{cc}
+\cos{\frac{\theta}{2}} &amp;amp;&amp;amp; 0 &amp;amp;&amp;amp; 0 &amp;amp;&amp;amp; -i\sin{\frac{\theta}{2}} \\
+0 &amp;amp;&amp;amp; \cos{\frac{\theta}{2}} &amp;amp;&amp;amp; -i\sin{\frac{\theta}{2}} &amp;amp;&amp;amp; 0 \\
+0 &amp;amp;&amp;amp; -i\sin{\frac{\theta}{2}} &amp;amp;&amp;amp; \cos{\frac{\theta}{2}} &amp;amp;&amp;amp; 0 \\
+-i\sin{\frac{\theta}{2}} &amp;amp;&amp;amp; 0 &amp;amp;&amp;amp; 0 &amp;amp;&amp;amp; \cos{\frac{\theta}{2}} \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referencia da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/RXX-composer-description.png&quot; alt=&quot;Descrição RXX&quot; /&gt;
+Na ferramenta IBM Quantum Composer, o ângulo padrão utilizado é \(\pi/2\).&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-rzz&quot;&gt;Operação RZZ&lt;/h5&gt;
+&lt;p&gt;A operação RZZ necessita de apenas um parâmetro: um ângulo expresso em radianos. É a representação de uma soma direta de duas operações Z, aplicada em dois qubits, gerando uma rotação Z baseado nos dois qubits de entrada. Essa operação é simétrica, ou seja, a ordem dos qubits em que é aplicada não faz diferença no resultado.&lt;/p&gt;
+
+&lt;p&gt;A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[RZZ(\theta) = exp\left(-i\frac{\theta}{2}Z \otimes Z\right) = \left[ {\begin{array}{cc}
+e^{-i\frac{\theta}{2}} &amp;amp;&amp;amp; 0 &amp;amp;&amp;amp; 0 &amp;amp;&amp;amp; 0 \\
+0 &amp;amp;&amp;amp; e^{i\frac{\theta}{2}} &amp;amp;&amp;amp; 0 &amp;amp;&amp;amp; 0 \\
+0 &amp;amp;&amp;amp; 0 &amp;amp;&amp;amp; e^{i\frac{\theta}{2}} &amp;amp;&amp;amp; 0 \\
+0 &amp;amp;&amp;amp; 0 &amp;amp;&amp;amp; 0 &amp;amp;&amp;amp; e^{-i\frac{\theta}{2}} \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referência da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/RZZ-composer-description.png&quot; alt=&quot;Descrição RZZ&quot; /&gt;
+Na ferramenta IBM Quantum Composer, o ângulo padrão utilizado é \(\pi/2\).&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-u&quot;&gt;Operação U&lt;/h5&gt;
+&lt;p&gt;Anteriormente chamada de operação U3, a partir de três parâmetros é possível construir qualquer operação para apenas um qubit a partir da uma operação U. Possui a duração de uma unidade de tempo.&lt;/p&gt;
+
+&lt;p&gt;A matriz de transferência da operação pode ser visualizada abaixo:&lt;/p&gt;
+
+\[U(\theta, \phi, \lambda) = \left[ {\begin{array}{cc}
+\cos{\frac{\theta}{2}} &amp;amp;&amp;amp; -e^{i\lambda}\sin{\frac{\theta}{2}} \\
+e^{i\phi}\sin{\frac{\theta}{2}} &amp;amp;&amp;amp; e^{i(\phi + \lambda)}\cos{\frac{\theta}{2}} \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referência da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/U-composer-description.png&quot; alt=&quot;Descrição U&quot; /&gt;
+Na ferramenta IBM Quantum Composer, o ângulo padrão utilizado é \(\pi/2\).&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-rccx&quot;&gt;Operação RCCX&lt;/h5&gt;
+&lt;p&gt;É a simplificação da operação Toffoli, também conhecida como operação Margolus. A simplificação da operação Toffoli implementa a operação Toffoli a partir de fases relativas. Essa implementação precisa de três operações CX, o que é a menor quantidade possível, como demonstrado &lt;a href=&quot;https://arxiv.org/abs/quant-ph/0312225&quot;&gt;aqui&lt;/a&gt;. Perceba que a simplificação de Toffoli não é equivalente a uma operação Toffoli, mas pode ser utilizada em momentos onde a operação Toffoli não precisaria ser computada novamente.&lt;/p&gt;
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referência da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/RCCX-composer-description.png&quot; alt=&quot;Descrição RCCX&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;operação-rc3x&quot;&gt;Operação RC3X&lt;/h5&gt;
+&lt;p&gt;É a simplificação de uma operação Toffoli controlada em três.
+A simplificação Toffoli implementa a operação Toffoli com fases relativas. Assim como a operação RCCX, não é uma equivalente à operação Toffoli, mas pode ser usada em momentos em que a operação completa não precisa ser computada novamente.&lt;/p&gt;
+
+&lt;p&gt;Na imagem abaixo podemos visualizar a referência da operação na ferramenta Quantum Composer:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/portas-composer/RC3X-composer-description.png&quot; alt=&quot;Descrição RC3X&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;h4 id=&quot;operações-obsoletas&quot;&gt;Operações Obsoletas&lt;/h4&gt;
+&lt;p&gt;Abaixo está representada uma lista de operações que não estão mais disponíveis na ferramenta IBM Quantum Composer, porém ainda são referenciadas na documentação para fins de histórico.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;CSWAP&lt;/li&gt;
+  &lt;li&gt;U1&lt;/li&gt;
+  &lt;li&gt;U3&lt;/li&gt;
+  &lt;li&gt;U2&lt;/li&gt;
+  &lt;li&gt;CU1&lt;/li&gt;
+  &lt;li&gt;CU3&lt;/li&gt;
+  &lt;li&gt;CH&lt;/li&gt;
+  &lt;li&gt;CY&lt;/li&gt;
+  &lt;li&gt;CZ&lt;/li&gt;
+  &lt;li&gt;CRX&lt;/li&gt;
+  &lt;li&gt;CRY&lt;/li&gt;
+  &lt;li&gt;CRZ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;conclusão&quot;&gt;Conclusão&lt;/h3&gt;
+&lt;p&gt;O presente artigo tem por principal objetivo descrever as funcionalidades atuais da ferramenta IBM Quantum Composer em um guia de fácil acesso, para que a ferramenta possa ser utilizada de forma mais práticas. As informações contidas neste material foram completamente baseadas na documentação oficial da ferramenta, que pode ser lida &lt;a href=&quot;https://quantum-computing.ibm.com/composer/docs/iqx/operations_glossary#u-gate&quot;&gt;aqui&lt;/a&gt; e na documentação oficial da bilbioteca &lt;a href=&quot;https://qiskit.org/documentation/stubs/qiskit.circuit.library.RC3XGate.html&quot;&gt;Qiskit&lt;/a&gt;.
+Esperamos que o material seja útil para seus estudos e experimentos!&lt;/p&gt;
+
+&lt;h3 id=&quot;referências&quot;&gt;Referências&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;https://quantum-computing.ibm.com/composer/docs/iqx/operations_glossary&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;https://qiskit.org/documentation/stubs/qiskit.circuit.library.RC3XGate.html&lt;/li&gt;
+  &lt;li&gt;https://arxiv.org/abs/quant-ph/0312225&lt;/li&gt;
+  &lt;li&gt;https://www.ibm.com/blogs/research/2019/12/qiskit-openpulse/&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 26 Sep 2022 21:00:00 -0300</pubDate>
+        <link>http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/09/26/operacoes-quantum-composer.html</link>
+        <guid isPermaLink="true">http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/09/26/operacoes-quantum-composer.html</guid>
+        
+        
+        <category>teoria</category>
+        
+        <category>computacao-quântica</category>
+        
+        <category>educativo</category>
+        
+      </item>
+    
+      <item>
+        <title>Bell States</title>
+        <description>&lt;!--more--&gt;
+
+&lt;p&gt;Os bell states foram apresentados em 1964 por John Stewart Bell e, rapidamente, ganharam a atenção da comunidade de mecânica quântica. Sendo um dos tópicos mais importantes para a computação quântica e a referência de um sistema entrelaçado.&lt;/p&gt;
+
+&lt;h3 id=&quot;história&quot;&gt;História&lt;/h3&gt;
+
+&lt;p&gt;A mecanica quântica começou a ganhar rapidamente defensores durante o século 20. Tão rápido quanto os seus seguidores, surgiram os seus críticos.&lt;/p&gt;
+
+&lt;p&gt;Um dos críticos mais famosos da mecanica quântica foi Albert Einstein. Um de seus alunos de doutorado Podolsky publicou em 1935 - tendo Einstein e Rosen como co-autores - o artigo &lt;em&gt;Can Quantum-Mechanical Description of Physical Reality be Considered Complete?&lt;/em&gt;. Nesse artigo, foi apresentado um experimento mental afirmando que a mecânica quântica era uma teoria incompleta, ou seja, existiria alguma variável desconhecida (&lt;em&gt;hiden variables&lt;/em&gt;) pela física.&lt;/p&gt;
+
+&lt;p&gt;Esse experimento ficou conhecido como paradoxio EPR e iniciou uma longa discução entre Einsten e Niels Bohr.&lt;/p&gt;
+
+&lt;p&gt;O artigo começa descrevendo um gerador de pares de particulas. Cada uma das particulas com duas propriedades. Vamos dizer, 0 e 1 para a primeira e A e B para a segunda. Cada valor possui 50% de chance de acontecer.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;img src=&quot;/assets/images/bell-states/bohms-variant.png&quot; alt=&quot;&quot; /&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;sub&gt;&lt;sup&gt; *Ref: https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/EPR_illustration.svg/500px-EPR_illustration.svg.png&lt;/sup&gt;&lt;/sub&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Uma vez medido uma das propriedades, digamos 0 e 1, as demais medições irão encontrar o mesmo valor, ou seja, teremos 100% de chance de encontrar o mesmo valor.&lt;/p&gt;
+
+&lt;p&gt;Agora se medimos a segunda propriedade, A e B, teremos 50% de chance de encontrar A e 50% de chance de encontrar B. Após medir novamente a primeira propriedade, esperariamos encontrar o primeiro valor medido, porém, em metade dos casos vamos encontrar o valor 0 e na outra metade o valor 1.&lt;/p&gt;
+
+&lt;p&gt;Assim quando mudamos a propriedade medida, de alguma forma, perdemos a medição anterior.&lt;/p&gt;
+
+&lt;p&gt;O mais interessante é quando trabalhamos com particulas entrelaçadas. Essas particulas possuem pares de valores fixos. Digamos 1-1. Assim quando medimos a primeira particula e encontramos 1, sabemos que a segunda vai ter o valor 1.&lt;/p&gt;
+
+&lt;p&gt;O que Einstein alega no artigo é que a informação da medição de uma das particulas não pode ser transmitida mais rápida do que a luz. Ou seja, quando medimos, a segunda particula não pode esperar a “luz” chegar até ela para “decidir” o valor da propriedade. Por isso, Einstein afirma que falta alguma variável que serviria como DNA para que a segunda particula “saiba” qual o valor dessa propriedade.&lt;/p&gt;
+
+&lt;p&gt;Esse paradoxo durou até 1964 quando John Stewart Bell publicou um estudo provando que existem sistemas que não podem ser explicados por uma teoria local e com variáveis escondidadas. Nesse mesmo artigo, ele mostra 4 sistemas que não podem ser explicados por variáveis escondidas. Esses sistemas passam a ser conhecidos como Bell States.&lt;/p&gt;
+
+&lt;p&gt;A partir desse artigo, físicos começaram a testar a ideia apresentada por Bell e encontrar os resultados esperados pelo seu artigo.&lt;/p&gt;
+
+&lt;h3 id=&quot;bell-states&quot;&gt;Bell States&lt;/h3&gt;
+
+&lt;p&gt;Uma vez que o John Bell conseguiu encontrar um sistema que possui um entrelaçamento quântico. Os físicos que desejavam estudar esse fenomeno começaram a trabalhar com esse sistema. Tornando esses sistemas um hello world da mecânica quântica.&lt;/p&gt;
+
+&lt;p&gt;Os 4 bell states são mostrados abaixo:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+\[\ket{\Psi^+} = \frac{ \ket{01} + \ket{10} }{\sqrt{2}}\]
+  &lt;/li&gt;
+  &lt;li&gt;
+\[\ket{\Psi^-} = \frac{ \ket{01} - \ket{10} }{\sqrt{2}}\]
+  &lt;/li&gt;
+  &lt;li&gt;
+\[\ket{\Phi^+} = \frac{ \ket{00} + \ket{11} }{\sqrt{2}}\]
+  &lt;/li&gt;
+  &lt;li&gt;
+\[\ket{\Phi^-} = \frac{ \ket{00} - \ket{11} }{\sqrt{2}}\]
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Vamos analisar o sistema 1. Nele temos duas possibilidades: primero, Alice mede seu qubit e verifica que ele colapsa para o qubit \(\ket{0}\). Assim, ela sabe que Bob vai ter o qubit \(\ket{1}\). Agora se o resultado da medição de Alice é \(\ket{1}\), então ela sabe que Bob vai ter o valor \(\ket{0}\). E podemos ver que ambos os estados possuem o coeficiente \(\frac{1}{\sqrt{2}}\), o que significa que o sistema possui 50% de chance de colapsar para o estado \(\ket{01}\) e 50% para o estado \(\ket{10}\).&lt;/p&gt;
+
+&lt;p&gt;Outro ponto a ser observado é que temos dois grupos de sistemas os: \(\Phi\) e os \(\Psi\). Nos \(\Phi\), ambos os observadores terão o mesmo resultado após a medição. Enquanto que no \(\Psi\), os observadores terão valores diferentes.&lt;/p&gt;
+
+&lt;p&gt;O circuito para gerar os bells states são listados abaixo.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;circuito para gerar o \(\Phi^+\) state &lt;br /&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;img src=&quot;/assets/images/bell-states/bell-state-1.png&quot; alt=&quot;circuito para gerar o $\Phi$ state&quot; /&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;sub&gt;&lt;sup&gt;*Ref: imagem construída pelo autor através do QisKit.&lt;/sup&gt;&lt;/sub&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;circuito para gerar o \(\Phi^-\) state&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;img src=&quot;/assets/images/bell-states/bell-state-2.png&quot; alt=&quot;circuito para gerar o $$\Phi$$ state&quot; /&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;sub&gt;&lt;sup&gt;*Ref: imagem construída pelo autor através do QisKit.&lt;/sup&gt;&lt;/sub&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;circuito para gerar o \(\Psi^+\) state&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;img src=&quot;/assets/images/bell-states/bell-state-3.png&quot; alt=&quot;circuito para gerar o $$\Phi$$ state&quot; /&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;sub&gt;&lt;sup&gt;*Ref: imagem construída pelo autor através do QisKit.&lt;/sup&gt;&lt;/sub&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;circuito para gerar o \(\Psi^-\) state&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;img src=&quot;/assets/images/bell-states/bell-state-4.png&quot; alt=&quot;circuito para gerar o $$\Phi$$ state&quot; /&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;sub&gt;&lt;sup&gt;*Ref: imagem construída pelo autor através do QisKit.&lt;/sup&gt;&lt;/sub&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Além de gerar um entrelaçamento através dos bell states, também podemos “remover” esse entreleçamento através de um circuito de decoder. A parte legal, é que podemos usar o mesmo decoder para todos os bell states.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;img src=&quot;/assets/images/bell-states/bell-state-decoder.png&quot; alt=&quot;Bell state decoder&quot; /&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;sub&gt;&lt;sup&gt;*Ref: imagem construída pelo autor através do QisKit.&lt;/sup&gt;&lt;/sub&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;No exemplo acima, primeiro construimos um bell state e depois aplicamos o decoder.&lt;/p&gt;
+
+&lt;p&gt;Os bell states também são conhecidos como par EPR.&lt;/p&gt;
+
+&lt;h3 id=&quot;algoritmo-de-teletransporte&quot;&gt;Algoritmo de Teletransporte&lt;/h3&gt;
+
+&lt;p&gt;Você certamente já ouviu falara no algoritmo de teletransporte, mas, ao contrário, do que você imagina, no algoritmo de teletransporte não iremos mover um qubit de posição. Isto é, não iremos pegar um qubit localizado em Porto Alegre e mover ele para Campinas, por exemplo.&lt;/p&gt;
+
+&lt;p&gt;O que vamos fazer é mover a informação do qubit localizado em Porto Alegre para o qubit localizado em Campinas.&lt;/p&gt;
+
+&lt;p&gt;O Algoritmo de teletransporte é fundamental para a computação quântica porque diferente da computação clássica onde podemos copiar uma informação e transferir para outro lugar, na computação quântica não podemos fazer isso por causa do no clone theorem. Assim, esse algoritmo permite a computação quântica enviar informações a longa distância.&lt;/p&gt;
+
+&lt;p&gt;Esse circuito é um pouco maior do que os circuitos que estamos acostumados. O exemplo a seguir, mostra como teletransportar o valor em \(q_0\) para o \(q_2\).&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;&lt;img src=&quot;/assets/images/bell-states/teleportation.png&quot; alt=&quot;Bell state decoder&quot; /&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;sub&gt;&lt;sup&gt;*Ref: imagem construída pelo autor através do QisKit.&lt;/sup&gt;&lt;/sub&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;O circuito é dividido em 4 partes. A primeira parte é usada para configurar a informação contina no \(q_0\), ou seja, é usada para definir qual informação será teletransportada.&lt;/p&gt;
+
+&lt;p&gt;A segunda parte, é usada para criar um entrelaçamento entre os qubits \(q_1\) e \(q_2\) e \(q_0\) e \(q_1\) e assim ser possível modificar esses qubits mesmo quando eles não estão fisicamente no mesmo lugar. Nesse exemplo, foi utilizado o bell state \(\Phi^+\), mas poderiamos ter utilizado qualquer outro.&lt;/p&gt;
+
+&lt;p&gt;A parte três faz uma medição para colapsar o sistema e a quarta parte serve como decoder da informação.&lt;/p&gt;
+
+&lt;p&gt;As três primeiras partes são executadas por quem vai enviar a informação enquanto que a última parte é executada por quem está recebendo a informação. Apenas o \(q_2\) é enviado, os outros dois qubits permanecem em posse do emissor.&lt;/p&gt;
+
+&lt;h3 id=&quot;dicas-de-leitura&quot;&gt;Dicas de Leitura&lt;/h3&gt;
+
+&lt;p&gt;A Wikipedia possui um excelente resumo da história paradoxo EPR, porém a sua explicação não é muito clara. Felizmente, no YouTube temos dois vídeos sobre esse paradoxo ótimos. O primeiro foi publicado pelo canal TED-Ed sob o título &lt;a href=&quot;https://www.youtube.com/watch?v=DbbWx2COU0E&quot;&gt;Einstein’s brilliant mistake: Entangled states - Chad Orzel&lt;/a&gt; e é um vídeo, puramente, de divulgação. Para os mais corajosos temos o vídeo do DrPhysicsA — &lt;a href=&quot;https://www.youtube.com/watch?v=0x9AgZASQ4k&quot;&gt;The Einstein Podolsky Rosen (EPR) Paradox - A simple explanation&lt;/a&gt; — e também temos o artigo em si no &lt;a href=&quot;https://cds.cern.ch/record/405662/files/PhysRev.47.777.pdf&quot;&gt;CERN Document Server&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;A Wikipedia também possui um excelente post sobre os bell states. Contando toda a sua história e uma explicação breve sobre o que são. O canal DrPhysicsA também possui um excelente vídeo, tentando, explicar de forma mais técnica a demonstração que John Bell fez no seu artigo. Eu não cheguei a ler o artigo original, mas ele pode ser encontrado no site da &lt;a href=&quot;https://journals.aps.org/ppf/abstract/10.1103/PhysicsPhysiqueFizika.1.195&quot;&gt;American Physical Society&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Já o quantum teleportation Algorithm pode ser encontrado em diversos lugares. A minha primeira recomendação é a própria Wikipedia e também existe um vídeo do &lt;a href=&quot;https://www.youtube.com/watch?v=mMwovHK2NrE&quot;&gt;Qiskit&lt;/a&gt; no YouTube.&lt;/p&gt;
+
+&lt;h3 id=&quot;referências&quot;&gt;Referências&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Eleanor Rieffel and Wolfgang Polak. 2011. Quantum Computing: A Gentle Introduction (1st. ed.). The MIT Press.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Bell_state&quot;&gt;Bell state&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/EPR_paradox&quot;&gt;EPR paradox&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=0x9AgZASQ4k&quot;&gt;The Einstein Podolsky Rosen (EPR) Paradox - A simple explanation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=gh7xITmvgyU&quot;&gt;Things we know about spin in quantum mechanics&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://quantumcomputinguk.org/tutorials/introduction-to-bell-states&quot;&gt;Introduction to Bell states in Qiskit with Code&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=mMwovHK2NrE&quot;&gt;Quantum Teleportation Algorithm — Programming on Quantum Computers Season 1Ep 5&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=DbbWx2COU0E&quot;&gt;Einstein’s brilliant mistake: Entangled states - Chad Orzel&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cds.cern.ch/record/405662/files/PhysRev.47.777.pdf&quot;&gt;Can Quantum-Mechanical Description of Physical Reality be Considered Complete?&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 04 Sep 2022 09:13:00 -0300</pubDate>
+        <link>http://localhost:4000/matem%C3%A1tica/computacao-qu%C3%A2ntica/entrela%C3%A7amento/bell-states/2022/09/04/bell-states.html</link>
+        <guid isPermaLink="true">http://localhost:4000/matem%C3%A1tica/computacao-qu%C3%A2ntica/entrela%C3%A7amento/bell-states/2022/09/04/bell-states.html</guid>
+        
+        
+        <category>matemática</category>
+        
+        <category>computacao-quântica</category>
+        
+        <category>entrelaçamento</category>
+        
+        <category>bell-states</category>
+        
+      </item>
+    
+      <item>
+        <title>Transformações Quânticas (Matrizes unitárias, Reversibilidade e No-Cloning Theorem)</title>
+        <description>&lt;p&gt;Quando começamos a avançar no estudo da computação quântica e já temos noção dos conceitos fundamentais isolados como: o que são qubits, estados de qubits, produto entre qubits. Passa a ser necessário também conhecermos melhor as regras e formas de manipulação dos qubits, para que possamos avançar para utilizações mais práticas do conhecimento em computação quântica como a escrita de algoritmos.&lt;/p&gt;
+
+&lt;p&gt;Sendo assim, no presente artigo será abordado diretamente o assunto de Transformações quânticas e suas particularidades para aprofundar o conhecimento nas interações realizadas com qubits em circuitos quânticos.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;estados-quânticos-quantum-states&quot;&gt;Estados quânticos (Quantum States)&lt;/h3&gt;
+&lt;p&gt;Como já mencionado nos artigos anteriores, a computação quântica é baseada diretamente nas regras da mecânica quântica, o que acaba por trazer uma &lt;strong&gt;abordagem&lt;/strong&gt; &lt;strong&gt;probabilísticas&lt;/strong&gt; ao invés de determinísticas como na computação clássica.&lt;/p&gt;
+
+&lt;p&gt;Assim sendo, por padrão é utilizada uma representação baseada em &lt;strong&gt;vetores&lt;/strong&gt; &lt;strong&gt;de&lt;/strong&gt; &lt;strong&gt;estado&lt;/strong&gt; para lidar algébricamente com qubits, utilizando operações de álgebra linear.
+Para exemplificar, abaixo temos o vetor de estados de um qubit:&lt;/p&gt;
+
+\[\psi = a\ket{0} + b\ket{1}\]
+
+&lt;p&gt;O vetor de estados de um qubit é geralmente representado utilizando a notação bra-ket de Dirac, por podermos retratar de forma genérica um vetor em um espaço com infinitas dimensões, dessa forma tem-se a possibilidade de enxergar de forma simplificada arranjos complexos de estados com probabilidades complexas. O mesmo vetor de estados demonstrado acima também pode ser exibido como:&lt;/p&gt;
+
+\[\psi = \left[ {\begin{array}{cc}
+a \\
+b \\
+\end{array} } \right]\]
+
+&lt;p&gt;Na segunda representação, temos que os coeficientes &lt;strong&gt;a&lt;/strong&gt; e &lt;strong&gt;b&lt;/strong&gt;, que representam as amplitudes de um determinado estado. O respectivo estado é determinado por sua posição no vetor e os valores de ambos são &lt;strong&gt;complexos&lt;/strong&gt;, podendo possuir uma parte real e uma parte imaginária.&lt;/p&gt;
+
+&lt;p&gt;Um sistema com dois qubits, como já visto anteriormente, é representado pelo produto tensorial entre os qubits isolados, que acaba por aumentar a quantidade de estados possíveis seguindo a ordem de \(2^n\) estados para &lt;strong&gt;n&lt;/strong&gt; qubits, como pode-se visualizar abaixo:&lt;/p&gt;
+
+\[\ket{\psi\phi} = \ket{\psi} \otimes \ket{\phi}\]
+
+&lt;p&gt;Para mais detalhes sobre o cálculo tensorial e entrelaçamento quântico, o assunto é abordado diretamente &lt;a href=&quot;/matemática/computacao-quântica/produto-tensorial/entrelaçamento/2022/08/06/multiples-qubits-cross-product-entrelacamento.html&quot;&gt;nesse post do nosso blog&lt;/a&gt;!&lt;/p&gt;
+
+&lt;h3 id=&quot;transformação-quântica-transformações-unitárias&quot;&gt;Transformação Quântica (Transformações unitárias)&lt;/h3&gt;
+&lt;p&gt;Bom, tendo feito nossa breve retomada da representação de estados quânticos, podemos ir para o assunto principal do artigo, que é justamente a transformação de estados.
+Quando nos referimos a transformação quântica, em outras palavras estamos referindo-nos às matrizes de transferência já mencionadas em um &lt;a href=&quot;/http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/05/24/portas-unicas.html&quot;&gt;outro artigo&lt;/a&gt;, que basicamente são matrizes compostas de coeficientes capazes de alterar o estado de um qubit de alguma forma quando aplicadas a ele. A aplicação se dá por meio do calculo do produto de matrizes entre o estado do qubit de entrada e a matriz de transferência.&lt;/p&gt;
+
+&lt;p&gt;Por conta da natureza probabilística dos qubits, a natureza não permite informações arbitrárias de suas componentes forçando determinadas regras a serem seguidas ao interagir com seus estados.
+A primeira dessas regras é que toda transformação deve ser diretamente conectada às medições quânticas e a superposição quântica.&lt;/p&gt;
+
+&lt;p&gt;Sendo o qubit \(\ket{\psi} = \left[ {\begin{array}{cc}
+0 \\
+1 \\
+\end{array} } \right]\)&lt;/p&gt;
+
+&lt;p&gt;E a matriz de transferência H (Hadamard):
+\(H =  \frac{1}{\sqrt{2}}\left[ {\begin{array}{cc}
+1 &amp;amp; 1 \\
+1 &amp;amp; -1\\
+\end{array} } \right]\)&lt;/p&gt;
+
+&lt;p&gt;Temos que \(\ket{\psi} \rightarrow H = \ket{\psi}H = \ket{-}\)&lt;/p&gt;
+
+&lt;h4 id=&quot;matrizes-unitárias&quot;&gt;Matrizes Unitárias&lt;/h4&gt;
+&lt;p&gt;Tendo em vista as restrições naturais das operações aplicadas a qubits, temos que elas precisam ser lineares e unitárias.
+Mais precisamente, podemos dizer que aplicar uma matriz unitária a um qubit, significa aplicar a mesma matriz a todos os estados possíveis do qubit em superposição.
+Da mesma forma, a linearidade implica que o produto escalar seja preservado, assim sendo, o módulo, ou “comprimento” do vetor aplicado não pode ser alterado com a operação, vetores unitários devem manter-se unitários e estados ortogonais devem manter-se ortogonais. (As componentes são complexas).&lt;/p&gt;
+
+&lt;p&gt;Assim sendo, existem argumentos matemáticos que implicam que para qualquer transformação quântica &lt;strong&gt;U&lt;/strong&gt;, seu operador adjunto precisa ser idêntico ao seu inverso.
+\(U^\dagger = U^{-1}\)&lt;/p&gt;
+
+&lt;p&gt;Além disso, temos algumas outras definições:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;O produto entre dois operadores unitários é unitário.&lt;/li&gt;
+  &lt;li&gt;O produto tensorial entre operadores unitários \(U_1 \otimes U_2\) é transformação unitária de \(X_1 \otimes X_2\) somente se \(U_1\) e \(U_2\) forem transformações unitárias dos respectivos espaços.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;reversibilidade&quot;&gt;Reversibilidade&lt;/h4&gt;
+&lt;p&gt;Devido a natureza incrivelmente frágil dos qubits atuais, um dos grandes problemas enfrentados pela área de computação quântica é o fato de que para reproduzir o comportamento de particulas, o sistema acaba por se tornar sucetível a inúmeros erros e à &lt;strong&gt;decoerência&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h6 id=&quot;decoerência&quot;&gt;Decoerência&lt;/h6&gt;
+&lt;p&gt;Definida como a perda de informação de um qubit (mudança de estado) por conta de interação com o ambiente ou outras partes do sistema.&lt;/p&gt;
+
+&lt;p&gt;Portanto, um requisito para transformações e operações quânticas funcionarem em larga escala, é que elas sejam também perfeitamente reversíveis.
+Reversibilidade significa sermos capazes de identificar a entrada utilizada somente a partir do conhecimento da saída obtida e da operação realizada, tornando possivel identificar também caso algum tipo de interferencia tenha atingido o sistema no processo.
+Como podemos identificar na imagem abaixo, que demonstra a tabela de valores da porta CNOT, que aplica uma inversão de valor no qubit B apenas caso o qubit A esteja em estado 1.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/transformacoes-quanticas/Reversibility-2.png&quot; alt=&quot;Reversibilidade 0&quot; /&gt;
+Fonte: &lt;a href=&quot;https://www.futurelearn.com/info/courses/intro-to-quantum-computing/0/steps/31561&quot;&gt;Future Learn&lt;/a&gt; (2022).&lt;/p&gt;
+
+&lt;p&gt;Como pode-se visualizar na imagem acima, a porta CNOT possui duas saídas (A’ e B’) para tornar-se reversível, pois a saída A’ apenas repassa o estado original do qubit A.
+A partir disso, pode-se perceber o problema mencionado, pois caso a porta não tivesse a saída A’, haveria mais de um estado com a mesma saída e entradas diferentes (1 - 4 e 2 - 3).&lt;/p&gt;
+
+&lt;h3 id=&quot;no-cloning-theorem&quot;&gt;No-Cloning Theorem&lt;/h3&gt;
+&lt;p&gt;Agora, abordaremos um teorema estritamente relacionado às transformações unitárias, o &lt;strong&gt;no-cloning theorem&lt;/strong&gt;, que implica que é impossível existir uma operação de clonagem perfeita, que seja capaz de copiar completamente o estado de um qubit em outro.&lt;/p&gt;
+
+&lt;p&gt;Supondo que \(U\) é um operador unitário que é capaz de clonar outros qubits. Assim sendo, temos que:&lt;/p&gt;
+
+&lt;p&gt;\(U(\ket{a}\ket{0}) = \ket{a}\ket{a} \Rightarrow\) para todos os estados quânticos.&lt;/p&gt;
+
+&lt;p&gt;Prosseguindo, suponhamos que \(\ket{a}\) e \(\ket{b}\) sejam estados ortogonais, e \(U\) seja capaz de cloná-los livremente, assim sendo:&lt;/p&gt;
+
+\[U(\ket{a}\ket{0}) = \ket{a}\ket{a}\]
+
+\[U(\ket{b}\ket{0}) = \ket{b}\ket{b}\]
+
+&lt;p&gt;Agora, considerando que: \(\ket{c} = \frac{1}{\sqrt{2}}(\ket{a} + \ket{b})\)&lt;/p&gt;
+
+&lt;p&gt;Por conta da linearidade de transformações quânticas, temos que:&lt;/p&gt;
+
+\[U(\ket{c}\ket{0}) = \frac{1}{\sqrt{2}}(U(\ket{a}\ket{0}) + U(\ket{b}\ket{0}))\]
+
+\[U(\ket{c}\ket{0}) = \frac{1}{\sqrt{2}}(\ket{a}\ket{a} + \ket{b}\ket{b})\]
+
+&lt;p&gt;Porém, sendo \(U\) um operador de clonagem, então obrigatoriamente:&lt;/p&gt;
+
+\[U(\ket{c}\ket{0}) = \ket{c}\ket{c}\]
+
+&lt;p&gt;O que implica que:&lt;/p&gt;
+
+\[U(\ket{c}\ket{0}) = \ket{c}\ket{c} = \frac{1}{2}(\ket{a}\ket{a} + \ket{a}\ket{b} + \ket{b}\ket{a} + \ket{b}\ket{b})\]
+
+&lt;p&gt;O que é diferente da nossa primeira conclusão sobre o resultado do operador \(U\).&lt;/p&gt;
+
+\[\frac{1}{2}(\ket{a}\ket{a} + \ket{a}\ket{b} + \ket{b}\ket{a} + \ket{b}\ket{b}) \neq \frac{1}{\sqrt{2}}(\ket{a}\ket{a} + \ket{b}\ket{b})\]
+
+&lt;p&gt;Assim sendo, de acordo com as leis da mecânica quântica, é impossível existir um operador unitário capaz de copiar completamente um estado complexo.
+Porém, é possível atingir uma eficácia suficientemente utilizável a partir de operações conhecidas, já tendo sido identificado até 80% de precisão em uma cópia durante testes de laboratório.&lt;/p&gt;
+
+&lt;h5 id=&quot;referências&quot;&gt;Referências&lt;/h5&gt;
+&lt;ul&gt;
+  &lt;li&gt;FUTURE LEARN. Quantum computing: Reversible evolution. Disponível em: https://www.futurelearn.com/info/courses/intro-to-quantum-computing/0/steps/31561.&lt;/li&gt;
+  &lt;li&gt;QUANTUM COMPUTING. EdX Quantum Reversibility - Part 1. Disponível em: https://www.youtube.com/watch?v=TpL7gkUGcXU&amp;amp;t=30s.&lt;/li&gt;
+  &lt;li&gt;Eleanor Rieffel and Wolfgang Polak. 2011. Quantum Computing: A Gentle Introduction (1st. ed.). The MIT Press.&lt;/li&gt;
+  &lt;li&gt;P.A.M Dirac. 1947. The Principles of Quantum Mechanics (3rd. ed.). University Press, Oxford.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Tue, 16 Aug 2022 05:00:00 -0300</pubDate>
+        <link>http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/08/16/transformacoes-quanticas.html</link>
+        <guid isPermaLink="true">http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/08/16/transformacoes-quanticas.html</guid>
+        
+        
+        <category>teoria</category>
+        
+        <category>computacao-quântica</category>
+        
+        <category>educativo</category>
+        
+      </item>
+    
+      <item>
+        <title>Múltiplos qubits, produto tensorial e entrelaçamento quântico</title>
+        <description>&lt;!--more--&gt;
+
+&lt;p&gt;Como visto em posts anteriores, o bloco fundamentar da computação quântica é o qubit, que é uma combinação linear de \(\ket{0}\) e \(\ket{1}\).&lt;/p&gt;
+
+\[\psi = a\ket{0} + b\ket{1}\]
+
+&lt;p&gt;Ou se preferir.&lt;/p&gt;
+
+\[\psi = \left[ {\begin{array}{cc}
+a \\
+b \\
+\end{array} } \right]\]
+
+&lt;p&gt;Um computar de um único qubit não é muito útil. São necessários múltiplos qubits para ser possível resolver algum problema real.&lt;/p&gt;
+
+&lt;h3 id=&quot;múltiplos-qubits&quot;&gt;Múltiplos qubits&lt;/h3&gt;
+&lt;p&gt;Por simplicidade, vamos trabalhar com um sistema de apenas dois qubits.&lt;/p&gt;
+
+&lt;p&gt;Provavelmente, a primeira ideia que vem a sua mente é montar o seguinte sistema linear.&lt;/p&gt;
+
+&lt;p&gt;\(\psi = a_1\ket{0} + b_1\ket{1}\)
+\(\phi = a_2\ket{0} + b_2\ket{1}\)&lt;/p&gt;
+
+&lt;p&gt;onde \(\psi\) é o vetor de estados do primeiro qubit e \(\phi\) é o vetor estado do segundo qubit.&lt;/p&gt;
+
+&lt;p&gt;Apesar de essa ser a representação mais intuitiva, a forma mais usada para se trabalhar com esses sistemas é através de um vetor de estados.&lt;/p&gt;
+
+\[\ket{\psi\phi} = \ket{\psi} \otimes \ket{\phi} = \alpha_1\ket{00} + \alpha_1\ket{01} + \alpha_1\ket{10} + \alpha_1\ket{11}\]
+
+&lt;p&gt;Ou como vetor.&lt;/p&gt;
+
+\[\ket{\psi\phi} = \left[ {\begin{array}{cc}
+\alpha_1 \\
+\alpha_2 \\
+\alpha_3 \\
+\alpha_4 \\
+\end{array} } \right]\]
+
+&lt;p&gt;Já que ambas as representações estão corretas. Deve existir uma relação entre elas. Assim, como que os &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;a&lt;/code&gt;s e &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;b&lt;/code&gt;s se relacionam com os alfas (\(\alpha\))?&lt;/p&gt;
+
+&lt;p&gt;Vamos fazer uma coisa perigosa e assumir que a mecânica quântica faz sentido. Assumindo isso, podemos criar um diagrama de árvore de probabilidade como o da figura a seguir.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/multiplos-qubits/exampl1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Percorrendo o caminho até chegar ao estado \(\ket{00}\), vemos que a probabilidade é dada por \(a_1a_2\). E fazendo o mesmo para os demais, podemos perceber que \(\ket{01} = a_1b_2\), \(\ket{10} = b_1a_2\) e \(\ket{11} = b_1b_2\). Ou seja,&lt;/p&gt;
+
+\[\ket{\psi\phi} = \left[ {\begin{array}{cc}
+\alpha_1 \\
+\alpha_2 \\
+\alpha_3 \\
+\alpha_4 \\
+\end{array} } \right]
+= 
+\left[ {\begin{array}{cc}
+a_1a_2 \\
+a_1b_2 \\
+b_1a_2 \\
+b_1b_2 \\
+\end{array} } \right]\]
+
+&lt;p&gt;Então temos uma maneira de representar os possíveis estados de um sistema de dois qubits. Porém, dado dois qubits, digamos \(\ket{0}\) e \(\ket{1}\) como que chegamos nesse vetor de estados?&lt;/p&gt;
+
+&lt;h3 id=&quot;produto-tensorial&quot;&gt;Produto tensorial&lt;/h3&gt;
+&lt;p&gt;Para representar o vetor de estados de dois, ou mais, qubits, usamos o produto tensorial, mas o que é um produto tensorial exatamente?&lt;/p&gt;
+
+&lt;p&gt;Vamos começar definindo o produto tensorial entre dois qubits. Então, o produto tensorial entre dois qubits \(\ket{a}=(a_1,b_1)\) e \(\ket{b}=(a_2, b_2)\) é dado através da seguinte fórmula&lt;/p&gt;
+
+\[a \otimes b = \left[ {\begin{array}{cc}
+a_1a_2 \\
+a_1b_2 \\
+b_1a_2 \\
+b_1b_2 \\
+\end{array} } \right]\]
+
+&lt;p&gt;Para termos um exemplo com números, vamos calcular o produto tensorial \(\ket{0} \otimes \ket{+}\).&lt;/p&gt;
+
+\[\ket{0} \otimes \ket{+}\]
+
+\[\ket{0} \otimes \ket{+} =  
+
+\left[ {\begin{array}{cc}
+1 \\
+0 \\
+\end{array} } \right]
+
+\otimes
+
+\frac{1}{\sqrt{2}} \left[ {\begin{array}{cc}
+1 \\
+1 \\
+\end{array} } \right]
+
+=  
+
+\frac{1}{\sqrt{2}} \left[ {\begin{array}{cc}
+1 \\
+1 \\
+0 \\
+0 \\
+\end{array} } \right]\]
+
+&lt;p&gt;Como toda operação matemática, temos algumas propriedades que são amplamente utilizadas:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;
+\[(\alpha \ket{v}) \otimes \ket{w} = \ket{v} \otimes (\alpha  \ket{w}) = \alpha(\ket{v} \otimes \ket{w})\]
+  &lt;/li&gt;
+  &lt;li&gt;
+\[(\ket{v} \otimes \ket{w}) \otimes \ket{u} = \ket{v} \otimes (\ket{w} \otimes \ket{u})\]
+  &lt;/li&gt;
+  &lt;li&gt;
+\[(\ket{v_1} + \ket{v_2}) \otimes \ket{w} = \ket{v_1} \otimes \ket{w} + \ket{v_2} \otimes \ket{w}\]
+  &lt;/li&gt;
+  &lt;li&gt;
+\[\ket{v} \otimes (\ket{w_1} + \ket{w_2}) = \ket{v} \otimes \ket{w_1} + \ket{v} \otimes \ket{w_2}\]
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Importante&lt;/strong&gt;: as operações de produto tensorial não são comutativas, isso é, \(\ket{v} \otimes \ket{w} \neq \ket{w} \otimes \ket{v}\).&lt;/p&gt;
+
+&lt;p&gt;Então no final, podemos escrever um sistema de dois qubits das seguintes formas&lt;/p&gt;
+
+\[\ket{01} = \ket{0} \otimes \ket{1}\]
+
+&lt;p&gt;E um exemplo mais interessante, seria um dos bell state.&lt;/p&gt;
+
+\[\ket{\Phi^+} = \frac{1}{\sqrt{2}}(\ket{0} \otimes \ket{0} + \ket{1} \otimes \ket{1}) = \frac{1}{\sqrt{2}}(\ket{00} + \ket{11})\]
+
+&lt;p&gt;Essa definição também pode ser estendida a matrizes:&lt;/p&gt;
+
+\[\left[ {\begin{array}{cc}
+a_1 \\
+a_2 \\
+\end{array} } \right] \otimes \left[ {\begin{array}{cc}
+b_1 &amp;amp; b_2 \\
+b_3 &amp;amp; b_4 \\
+\end{array} } \right]
+
+=
+
+\left[ {\begin{array}{cc}
+a_1 \otimes \left[ {\begin{array}{cc}
+b_1 &amp;amp; b_2 \\
+b_3 &amp;amp; b_4 \\
+\end{array} } \right] \\
+
+a_2 \otimes \left[ {\begin{array}{cc}
+b_1 &amp;amp; b_2 \\
+b_3 &amp;amp; b_4 \\
+\end{array} } \right]
+
+\end{array} } \right]
+
+=
+
+\left[ {\begin{array}{cc}
+a_1b_1 &amp;amp; a_1b_2 \\
+a_1b_3 &amp;amp; a_1b_4 \\
+a_2b_1 &amp;amp; a_2b_2 \\
+a_2b_3 &amp;amp; a_2b_4 \\
+\end{array} } \right]\]
+
+&lt;h3 id=&quot;entrelaçamento&quot;&gt;Entrelaçamento&lt;/h3&gt;
+&lt;p&gt;Como vimos na seção anterior, podemos representar um sistema de qubits através de um produto tensorial.&lt;/p&gt;
+
+&lt;p&gt;Porém, uma pergunta que fica no ar é: dado o vetor resultado do produto tensorial, podemos encontrar dois vetores que formam ele?&lt;/p&gt;
+
+&lt;p&gt;Por exemplo, dado o seguinte vetor de estados de dois qubits. É possível encontrar dois qubits onde o produto tensorial resulta no mesmo?&lt;/p&gt;
+
+\[\ket{\Phi^+} = \frac{1}{\sqrt{2}} \left[ {\begin{array}{cc}
+1 \\
+0 \\
+0 \\
+1 \\
+\end{array} } \right]\]
+
+&lt;p&gt;A resposta é não.&lt;/p&gt;
+
+&lt;p&gt;Se um sistema de qubits \(\ket{\Psi}\) não pode ser escrito como \(\ket{\psi} \otimes \ket{\phi}\). Então dizemos que existe um entrelaçamento quântico e quando podemos escrever o sistema através de um produto tensorial, dizemos ser um estado separável.&lt;/p&gt;
+
+&lt;p&gt;Uma dúvida que fica no ar, é como que nós geramos um entrelaçamento quântico como o \(\ket{\Phi^+}\)?&lt;/p&gt;
+
+&lt;p&gt;A forma mais simples é usando um Hadamard gate e um CNOT gate como mostrado na figura abaixo.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/multiplos-qubits/bell-state-circuit.png&quot; alt=&quot;Circuito para gerar um bell state&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;*Ref: https://en.wikipedia.org/wiki/Bell_state#/media/File:The_Hadamard-CNOT_transform_on_the_zero-state.png &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;No sistema de dois qubits, primeira aplicamos o hadamard gate ao primeiro qubit (H na imagem acima). Isso vai gerar uma sobreposição.&lt;/p&gt;
+
+\[\frac{( \ket{0} + \ket{1})\ket{0}}{\sqrt{2}} = \ket{+0}\]
+
+&lt;p&gt;Então usamos essa sobreposição como controlador do CNOT no segundo qubit, e assim, gerando o bell state \(\ket{\Phi^+}\).&lt;/p&gt;
+
+&lt;h3 id=&quot;dicas-de-leitura&quot;&gt;Dicas de Leitura&lt;/h3&gt;
+&lt;p&gt;Para um passo a passo mais detalhado de como gerar o bell state, e como gerar os demais bell states, eu recomendo o post &lt;a href=&quot;https://quantumcomputinguk.org/tutorials/introduction-to-bell-states&quot;&gt;truth tables with grover’s search in qiskit&lt;/a&gt; do quantum computing uk.&lt;/p&gt;
+
+&lt;p&gt;Durante o post  do quantum computing uk é apresentado a seguinte matrix como sendo o operador CNOT.
+\(CNOT = \left[ {\begin{array}{cc}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 \\
+0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\
+\end{array} } \right]\)
+Porém, não é justificado a origem dessa matrix. O usuário Perry Sakkaris proveu uma boa explicação no &lt;a href=&quot;https://quantumcomputing.stackexchange.com/a/5192&quot;&gt;Stack Exchange&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;É possível encontrar uma introdução mais teórica sobre produto tensorial no canal &lt;a href=&quot;https://www.youtube.com/watch?v=KnSZBjnd_74&quot;&gt;Mu Prime Math&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;referências&quot;&gt;Referências&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Eleanor Rieffel and Wolfgang Polak. 2011. Quantum Computing: A Gentle Introduction (1st. ed.). The MIT Press.&lt;/li&gt;
+  &lt;li&gt;https://quantumcomputinguk.org/tutorials/introduction-to-bell-states&lt;/li&gt;
+  &lt;li&gt;https://en.wikipedia.org/wiki/Bell_state&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sat, 06 Aug 2022 09:13:00 -0300</pubDate>
+        <link>http://localhost:4000/matem%C3%A1tica/computacao-qu%C3%A2ntica/produto-tensorial/entrela%C3%A7amento/2022/08/06/multiples-qubits-cross-product-entrelacamento.html</link>
+        <guid isPermaLink="true">http://localhost:4000/matem%C3%A1tica/computacao-qu%C3%A2ntica/produto-tensorial/entrela%C3%A7amento/2022/08/06/multiples-qubits-cross-product-entrelacamento.html</guid>
+        
+        
+        <category>matemática</category>
+        
+        <category>computacao-quântica</category>
+        
+        <category>produto-tensorial</category>
+        
+        <category>entrelaçamento</category>
+        
+      </item>
     
       <item>
         <title>Os Números Imaginários, uma base para Computação Quântica</title>
