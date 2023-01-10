@@ -7,14 +7,15 @@ categories: teoria computacao-quântica educativo
 usemathjax: true
 ---
 
+Nesse artigo iremos introduzir dois dispositivos quânticos que simulam a ação de um codificador binário 8:3 e um multiplexador 4:1 utilizando como orientação o artigo [ref.I]. A generalização n:m desses dispositivos pode ser facilmente construída e caso o leitor se interesse a referência I mostra alguns detalhes. 
+É importante pontuar que embora usemos a palavra "quântica" estes dispositivos não dependem de qualquer fenômeno quântico. Os gates que realizam a função dos dispositivos clássicos são substituidos por composições simples de gates quânticos e portanto podem ser simulados em ferramentas como o IBM Quantum Composer.
+Antes da leitura desse post é recomendado um conhecimento prévio em gates quânticos e clássicos.
+
+## Codificador e Multiplexador
 Um codificador é um dispositivo que é utilizado para transformar dados de entrada X em dados de saída Y de acordo com certas regras. O decodificador, por outro lado, faz o caminho inverso levando os dados Y em X. Como o nome sugere, um conjunto de entrada é codificado de forma que apenas decodificadores podem recuperar os dados iniciais. O leitor pode perceber o quão importante é o estudo desses dispositivos não apenas em criptografia ou compiladores mas para a computação em geral, como processamento de informação. Um exemplo de codificador é o binário que transforma números em cadeias de bits.
+
 Um multiplexador é um dispositivo que recebe como entrada dados de diversos canais e retorna, através de controladores (bits), estes dados em apenas um canal otimizando, geralmente, o tratamento dos dados posteriormente. O demultiplexador realiza a operação inversa, recebe como entrada os dados através de um canal e distribui a saida em vários canais.
 Conforme esperado, em computação clássica essas operações são realizadas através de circuitos, gates e bits. Em computação quântica desejamos que ocorra o mesmo. Neste artigo introduziremos esses dispositivos clássicos e construiremos os análogos quânticos usando como referência os artigos listados na referência através do Qiskit.
-
-Nesse artigo iremos introduzir dois dispositivos quânticos que simulam a ação de um codificador binário 8:3 e um multiplexador 4:1 utilizando como orientação o artigo da referência I. A generalização n:m desses dispositivos pode ser facilmente construída e caso o leitor se interesse a referência I mostra alguns detalhes. 
-É importante pontuar que embora usemos a palavra "quântica" estes dispositivos não dependem de qualquer fenômeno quântico. Os gates que realizam a função dos dispositivos clássicos são substituidos por composições simples de gates quânticos e portanto podem ser simulados em ferramentas como o IBM Quantum Composer.
-
-Antes da leitura desse post é recomendado um conhecimento prévio em gates quânticos e clássicos.
 
 ### Codificador binário 8:3
 
@@ -39,9 +40,9 @@ Fonte: Autor. Utilizado o IBM Quantum Composer.
 ![11](/assets/images/encoders-multiplexers/11.png)
 Fonte: Autor. Utilizado o IBM Quantum Composer.
 
-Onde o último qubit (ou primeiro qubit no Composer) é a resposta da operação. Uma implementação em Python usando o Qiskit está presente na referência I.
+Onde o último qubit (ou primeiro qubit no Composer) é a resposta da operação. Uma implementação em Python usando o Qiskit está presente em [ref.I].
 
-Agora poderiammos montar o codificador binário 8:3 se o IBM Quantum Composer nos fornecesse uma ferramenta direta para trabalharmos com mais de 7 qubtis. Como não é o caso, teremos que nos limitar, por enquanto, a esquemas e linhas de código. Uma implementação em Python utilizando o Qiskit e o IBM podem ser encontradas na refI. A construção do codificador binário 8:3 fica [refI]:
+Agora poderiammos montar o codificador binário 8:3 se o IBM Quantum Composer nos fornecesse uma ferramenta direta para trabalharmos com mais de 7 qubtis. Como não é o caso, teremos que nos limitar, por enquanto, a esquemas e linhas de código. Uma implementação em Python utilizando o Qiskit e o IBM podem ser encontradas em [ref.I]. A construção do codificador binário 8:3 fica, conforme [ref.I]:
 
 ![encoder](/assets/images/encoders-multiplexers/encoderfinal.png)
 Fonte: Narula, Hridey & Behera, Bikash & Panigrahi, Prasanta. (2020). Implementing Quantum Data Processing Circuits Using IBM Quantum Experience Platform. 10.13140/RG.2.2.36062.38729
@@ -73,18 +74,20 @@ Da mesma forma que para o codificador, não podemos implementar um multiplexador
 ![multiplexer](/assets/images/encoders-multiplexers/mux.png)
 Fonte: Narula, Hridey & Behera, Bikash & Panigrahi, Prasanta. (2020). Implementing Quantum Data Processing Circuits Using IBM Quantum Experience Platform. 10.13140/RG.2.2.36062.38729
 
-Note que uma vez criado o codificador e o multiplexador, basta inverter as portas para obtermos o decodificador e o demultiplexador. Estes são detalhados na ref. I.
+Note que uma vez criado o codificador e o multiplexador, basta inverter as portas para obtermos o decodificador e o demultiplexador. Estes são detalhados em [ref.I].
 
 ## Referências
 I. Narula, Hridey & Behera, Bikash & Panigrahi, Prasanta. (2020). Implementing Quantum Data Processing Circuits Using IBM Quantum Experience Platform. 10.13140/RG.2.2.36062.38729 [https://www.researchgate.net/publication/338411513_Implementing_Quantum_Data_Processing_Circuits_Using_IBM_Quantum_Experience_Platform]
+
+
 II. Arijit Roy, Dibyendu Chatterjee and Subhasis Pal. (2012). Synthesis of Quantum Multiplexer Circuits [http://ijcsi.org/papers/IJCSI-9-1-3-67-74.pdf]
 
 
 
 ### Futuro
-* Adicionar mais conteúdo teórico usando RefII
+* Adicionar mais conteúdo teórico usando [ref.II]
 * É possível criar um gate que flipe 1 para 0 sempre? 
-* Irreversibilidade quântica https://ieeexplore.ieee.org/document/5392446
+* Irreversibilidade https://ieeexplore.ieee.org/document/5392446
 * É possível criar um multiplexador com um qubit de controle?
 
 

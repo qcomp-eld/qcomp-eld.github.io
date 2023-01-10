@@ -7,7 +7,7 @@ categories: teoria computacao-quântica educativo
 usemathjax: true
 ---
 
-Neste artigo iremos introduzir, a partir de [ref.I], um dos primeiros algoritmos quânticos criados. Embora não tenha muita aplicação prática, à princípio,  este é simples e fornece um exemplo de como trabalhar com computação quântica exclusivamente em teoria, o que, de fato, é útil estando na era NISQ. Conforme [ref.II], o algoritmo de Deutsch-Josza também serve para demonstrar a importância de permitir que amplitudes quânticas assumam valores positivos e negativos, em oposição às amplitudes clássicas que são sempre não negativas. 
+Neste artigo iremos introduzir, a partir de [ref.I], um dos primeiros algoritmos quânticos criados. Embora não tenha muita aplicação prática, este é simples e fornece um ótimo exemplo de como trabalhar com computação quântica exclusivamente em teoria, o que, de fato, é útil estando na era NISQ. Conforme [ref.II], o algoritmo de Deutsch-Josza também serve para demonstrar a importância de permitir que amplitudes quânticas assumam valores positivos e negativos, em oposição às amplitudes clássicas que são sempre não negativas. 
 Antes da leitura desse post é recomendado um conhecimento prévio sobre gates quânticos.
 
 
@@ -28,7 +28,7 @@ Para facilitar a notação, criaremos outro Oracle $$U_f$$ baseado em $$O_f$$ co
 De fato, note que, com esse $$y$$ teremos,
 
 $$
-O_f\ket{x}\ket{y} = \frac{1}{\sqrt{2}}(\ket{x}\otimes  \ket{(\ket{0}-\ket{1}))\oplus f(x)}) = \frac{1}{\sqrt{2}}(\ket{x}\otimes \ket{(\ket{0}\oplus f(x)-\ket{1}\oplus f(x))})
+O_f\ket{x}\ket{y} = \frac{1}{\sqrt{2}}(\ket{x}\otimes  \ket{(\ket{0}-\ket{1})\oplus f(x)}) = \frac{1}{\sqrt{2}}(\ket{x}\otimes \ket{(\ket{0}\oplus f(x)-\ket{1}\oplus f(x))})
 $$
 
 que é igual $$\ket{x} \ket{y}$$ no caso em que $$f(x)=0$$ e $$-\ket{x} \ket{y}$$ no caso em que $$f(x)=1$$
@@ -39,7 +39,7 @@ O_f\ket{x}\ket{y} = (-1)^{f(x)}\ket{x}
 $$
 
 E portanto $$U_f$$ é um operador de fase uma vez que $$U_f\ket{x}=(-1)^{f(x)}\ket{x}$$.
-O estudo de Oracles não se restringe a este algoritmo. No algoritmo de Grover entendem este conceito também é fundamental.
+O estudo de Oracles não se restringe a este algoritmo. No algoritmo de Grover este conceito também é fundamental.
 
 #### Hadamard gate em n dimensões
 Para iniciarmos o estudo do Algoritmo de Deutsch-Josza precisamos, por fim, reelembrar a ação do gate Hadamard em n qubits. O leitor pode verificar facilmente que a ação do gate em um qubit puro $$\ket{0}$$ ou $$\ket{1}$$ é
@@ -93,6 +93,8 @@ O algoritmo de Deutsch-Josza nos fornece uma forma onde somente 1 consulta é ne
 O circuito quântico, em n=4, que implementa o algoritmo de Deutsch-Josza é:
 ![Gate-DJ](/assets/images/deutsch-josza-algorithm/dj_circuit.png)
 Fonte: Qiskit, refIV. O gate Oracle está representando nosso gate $$U_f$$ construido.
+
+
 Iremos analisar passo-a-passo o funcionamento do circuito para $$n$$ qualquer.
 Inicialmente teremos como entrada o estado puro $$\ket{00..0}$$ onde temos $$n$$ zeros. Nesse caso teremos o estado inicial
 
@@ -154,8 +156,11 @@ Portanto, teremos 1 como probabilidade se $$f$$ for constante e 0 se $$f$$ for b
 
 ### Referências
 I. Qiskit - Lecture 2.1 Simple Quantum Algoritms 1 [YouTube] https://www.youtube.com/watch?v=WYAUh-4K5E0&list=PLOFEBzvs-VvqJwybFxkTiDzhf5E11p8BI&index=3 acessado em 06/01/2023
+
 II. Field guide on IBM. Deutsch-Jozsa algorithm, https://quantum-computing.ibm.com/composer/docs/iqx/guide/deutsch-jozsa-algorithm acessado em 06/01/2023
+
 III. [procurar uma fonte pra isso - lembro de ler em algum texto de comp.]
+
 IV. Qiskit https://qiskit.org/textbook/ch-algorithms/deutsch-jozsa.html#4.4-Generalised-Circuits- acessado em 06/01/2023
 
 
