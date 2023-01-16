@@ -16,13 +16,14 @@ Antes de estudar o algoritmo de Deutsch-Josza iremos relembrar dois conceitos im
 #### Oracle
 Comecemos pelo conceito de Oracle: dispositivo físico misterioso no sentido de não sabermos as regras que o compoem mas podemos interagir com ele através de queries as quais ele nos retornará respostas. 
 Um dos objetivos principais no estudo de Oracles é conseguir respostas relevantes utilizando a quantidade minima de consultas (ou queries) possível.
-Qualquer ação em bits, em um computador clássico, pode ser [ref.III] representada através de uma função $$f:\{0,1\}^n \rightarrow \{0,1\}^m$$. Dessa forma nosso Oracle será, por exemplo, a função $$f$$.
+Qualquer ação em bits, em um computador clássico, pode ser representada através de uma função $$f:\{0,1\}^n \rightarrow \{0,1\}^m$$. Dessa forma nosso Oracle será, por exemplo, a função $$f$$.
 Em computação quântica, analogamente, pediremos que nosso Oracle seja reversível e o usaremos diretamente no circuito através do gate simples $$O_f$$ que age através de um gate, isto é, dados dois qubits $$x$$ e $$y$$:
 
 $$
 O_f\ket{x}\ket{y} = \ket{x}\ket{y\oplus f(x)}
 $$
 
+O Oracle não pode ser uma simples função $$f(x)$$ porque este deve possuir uma inversa. Para mais detalhes, você pode assistir uma explicação do próprio Deutsch em [ref.V].
 Para facilitar, por enquanto, trabalharemos apenas com $$f:\{0,1\}^n \rightarrow \{0,1\}$$. Note que se $$f(x)=x$$, então $$O_f$$ será o gate CNOT.
 Para facilitar a notação, criaremos outro Oracle $$U_f$$ baseado em $$O_f$$ com $$y=\frac{1}{\sqrt{2}}(\ket{0}-\ket{1})$$ que recebe $$\ket{x}$$ como entrada e retorna $$U_f\ket{x}$$ independentemente de $$y$$.
 De fato, note que, com esse $$y$$ teremos,
@@ -39,7 +40,7 @@ O_f\ket{x}\ket{y} = (-1)^{f(x)}\ket{x}
 $$
 
 E portanto $$U_f$$ é um operador de fase uma vez que $$U_f\ket{x}=(-1)^{f(x)}\ket{x}$$.
-O estudo de Oracles não se restringe a este algoritmo. No algoritmo de Grover este conceito também é fundamental.
+O estudo de Oracles não se restringe a este algoritmo. No algoritmo de Grover, por exemplo, este conceito também é fundamental.
 
 #### Hadamard gate em n dimensões
 Para iniciarmos o estudo do Algoritmo de Deutsch-Josza precisamos, por fim, reelembrar a ação do gate Hadamard em n qubits. O leitor pode verificar facilmente que a ação do gate em um qubit puro $$\ket{0}$$ ou $$\ket{1}$$ é
@@ -155,19 +156,13 @@ Portanto, teremos 1 como probabilidade se $$f$$ for constante e 0 se $$f$$ for b
 
 
 ### Referências
-I. Qiskit - Lecture 2.1 Simple Quantum Algoritms 1 [YouTube] https://www.youtube.com/watch?v=WYAUh-4K5E0&list=PLOFEBzvs-VvqJwybFxkTiDzhf5E11p8BI&index=3 acessado em 06/01/2023
+I. Qiskit - Lecture 2.1 Simple Quantum Algoritms 1 [YouTube] https://www.youtube.com/watch?v=WYAUh-4K5E0&list=PLOFEBzvs-VvqJwybFxkTiDzhf5E11p8BI&index=3 acessado em 06/01/2023.
 
-II. Field guide on IBM. Deutsch-Jozsa algorithm, https://quantum-computing.ibm.com/composer/docs/iqx/guide/deutsch-jozsa-algorithm acessado em 06/01/2023
-
-III. [procurar uma fonte pra isso - lembro de ler em algum texto de comp.]
+II. Field guide on IBM. Deutsch-Jozsa algorithm, https://quantum-computing.ibm.com/composer/docs/iqx/guide/deutsch-jozsa-algorithm acessado em 06/01/2023.
 
 IV. Qiskit https://qiskit.org/textbook/ch-algorithms/deutsch-jozsa.html#4.4-Generalised-Circuits- acessado em 06/01/2023
 
+V. Quantum Computation 5: A Quantum Algorithm, https://youtu.be/3I3OBFlJmnE?t=164 acessado em 16/01/2023.
 
-### Futuro
-* 
-* 
-* 
-* 
 
 
