@@ -12,7 +12,7 @@ Antes da leitura desse post é recomendado um conhecimento prévio sobre gates q
 
 
 ## Introdução
-Antes de estudar o algoritmo de Deutsch-Josza iremos relembrar dois conceitos importantes para computação quântica: Oracle e o gate Hadamard em $$ n $$ dimensões
+Antes de estudar o algoritmo de Deutsch-Josza iremos relembrar dois conceitos importantes para computação quântica: Oracle e o gate Hadamard em $$ n $$ dimensões.
 #### Oracle
 Comecemos pelo conceito de Oracle: dispositivo físico misterioso no sentido de não sabermos as regras que o compõem mas podemos interagir com ele através de queries as quais ele nos retornará respostas. 
 Um dos objetivos principais no estudo de Oracles é conseguir respostas relevantes utilizando a quantidade minima de consultas (ou queries) possível.
@@ -23,7 +23,7 @@ $$
 O_f\ket{x}\ket{y} = \ket{x}\ket{y\oplus f(x)}
 $$
 
-O Oracle não pode ser uma simples função $$f(x)$$ porque este deve possuir uma inversa. Para mais detalhes, você pode assistir uma explicação do próprio Deutsch em [ref.V].
+O Oracle não pode ser uma simples função $$f(x)$$ porque este deve possuir uma operação inversa. Para mais detalhes, você pode assistir uma explicação do próprio Deutsch em [ref.V].
 Para facilitar, por enquanto, trabalharemos apenas com $$f:\{0,1\}^n \rightarrow \{0,1\}$$. Note que se $$f(x)=x$$, então $$O_f$$ será o gate CNOT.
 Para facilitar a notação, criaremos outro Oracle $$U_f$$ baseado em $$O_f$$ com $$y=\frac{1}{\sqrt{2}}(\ket{0}-\ket{1})$$ que recebe $$\ket{x}$$ como entrada e retorna $$U_f\ket{x}$$ independentemente de $$y$$.
 De fato, note que, com esse $$y$$ teremos,
@@ -40,8 +40,7 @@ O_f\ket{x}\ket{y} = (-1)^{f(x)}\ket{x}
 $$
 
 E portanto $$U_f$$ é um operador de fase uma vez que $$U_f\ket{x}=(-1)^{f(x)}\ket{x}$$.
-O estudo de Oracles não se restringe a este algoritmo. No algoritmo de Grover, por exemplo, este conceito também é fundamental.
-Os algoritmos de Bernstein-Vazirani e de Simon, também populares na literatura, funcionam de forma similar à este algoritmo.
+O estudo de Oracles não se restringe a este algoritmo. No algoritmo de Grover, por exemplo, este conceito também é fundamental. Os algoritmos de Bernstein-Vazirani e de Simon, também populares na literatura, funcionam de forma similar à este algoritmo.
 
 #### Hadamard gate em n dimensões
 Para iniciarmos o estudo do Algoritmo de Deutsch-Josza precisamos, por fim, reelembrar a ação do gate Hadamard em n qubits. O leitor pode verificar facilmente que a ação do gate em um qubit puro $$\ket{0}$$ ou $$\ket{1}$$ é
@@ -154,6 +153,61 @@ Neste somatório, podemos ter $$f(x)=0$$ e nesse caso $$\sum_{x \in \{0,1\}^n}{}
 
 Portanto, teremos 1 como probabilidade se $$f$$ for constante e 0 se $$f$$ for balanceada. Dessa forma descobrimos a natureza de $$f$$ rodando apenas uma vez o algoritmo cqd.
 
+### Implementação exemplo
+
+Para tornar o conceito um pouco mais concreto, podemos implementar um caso particular fornecido por Srinjoy Ganguly através de [ref.VI]. Nesta implementação foi considerado $$ n=2 $$ e um Oracle constante.
+Entretanto, para construirmos o algoritmo de Deutsch-Josza, precisamos fixar, e portanto caracterizar, um Oracle.
+Note que a vantagem deste algoritmo reside justamente no fato de não precisarmos descrever a função dentro do Oracle para saber sua natureza. Desta forma, esta implementação serve apenas como exemplo de construção de um circuito a partir do seu algoritmo.
+
+
+```
+import numpy as np
+from qiskit import QuantumCircuit, Aer, execute
+from qiskit.visualization import plot_histogram
+
+
+n = 2  # Tamanho da string de bits
+
+# Criamos nosso Oracle constante:
+const_oracle = QuantumCircuit(n+1)
+output = np.random.randint(2) # Gera um número aleatório (0 ou 1)
+if output == 1:
+    const_oracle.x(n)
+const_oracle.draw('mpl')
+
+
+# Criamos o circuito:
+dj_circuit = QuantumCircuit(n+1, n)
+
+
+# Passo 1. Colocamos os gates de Hadamard
+for qubit in range(n):
+    dj_circuit.h(qubit)
+
+# Passo 2. Adicionamos o Oracle no circuito
+dj_circuit.compose(const_oracle, inplace=True) 
+dj_circuit.barrier()
+
+# Passo 3. Colocamos novamente os gates de Hadamard
+for qubit in range(n):
+    dj_circuit.h(qubit)
+dj_circuit.barrier()
+
+# Passo 4. Medição no circuito
+for i in range(n):
+    dj_circuit.measure(i, i)
+
+# Simulação
+backend = Aer.get_backend('qasm_simulator')
+job = execute(dj_circuit, backend, shots=1000)
+result = job.result()
+
+# Resultados
+counts = result.get_counts(dj_circuit)
+print("\nTotal counts are:",counts)
+plot_histogram(counts)
+
+```
 
 
 ### Referências
@@ -161,9 +215,11 @@ I. Qiskit - Lecture 2.1 Simple Quantum Algoritms 1 [YouTube] https://www.youtube
 
 II. Field guide on IBM. Deutsch-Jozsa algorithm, https://quantum-computing.ibm.com/composer/docs/iqx/guide/deutsch-jozsa-algorithm acessado em 06/01/2023.
 
-IV. Qiskit https://qiskit.org/textbook/ch-algorithms/deutsch-jozsa.html#4.4-Generalised-Circuits- acessado em 06/01/2023
+IV. Qiskit https://qiskit.org/textbook/ch-algorithms/deutsch-jozsa.html#4.4-Generalised-Circuits- acessado em 06/01/2023.
 
 V. Quantum Computation 5: A Quantum Algorithm, https://youtu.be/3I3OBFlJmnE?t=164 acessado em 16/01/2023.
+
+VI. Curso da Udemy (Instrutor Srinjoy Ganguly): Quantum Computing with IBM Qiskit Ultimate Masterclass. Seção 32: Deutsch-Jozsa Algorithm with Qiskit. https://www.udemy.com/course/quantum-computing-with-ibm-qiskit-ultimate-masterclass/learn/lecture/27731102#overview acessado em 23/01/2023.
 
 
 
