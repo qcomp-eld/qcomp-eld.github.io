@@ -91,11 +91,11 @@ from qiskit.visualization import *
 provider = IBMQ.load_account()
 simulator=Aer.get_backend('qasm_simulator')
 
-qi=QuantumRegister(8)
-qb=QuantumRegister(2)
-qo=QuantumRegister(3)
-v=QuantumRegister(1)
-c=ClassicalRegister(4)
+qi=QuantumRegister(8) #Armazena os inputs
+qb=QuantumRegister(2) #Agem como buffers para cálculos intermediários 
+qo=QuantumRegister(3) #Armazena os outputs
+v=QuantumRegister(1) #Indica se o input é válido
+c=ClassicalRegister(4) #Mede os outputs
 
 circuit=QuantumCircuit(qi,qb,qo,v,c)
 
@@ -118,7 +118,7 @@ def or4(qc,q0,q1,q2,q3,b1,b2,q4):
     qc.reset(b1)
     qc.reset(b2)
 
-circuit.x(qi[2])  #aqui estamos colocando 2 como input
+circuit.x(qi[2])  #Aqui estamos colocando 2 como input
 
 or4(circuit,qi[4],qi[5],qi[6],qi[7],qb[0],qb[1],qo[2])
 or4(circuit,qi[2],qi[3],qi[6],qi[7],qb[0],qb[1],qo[1])
@@ -153,13 +153,13 @@ from qiskit.visualization import *
 provider = IBMQ.load_account()
 simulator=Aer.get_backend('qasm_simulator')
 
-qi=QuantumRegister(4)
-qs=QuantumRegister(2)
-qb=QuantumRegister(2)
-qe=QuantumRegister(4)
-qxs=QuantumRegister(2)
-qo=QuantumRegister(1)
-c=ClassicalRegister(1)
+qi=QuantumRegister(4) #Armazena os inputs
+qs=QuantumRegister(2) #Armazena os sinais de controle
+qb=QuantumRegister(2) #Buffer para cálculos intermediários
+qe=QuantumRegister(4) #Buffer extra para cálculos intermediários
+qxs=QuantumRegister(2) #Armazena sinais de controle invertidos
+qo=QuantumRegister(1) #Armazena outputs
+c=ClassicalRegister(1) #Usado para medição dos outputs
 
 circuit=QuantumCircuit(qi,qs,qb,qe,qxs,qo,c)
 
@@ -194,10 +194,9 @@ def or4(qc,q0,q1,q2,q3,b1,b2,q4):
 circuit.x(qi[0])
 circuit.x(qi[2])
 circuit.x(qi[3])
+circuit.x(qs[1]) #Bits de controle
 
-#Control signal
-circuit.x(qs[1])
-
+#Fazendo uma cópia do input e invertendo-o
 for i in range(0,2):
     circuit.cx(qs[i],qxs[i])
     circuit.x(qxs[i])
@@ -229,15 +228,14 @@ from qiskit.compiler import transpile, assemble
 from qiskit.tools.jupyter import *
 from qiskit.visualization import *
 
-
 provider = IBMQ.load_account()
 simulator=Aer.get_backend('qasm_simulator')
 
-qi=QuantumRegister(3)
-qb=QuantumRegister(1)
-qx=QuantumRegister(3)
-qo=QuantumRegister(8)
-c=ClassicalRegister(8)
+qi=QuantumRegister(3) #Armazena inputs
+qb=QuantumRegister(1) #Age como buffer para cálculos intermediários
+qx=QuantumRegister(3) #Armazena inputs invertidos para cálculos
+qo=QuantumRegister(8) #Armazena outputs
+c=ClassicalRegister(8) #Usado para medição dos outputs
 
 circuit=QuantumCircuit(qi,qx,qb,qo,c)
 
@@ -254,11 +252,12 @@ def or3(qc,q0,q1,q2,b,q3):
     fun_or(qc,b,q2,q3)
     qc.reset(b)
 
-#Input:
+#Input 111:
 circuit.x(qi[2])
 circuit.x(qi[1])
 circuit.x(qi[0])
 
+#Faz uma cópia do input e inverte este
 for i in range(0,3):
     circuit.cx(qi[i]),qx[i])
     circuit.x(qx[i])
@@ -307,12 +306,12 @@ from qiskit.visualization import *
 provider = IBMQ.load_account()
 simulator=Aer.get_backend('qasm_simulator')
 
-qi=QuantumRegister(1)
-qs=QuantumRegister(2)
-qxs=QuantumRegister(2)
-qb=QuantumRegister(1)
-qo=QuantumRegister(4)
-c=ClassicalRegister(4)
+qi=QuantumRegister(1) #Armazena os inputs
+qs=QuantumRegister(2) #Armazena os sinais de controle
+qxs=QuantumRegister(2) #Buffer para cálculos intermediários
+qb=QuantumRegister(1) #Armazena sinais de controle invertidos
+qo=QuantumRegister(4) #Armazena outputs
+c=ClassicalRegister(4) #Usados para medição dos outputs
 
 circuit=QuantumCircuit(qi,qb,qs,qxs,qo,c)
 

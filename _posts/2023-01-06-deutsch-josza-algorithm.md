@@ -7,14 +7,14 @@ categories: teoria computacao-quântica educativo
 usemathjax: true
 ---
 
-Neste artigo iremos introduzir, a partir de [ref.I], um dos primeiros algoritmos quânticos criados. Embora não tenha muita aplicação prática, este é simples e fornece um ótimo exemplo de como trabalhar com computação quântica exclusivamente em teoria, o que, de fato, é útil estando na era NISQ. Conforme [ref.II], o algoritmo de Deutsch-Josza também serve para demonstrar a importância de permitir que amplitudes quânticas assumam valores positivos e negativos, em oposição às amplitudes clássicas que são sempre não negativas. 
+Neste artigo iremos introduzir, a partir de [ref.I], um dos primeiros algoritmos quânticos criados. Embora não tenha muita aplicação prática, este é simples e fornece um ótimo exemplo de como trabalhar com computação quântica exclusivamente em teoria, o que, de fato, é útil estando na era NISQ (Noisy Intermediate-Scale Quantum, que refere-se a época onde temos poucos qubits disponíveis e controle imperfeito destes). Conforme [ref.II], o algoritmo de Deutsch-Josza também serve para demonstrar a importância de permitir que amplitudes quânticas assumam valores positivos e negativos, em oposição às amplitudes clássicas que são sempre não negativas. 
 Antes da leitura desse post é recomendado um conhecimento prévio sobre gates quânticos.
 
 
 ## Introdução
-Antes de estudar o algoritmo de Deutsch-Josza iremos relembrar dois conceitos importantes para computação quântica: Oracle e o gate Hadamard em n dimensões
+Antes de estudar o algoritmo de Deutsch-Josza iremos relembrar dois conceitos importantes para computação quântica: Oracle e o gate Hadamard em $$ n $$ dimensões
 #### Oracle
-Comecemos pelo conceito de Oracle: dispositivo físico misterioso no sentido de não sabermos as regras que o compoem mas podemos interagir com ele através de queries as quais ele nos retornará respostas. 
+Comecemos pelo conceito de Oracle: dispositivo físico misterioso no sentido de não sabermos as regras que o compõem mas podemos interagir com ele através de queries as quais ele nos retornará respostas. 
 Um dos objetivos principais no estudo de Oracles é conseguir respostas relevantes utilizando a quantidade minima de consultas (ou queries) possível.
 Qualquer ação em bits, em um computador clássico, pode ser representada através de uma função $$f:\{0,1\}^n \rightarrow \{0,1\}^m$$. Dessa forma nosso Oracle será, por exemplo, a função $$f$$.
 Em computação quântica, analogamente, pediremos que nosso Oracle seja reversível e o usaremos diretamente no circuito através do gate simples $$O_f$$ que age através de um gate, isto é, dados dois qubits $$x$$ e $$y$$:
@@ -41,6 +41,7 @@ $$
 
 E portanto $$U_f$$ é um operador de fase uma vez que $$U_f\ket{x}=(-1)^{f(x)}\ket{x}$$.
 O estudo de Oracles não se restringe a este algoritmo. No algoritmo de Grover, por exemplo, este conceito também é fundamental.
+Os algoritmos de Bernstein-Vazirani e de Simon, também populares na literatura, funcionam de forma similar à este algoritmo.
 
 #### Hadamard gate em n dimensões
 Para iniciarmos o estudo do Algoritmo de Deutsch-Josza precisamos, por fim, reelembrar a ação do gate Hadamard em n qubits. O leitor pode verificar facilmente que a ação do gate em um qubit puro $$\ket{0}$$ ou $$\ket{1}$$ é
