@@ -5,9 +5,580 @@
     <description>Grupo de Estudos de Computação Quântica</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 16 Dec 2022 15:37:19 -0300</pubDate>
-    <lastBuildDate>Fri, 16 Dec 2022 15:37:19 -0300</lastBuildDate>
+    <pubDate>Tue, 24 Jan 2023 10:49:25 -0300</pubDate>
+    <lastBuildDate>Tue, 24 Jan 2023 10:49:25 -0300</lastBuildDate>
     <generator>Jekyll v4.3.1</generator>
+    
+      <item>
+        <title>Algoritmo de Deutsch-Josza</title>
+        <description>&lt;p&gt;Neste artigo iremos introduzir, a partir de [ref.I], um dos primeiros algoritmos quânticos criados. Embora não tenha muita aplicação prática, este é simples e fornece um ótimo exemplo de como trabalhar com computação quântica exclusivamente em teoria, o que, de fato, é útil estando na era NISQ (Noisy Intermediate-Scale Quantum, que refere-se a época onde temos poucos qubits disponíveis e controle imperfeito destes). Conforme [ref.II], o algoritmo de Deutsch-Josza também serve para demonstrar a importância de permitir que amplitudes quânticas assumam valores positivos e negativos, em oposição às amplitudes clássicas que são sempre não negativas. 
+Antes da leitura desse post é recomendado um conhecimento prévio sobre gates quânticos.&lt;/p&gt;
+
+&lt;h2 id=&quot;introdução&quot;&gt;Introdução&lt;/h2&gt;
+&lt;p&gt;Antes de estudar o algoritmo de Deutsch-Josza iremos relembrar dois conceitos importantes para computação quântica: Oracle e o gate Hadamard em \(n\) dimensões.&lt;/p&gt;
+&lt;h4 id=&quot;oracle&quot;&gt;Oracle&lt;/h4&gt;
+&lt;p&gt;Comecemos pelo conceito de Oracle: dispositivo físico misterioso no sentido de não sabermos as regras que o compõem mas podemos interagir com ele através de queries as quais ele nos retornará respostas. 
+Um dos objetivos principais no estudo de Oracles é conseguir respostas relevantes utilizando a quantidade minima de consultas (ou queries) possível.
+Qualquer ação em bits, em um computador clássico, pode ser representada através de uma função \(f:\{0,1\}^n \rightarrow \{0,1\}^m\). Dessa forma nosso Oracle será, por exemplo, a função \(f\).
+Em computação quântica, analogamente, pediremos que nosso Oracle seja reversível e o usaremos diretamente no circuito através do gate simples \(O_f\) que age através de um gate, isto é, dados dois qubits \(x\) e \(y\):&lt;/p&gt;
+
+\[O_f\ket{x}\ket{y} = \ket{x}\ket{y\oplus f(x)}\]
+
+&lt;p&gt;O Oracle não pode ser uma simples função \(f(x)\) porque este deve possuir uma operação inversa. Para mais detalhes, você pode assistir uma explicação do próprio Deutsch em [ref.V].
+Para facilitar, por enquanto, trabalharemos apenas com \(f:\{0,1\}^n \rightarrow \{0,1\}\). Note que se \(f(x)=x\), então \(O_f\) será o gate CNOT.
+Para facilitar a notação, criaremos outro Oracle \(U_f\) baseado em \(O_f\) com \(y=\frac{1}{\sqrt{2}}(\ket{0}-\ket{1})\) que recebe \(\ket{x}\) como entrada e retorna \(U_f\ket{x}\) independentemente de \(y\).
+De fato, note que, com esse \(y\) teremos,&lt;/p&gt;
+
+\[O_f\ket{x}\ket{y} = \frac{1}{\sqrt{2}}(\ket{x}\otimes  \ket{(\ket{0}-\ket{1})\oplus f(x)}) = \frac{1}{\sqrt{2}}(\ket{x}\otimes \ket{(\ket{0}\oplus f(x)-\ket{1}\oplus f(x))})\]
+
+&lt;p&gt;que é igual \(\ket{x} \ket{y}\) no caso em que \(f(x)=0\) e \(-\ket{x} \ket{y}\) no caso em que \(f(x)=1\)
+Logo,&lt;/p&gt;
+
+\[O_f\ket{x}\ket{y} = (-1)^{f(x)}\ket{x}\]
+
+&lt;p&gt;E portanto \(U_f\) é um operador de fase uma vez que \(U_f\ket{x}=(-1)^{f(x)}\ket{x}\).
+O estudo de Oracles não se restringe a este algoritmo. No algoritmo de Grover, por exemplo, este conceito também é fundamental. Os algoritmos de Bernstein-Vazirani e de Simon, também populares na literatura, funcionam de forma similar à este algoritmo.&lt;/p&gt;
+
+&lt;h4 id=&quot;hadamard-gate-em-n-dimensões&quot;&gt;Hadamard gate em n dimensões&lt;/h4&gt;
+&lt;p&gt;Para iniciarmos o estudo do Algoritmo de Deutsch-Josza precisamos, por fim, reelembrar a ação do gate Hadamard em n qubits. O leitor pode verificar facilmente que a ação do gate em um qubit puro \(\ket{0}\) ou \(\ket{1}\) é&lt;/p&gt;
+
+\[H\ket{x} = \frac{1}{\sqrt{2}}(\ket{0}+(-1)^x \ket{1})\]
+
+&lt;p&gt;com \(x = 1\) ou \(x = 0\). Daí:&lt;/p&gt;
+
+\[H\ket{x} = \frac{1}{\sqrt{2}}\sum_{k \in \{0,1\}}{}(-1)^{kx}\ket{k}\]
+
+&lt;p&gt;Para \(x \in \{0,1\}^n\) teremos:&lt;/p&gt;
+
+\[H^{\otimes n}\ket{x} = \frac{1}{\sqrt{2^n}}\sum_{k \in \{0,1\}^n}{}(-1)^{k*x}\ket{k}\]
+
+&lt;p&gt;Onde \(*\) denota o produto interno usual. Por exemplo, se \(n=3\) e \(\ket{x}=\ket{010}\) teremos:&lt;/p&gt;
+
+\[H^{\otimes 3}\ket{010} = \ket{+} \otimes \ket{-} \otimes \ket{+}\]
+
+\[= \frac{1}{\sqrt{2}}(\ket{0}+\ket{1}) \otimes \frac{1}{\sqrt{2}}(\ket{0}-\ket{1}) \otimes \frac{1}{\sqrt{2}}(\ket{0}+\ket{1})\]
+
+\[= \frac{1}{\sqrt{2^3}}\{(\ket{00}-\ket{01}+\ket{10}-\ket{11}) \otimes (\ket{0}+\ket{1})\}\]
+
+\[= \frac{1}{\sqrt{2^3}}\{\ket{000}+\ket{001}-\ket{010}-\ket{011}+\ket{100}+\ket{101}-\ket{110}-\ket{111}\}\]
+
+\[= \frac{1}{\sqrt{2^3}}\sum_{k \in \{0,1\}^3}{}(-1)^{k*(010)}\ket{k}\]
+
+&lt;p&gt;Onde foi aplicado o gate de Hadamard para cada um dos qubits 0,1 e 0, e a soma é para todo \(k\) da forma \(ijk\) com \(i,j,k \in \{0,1\}\)&lt;/p&gt;
+
+&lt;h2 id=&quot;o-algoritmo-de-deutsch-josza&quot;&gt;O Algoritmo de Deutsch-Josza&lt;/h2&gt;
+&lt;p&gt;Seja \(f:\{0,1\}^n \rightarrow \{0,1\}\) performado por um Oracle tal que \(f(x)\) seja constante (\(f(x)=0\) ou \(f(x)=1\) para todo \(x \in \{0,1\}^n\)) ou balanceado (nesse caso teremos \(f(x)=1\) e \(f(y)=0\) por algum \(x\) e \(y\) \(\in \{0,1\}^n\)). 
+Nosso objetivo é descobrir se \(f\) é constante ou balanceada. Para isso, o melhor que poderiamos fazer usando computação clássica é chamar, pelo menos, duas vezes o Oracle e caso as respostas sejam diferentes poderiamos afirmar que \(f\) é balanceada. Entretanto, no pior dos casos, teriamos que fazer \(\frac{N}{2}+1=2^{n-1}+1\) consultas para detectar a natureza da função, onde \(n\) é a quantidade de bits de entrada e \(N=2^n\) é a quantidade total de strings obtidas por estes.
+O algoritmo de Deutsch-Josza nos fornece uma forma onde somente 1 consulta é necessária utilizando por causa do fenômeno de superposição.
+O circuito quântico, em n=4, que implementa o algoritmo de Deutsch-Josza é:
+&lt;img src=&quot;/assets/images/deutsch-josza-algorithm/dj_circuit.png&quot; alt=&quot;Gate-DJ&quot; /&gt;
+Fonte: Qiskit, refIV. O gate Oracle está representando nosso gate \(U_f\) construido.&lt;/p&gt;
+
+&lt;p&gt;Iremos analisar passo-a-passo o funcionamento do circuito para \(n\) qualquer.
+Inicialmente teremos como entrada o estado puro \(\ket{00..0}\) onde temos \(n\) zeros. Nesse caso teremos o estado inicial&lt;/p&gt;
+
+\[\ket{\psi_0}=\ket{0}^{\otimes n}\]
+
+&lt;p&gt;Após a aplicação dos gates Hadamard teremos, conforme mostrado na introdução:&lt;/p&gt;
+
+\[\ket{\psi_1} = H^{\otimes n}\ket{\psi_0} = \frac{1}{\sqrt{2^n}}\sum_{x \in \{0,1\}^n}{}(-1)^{x*\psi_0}\ket{x} = \frac{1}{\sqrt{2^n}}\sum_{x \in \{0,1\}^n}{}\ket{x}\]
+
+&lt;p&gt;Onde a última igualdade foi obtida porque \(\ket{\psi_0}=\ket{00...0}\). Aplicando nosso Oracle teremos:&lt;/p&gt;
+
+\[\ket{\psi_2} = U_f\ket{\psi_1} = \frac{1}{\sqrt{2^n}}\sum_{x \in \{0,1\}^n}{}U_f\ket{x} = \frac{1}{\sqrt{2^n}}\sum_{x \in \{0,1\}^n}{}(-1)^{f(x)}\ket{x}\]
+
+&lt;p&gt;Por fim, aplicando Hadamard novamente:&lt;/p&gt;
+
+\[\ket{\psi_3} = H^{\otimes n}\ket{\psi_2} = \frac{1}{\sqrt{2^n}}\sum_{x \in \{0,1\}^n}{}(-1)^{f(x)}H^{\otimes n}\ket{x}\]
+
+\[= \frac{1}{2^n}\sum_{x \in \{0,1\}^n}{}(-1)^{f(x)}\sum_{k \in \{0,1\}^n}(-1)^{k*x}{}\ket{k}\]
+
+\[=\sum_{k \in \{0,1\}^n}{} \{\frac{1}{2^n}\sum_{x \in \{0,1\}^n}{}(-1)^{f(x)+ k*x}\}\ket{k}\]
+
+&lt;p&gt;Definimos então o termo \(\frac{1}{2^n}\sum_{x \in \{0,1\}^n}{}(-1)^{f(x)+ k*x}\) como \(c_k\) e portanto&lt;/p&gt;
+
+\[\ket{\psi_3} = \sum_{k \in \{0,1\}^n}{}c_k \ket{k}\]
+
+&lt;p&gt;Logo, os termos \(c_k\) determinarão as probabilidades de medir o estado \(\ket{00...0}\). De fato:&lt;/p&gt;
+
+\[P[output=00...0] = |\braket{00...0|\psi_3}|^2 = |\sum_{k \in \{0,1\}^n}{}c_k\braket{00...0|k}|^2 = |c_{00...0}|^2\]
+
+&lt;p&gt;que será igual a 1 se \(k=00...0\) e 0 caso contrário (pela ortogonalidade). Logo,&lt;/p&gt;
+
+\[P[output=00...0] = |\frac{1}{2^n}\sum_{x \in \{0,1\}^n}{}(-1)^{f(x)}|^2\]
+
+&lt;p&gt;Neste somatório, podemos ter \(f(x)=0\) e nesse caso \(\sum_{x \in \{0,1\}^n}{}(-1)^{f(x)} = 2^n\). Podemos ter também \(f(x)=1\) e daí: \(\sum_{x \in \{0,1\}^n}{}(-1)^{f(x)} = -2^n\) ou, por fim, se \(f\) for balanceada então os termos se cancelam e teriamos zero como resultado.&lt;/p&gt;
+
+&lt;p&gt;Portanto, teremos 1 como probabilidade se \(f\) for constante e 0 se \(f\) for balanceada. Dessa forma descobrimos a natureza de \(f\) rodando apenas uma vez o algoritmo cqd.&lt;/p&gt;
+
+&lt;h3 id=&quot;implementação-exemplo&quot;&gt;Implementação exemplo&lt;/h3&gt;
+
+&lt;p&gt;Para tornar o conceito um pouco mais concreto, podemos implementar um caso particular fornecido por Srinjoy Ganguly através de [ref.VI]. Nesta implementação foi considerado \(n=2\) e um Oracle constante.
+Entretanto, para construirmos o algoritmo de Deutsch-Josza, precisamos fixar, e portanto caracterizar, um Oracle.
+Note que a vantagem deste algoritmo reside justamente no fato de não precisarmos descrever a função dentro do Oracle para saber sua natureza. Desta forma, esta implementação serve apenas como exemplo de construção de um circuito a partir do seu algoritmo.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import numpy as np
+from qiskit import QuantumCircuit, Aer, execute
+from qiskit.visualization import plot_histogram
+
+
+n = 2  # Tamanho da string de bits
+
+# Criamos nosso Oracle constante:
+const_oracle = QuantumCircuit(n+1)
+output = np.random.randint(2) # Gera um número aleatório (0 ou 1)
+if output == 1:
+    const_oracle.x(n)
+const_oracle.draw(&apos;mpl&apos;)
+
+
+# Criamos o circuito:
+dj_circuit = QuantumCircuit(n+1, n)
+
+
+# Passo 1. Colocamos os gates de Hadamard
+for qubit in range(n):
+    dj_circuit.h(qubit)
+
+# Passo 2. Adicionamos o Oracle no circuito
+dj_circuit.compose(const_oracle, inplace=True) 
+dj_circuit.barrier()
+
+# Passo 3. Colocamos novamente os gates de Hadamard
+for qubit in range(n):
+    dj_circuit.h(qubit)
+dj_circuit.barrier()
+
+# Passo 4. Medição no circuito
+for i in range(n):
+    dj_circuit.measure(i, i)
+
+# Simulação
+backend = Aer.get_backend(&apos;qasm_simulator&apos;)
+job = execute(dj_circuit, backend, shots=1000)
+result = job.result()
+
+# Resultados
+counts = result.get_counts(dj_circuit)
+print(&quot;\nTotal counts are:&quot;,counts)
+plot_histogram(counts)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;referências&quot;&gt;Referências&lt;/h3&gt;
+&lt;p&gt;I. Qiskit - Lecture 2.1 Simple Quantum Algoritms 1 [YouTube] https://www.youtube.com/watch?v=WYAUh-4K5E0&amp;amp;list=PLOFEBzvs-VvqJwybFxkTiDzhf5E11p8BI&amp;amp;index=3 acessado em 06/01/2023.&lt;/p&gt;
+
+&lt;p&gt;II. Field guide on IBM. Deutsch-Jozsa algorithm, https://quantum-computing.ibm.com/composer/docs/iqx/guide/deutsch-jozsa-algorithm acessado em 06/01/2023.&lt;/p&gt;
+
+&lt;p&gt;IV. Qiskit https://qiskit.org/textbook/ch-algorithms/deutsch-jozsa.html#4.4-Generalised-Circuits- acessado em 06/01/2023.&lt;/p&gt;
+
+&lt;p&gt;V. Quantum Computation 5: A Quantum Algorithm, https://youtu.be/3I3OBFlJmnE?t=164 acessado em 16/01/2023.&lt;/p&gt;
+
+&lt;p&gt;VI. Curso da Udemy (Instrutor Srinjoy Ganguly): Quantum Computing with IBM Qiskit Ultimate Masterclass. Seção 32: Deutsch-Jozsa Algorithm with Qiskit. https://www.udemy.com/course/quantum-computing-with-ibm-qiskit-ultimate-masterclass/learn/lecture/27731102#overview acessado em 23/01/2023.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 06 Jan 2023 07:00:00 -0300</pubDate>
+        <link>http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2023/01/06/deutsch-josza-algorithm.html</link>
+        <guid isPermaLink="true">http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2023/01/06/deutsch-josza-algorithm.html</guid>
+        
+        
+        <category>teoria</category>
+        
+        <category>computacao-quântica</category>
+        
+        <category>educativo</category>
+        
+      </item>
+    
+      <item>
+        <title>Exemplo de Codificador e Multiplexador Quânticos</title>
+        <description>&lt;p&gt;Nesse artigo iremos introduzir dois dispositivos quânticos que simulam a ação de um codificador binário 8:3 e um multiplexador 4:1 utilizando como orientação o artigo [ref.I]. A generalização n:m desses dispositivos pode ser facilmente construída e caso o leitor se interesse a referência I mostra alguns detalhes. 
+É importante pontuar que embora usemos a palavra “quântica” estes dispositivos não dependem de qualquer fenômeno quântico. Os gates que realizam a função dos dispositivos clássicos são substituidos por composições simples de gates quânticos e portanto podem ser simulados em ferramentas como o IBM Quantum Composer.
+Antes da leitura desse post é recomendado um conhecimento prévio em gates quânticos e clássicos.&lt;/p&gt;
+
+&lt;h2 id=&quot;codificador-e-multiplexador&quot;&gt;Codificador e Multiplexador&lt;/h2&gt;
+&lt;p&gt;Um codificador é um dispositivo que é utilizado para transformar dados de entrada X em dados de saída Y de acordo com certas regras. O decodificador, por outro lado, faz o caminho inverso levando os dados Y em X. Como o nome sugere, um conjunto de entrada é codificado de forma que apenas decodificadores podem recuperar os dados iniciais. O leitor pode perceber o quão importante é o estudo desses dispositivos não apenas em criptografia ou compiladores mas para a computação em geral, como processamento de informação. Um exemplo de codificador é o binário que transforma números em cadeias de bits.&lt;/p&gt;
+
+&lt;p&gt;Um multiplexador é um dispositivo que recebe como entrada dados de diversos canais e retorna, através de controladores (bits), estes dados em apenas um canal otimizando, geralmente, o tratamento dos dados posteriormente. O demultiplexador realiza a operação inversa, recebe como entrada os dados através de um canal e distribui a saida em vários canais.
+Conforme esperado, em computação clássica essas operações são realizadas através de circuitos, gates e bits. Em computação quântica desejamos que ocorra o mesmo. Neste artigo introduziremos esses dispositivos clássicos e construiremos os análogos quânticos usando como referência os artigos listados na referência através do Qiskit.&lt;/p&gt;
+
+&lt;h3 id=&quot;codificador-binário-83&quot;&gt;Codificador binário 8:3&lt;/h3&gt;
+
+&lt;p&gt;Utilizaremos como exemplo o codificador binário com inputs entre 0 e \(N\). Logo, teremos \(log_2 (N+1) = K\) linhas de saída. Se \(N = 7\), por exemplo, \(K = 3\) e precisaremos de 3 bits para descrever o número a ser codificado. Seguindo esse exemplo, escreveremos essa cadeia como XYZ com X,Y e Z sendo 0 ou 1.
+Notemos imediatamente que XYZ = 000 quando a entrada for 0. Por outro lado, Z será 1 para as entradas 1, 3, 5 ou 7. Y será 1 quando as entradas forem 2, 3, 6 ou 7 e por fim, X será 1 quando as entradas forem 4, 5, 6 ou 7. Deste sistema com 4 equações, notamos que precisaremos de pelo menos 4 gates OR.
+Utilizando gates quânticos em dimensão 2, o gate OR pode ser escrito como uma composição de gates X com um gate de Toffoli:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/gate_or.png&quot; alt=&quot;Gate-OR&quot; /&gt;
+Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
+
+&lt;p&gt;De fato, podemos ver que este gate representa o gate clássico OR através das respectivas tabelas verdade:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/00.png&quot; alt=&quot;00&quot; /&gt;
+Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/01.png&quot; alt=&quot;01&quot; /&gt;
+Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/10.png&quot; alt=&quot;10&quot; /&gt;
+Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/11.png&quot; alt=&quot;11&quot; /&gt;
+Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
+
+&lt;p&gt;Onde o primeiro bit da tabela de probabilidades, ou o último qubit no Composer (q[2]), é a resposta da operação. Uma implementação em Python usando o Qiskit está presente em [ref.I].&lt;/p&gt;
+
+&lt;p&gt;O IBM Quantum Composer não nos fornece uma ferramenta direta para trabalharmos com mais de 7 qubtis. Para implementar o codificador binário, teremos que programar no IBM Quantum Lab. Uma implementação em Python utilizando o Qiskit e o IBMQ podem ser encontradas em [ref.I]. A construção do circuito codificador binário 8:3 fica, conforme [ref.I]:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/encoderfinal.png&quot; alt=&quot;encoder&quot; /&gt;
+Fonte: Narula, Hridey &amp;amp; Behera, Bikash &amp;amp; Panigrahi, Prasanta. (2020). Implementing Quantum Data Processing Circuits Using IBM Quantum Experience Platform. 10.13140/RG.2.2.36062.38729&lt;/p&gt;
+
+&lt;p&gt;Onde as linhas q16 correspondem aos inputs, q18 os outputs, q17 e q19 à qubits auxiliares usados como buffer e validação. Aparentemente, foram utilizados 16 qubits (e não 8) porque queriam preservar os valores de entrada.
+Para realizar testes nesse sistema, basta acessar o IBM Quantum Lab com sua conta, criar um projeto .ipynb e executar o código do apêndice I. O input n que você quiser testar deve ser escrito na parte “circuit.x(qi[2])” onde, nesse caso, n=2.&lt;/p&gt;
+
+&lt;h3 id=&quot;multiplexador-41&quot;&gt;Multiplexador 4:1&lt;/h3&gt;
+
+&lt;p&gt;Para implementar um multiplexer precisaremos das portas quânticas que reproduzem o efeito das portas clássicas OR e AND. Entretanto, a porta OR já foi estudada na seção anterior e a porta AND é equivalente, em questão de tabela verdade, a porta Toffoli desde que o target qubit seja 0. De fato, fixando o terceiro qubit de entrada como zero no Qiskit:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/000.png&quot; alt=&quot;000&quot; /&gt;
+Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/010.png&quot; alt=&quot;010&quot; /&gt;
+Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/100.png&quot; alt=&quot;100&quot; /&gt;
+Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/110.png&quot; alt=&quot;110&quot; /&gt;
+Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
+
+&lt;p&gt;Para fixar o terceiro qubit como 0 podemos usar uma estrutura condicional que flipe o qubit caso este seja 1. Dessa forma nosso “AND quântico” fica:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/quantum_and.png&quot; alt=&quot;Gate-AND&quot; /&gt;
+Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
+
+&lt;p&gt;Da mesma forma que o codificador, não podemos implementar um multiplexador no IBM Quantum Composer. Uma implementação deste está presente no apêndice II e segue o mesmo passo-a-passo (i.e. utilizando o IBMQ Lab) do codificador. O circuito, caso tivessemos 16 qubits, ficaria:
+&lt;img src=&quot;/assets/images/encoders-multiplexers/mux.png&quot; alt=&quot;multiplexer&quot; /&gt;
+Fonte: Narula, Hridey &amp;amp; Behera, Bikash &amp;amp; Panigrahi, Prasanta. (2020). Implementing Quantum Data Processing Circuits Using IBM Quantum Experience Platform. 10.13140/RG.2.2.36062.38729&lt;/p&gt;
+
+&lt;p&gt;Resta construir o decodificador e o demultiplexador. Entretanto, estes só dependem das portas já construídas e portanto, em teoria, basta apenas substitui-las. O decodificador por exemplo só usa portas OR e NOT. A implementação, bem como os circuitos destes, estão detalhados em [ref.I] e o código nos apêndices III e IV.&lt;/p&gt;
+
+&lt;h5 id=&quot;apêndice-i-uma-implementação-para-o-codificador-binário-83&quot;&gt;Apêndice I: Uma implementação para o codificador binário 8:3&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%matplotlib inline
+
+from qiskit import QuantumCircuit, execute, Aer, IBMQ, QuantumRegister, ClassicalRegister
+from qiskit.compiler import transpile, assemble
+from qiskit.tools.jupyter import *
+from qiskit.visualization import *
+
+
+provider = IBMQ.load_account()
+simulator=Aer.get_backend(&apos;qasm_simulator&apos;)
+
+qi=QuantumRegister(8) #Armazena os inputs
+qb=QuantumRegister(2) #Agem como buffers para cálculos intermediários 
+qo=QuantumRegister(3) #Armazena os outputs
+v=QuantumRegister(1) #Indica se o input é válido
+c=ClassicalRegister(4) #Mede os outputs
+
+circuit=QuantumCircuit(qi,qb,qo,v,c)
+
+def fun_or(qc,q0,q1,q2):
+    qc.x(q0)
+    qc.x(q1)
+    qc.ccx(q0,q1,q2)
+    qc.x(q2)
+    qc.x(q1)
+    qc.x(q0)
+
+def or3(qc,q0,q1,q2,b,q3):
+    fun_or(qc,q0,q1,b)
+    fun_or(qc,b,q2,q3)
+    qc.reset(b)
+
+def or4(qc,q0,q1,q2,q3,b1,b2,q4):
+    or3(qc,q0,q1,q2,b1,b2)
+    fun_or(qc,b2,q3,q4)
+    qc.reset(b1)
+    qc.reset(b2)
+
+circuit.x(qi[2])  #Aqui estamos colocando 2 como input
+
+or4(circuit,qi[4],qi[5],qi[6],qi[7],qb[0],qb[1],qo[2])
+or4(circuit,qi[2],qi[3],qi[6],qi[7],qb[0],qb[1],qo[1])
+or4(circuit,qi[1],qi[5],qi[3],qi[7],qb[0],qb[1],qo[0])
+or4(circuit,qi[0],qo[0],qo[1],qo[2],qb[0],qb[1],v[0])
+
+circuit.measure(v[0],c[3])
+circuit.measure(qo[2],c[2])
+circuit.measure(qo[1],c[1])
+circuit.measure(qo[0],c[0])
+
+job=execute(circuit,simulator,shots=100)
+result=job.result()
+counts=result.get_counts(circuit)
+
+print(counts)
+#circuit.draw()
+#plot_histogram(counts)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;apêndice-ii-uma-implementação-para-o-multiplexador-41&quot;&gt;Apêndice II: Uma implementação para o multiplexador 4:1&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%matplotlib inline
+
+from qiskit import QuantumCircuit, execute, Aer, IBMQ, QuantumRegister, ClassicalRegister
+from qiskit.compiler import transpile, assemble
+from qiskit.tools.jupyter import *
+from qiskit.visualization import *
+
+
+provider = IBMQ.load_account()
+simulator=Aer.get_backend(&apos;qasm_simulator&apos;)
+
+qi=QuantumRegister(4) #Armazena os inputs
+qs=QuantumRegister(2) #Armazena os sinais de controle
+qb=QuantumRegister(2) #Buffer para cálculos intermediários
+qe=QuantumRegister(4) #Buffer extra para cálculos intermediários
+qxs=QuantumRegister(2) #Armazena sinais de controle invertidos
+qo=QuantumRegister(1) #Armazena outputs
+c=ClassicalRegister(1) #Usado para medição dos outputs
+
+circuit=QuantumCircuit(qi,qs,qb,qe,qxs,qo,c)
+
+def fun_or(qc,q0,q1,q2):
+    qc.x(q0)
+    qc.x(q1)
+    qc.ccx(q0,q1,q2)
+    qc.x(q2)
+    qc.x(q1)
+    qc.x(q0)
+
+def or3(qc,q0,q1,q2,b,q3):
+    fun_or(qc,q0,q1,b)
+    fun_or(qc,b,q2,q3)
+    qc.reset(b)
+
+def fun_and(qc,q0,q1,q2):
+    qc.ccx(q0,q1,q2)
+
+def and3(qc,q0,q1,q2,b,q3):
+    fun_and(qc,q0,q1,b)
+    fun_and(qc,b,q2,q3)
+    qc.reset(b)
+
+def or4(qc,q0,q1,q2,q3,b1,b2,q4):
+    or3(qc,q0,q1,q2,b1,b2)
+    fun_or(qc,b2,q3,q4)
+    qc.reset(b1)
+    qc.reset(b2)
+
+#Input
+circuit.x(qi[0])
+circuit.x(qi[2])
+circuit.x(qi[3])
+circuit.x(qs[1]) #Bits de controle
+
+#Fazendo uma cópia do input e invertendo-o
+for i in range(0,2):
+    circuit.cx(qs[i],qxs[i])
+    circuit.x(qxs[i])
+
+and3(circuit,qxs[0],qxs[1],qi[0],qb[0],qe[0])
+and3(circuit,qs[0],qxs[1],qi[1],qb[0],qe[1])
+and3(circuit,qxs[0],qs[1],qi[2],qb[0],qe[2])
+and3(circuit,qs[0],qs[1],qi[3],qb[0],qe[3])
+or4(circuit,qe[0],qe[1],qe[2],qe[3],qb[0],qb[1],qo[0])
+
+circuit.measure(qo[0],c[0])
+
+job=execute(circuit,simulator,shots=100)
+result=job.result()
+counts=result.get_counts(circuit)
+
+print(counts)
+#circuit.draw()
+#plot_histogram(counts)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;apêndice-iii-uma-implementação-para-o-decodificador-38&quot;&gt;Apêndice III: Uma implementação para o decodificador 3:8&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%matplotlib inline
+
+from qiskit import QuantumCircuit, execute, Aer, IBMQ, QuantumRegister, ClassicalRegister
+from qiskit.compiler import transpile, assemble
+from qiskit.tools.jupyter import *
+from qiskit.visualization import *
+
+provider = IBMQ.load_account()
+simulator=Aer.get_backend(&apos;qasm_simulator&apos;)
+
+qi=QuantumRegister(3) #Armazena inputs
+qb=QuantumRegister(1) #Age como buffer para cálculos intermediários
+qx=QuantumRegister(3) #Armazena inputs invertidos para cálculos
+qo=QuantumRegister(8) #Armazena outputs
+c=ClassicalRegister(8) #Usado para medição dos outputs
+
+circuit=QuantumCircuit(qi,qx,qb,qo,c)
+
+def fun_or(qc,q0,q1,q2):
+    qc.x(q0)
+    qc.x(q1)
+    qc.ccx(q0,q1,q2)
+    qc.x(q2)
+    qc.x(q1)
+    qc.x(q0)
+
+def or3(qc,q0,q1,q2,b,q3):
+    fun_or(qc,q0,q1,b)
+    fun_or(qc,b,q2,q3)
+    qc.reset(b)
+
+#Input 111:
+circuit.x(qi[2])
+circuit.x(qi[1])
+circuit.x(qi[0])
+
+#Faz uma cópia do input e inverte este
+for i in range(0,3):
+    circuit.cx(qi[i]),qx[i])
+    circuit.x(qx[i])
+
+or3(circuit,qx[0],qx[1],qx[2],qb[0],qo[7])
+or3(circuit,qi[0],qx[1],qx[2],qb[0],qo[6])
+or3(circuit,qx[0],qi[1],qx[2],qb[0],qo[5])
+or3(circuit,qi[0],qi[1],qx[2],qb[0],qo[4])
+or3(circuit,qx[0],qx[1],qi[2],qb[0],qo[3])
+or3(circuit,qi[0],qx[1],qi[2],qb[0],qo[2])
+or3(circuit,qx[0],qi[1],qi[2],qb[0],qo[1])
+or3(circuit,qi[0],qi[1],qi[2],qb[0],qo[0])
+
+for i in range(0,8):
+    circuit.x(qo[i])
+
+circuit.measure(qo[7],c[0])
+circuit.measure(qo[6],c[1])
+circuit.measure(qo[5],c[2])
+circuit.measure(qo[4],c[3])
+circuit.measure(qo[3],c[4])
+circuit.measure(qo[2],c[5])
+circuit.measure(qo[1],c[6])
+circuit.measure(qo[0],c[7])
+
+job=execute(circuit,simulator,shots=100)
+result=job.result()
+counts=result.get_counts(circuit)
+
+print(counts)
+#circuit.draw()
+#plot_histogram(counts)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;apêndice-iv-uma-implementação-para-o-demultiplexador-14&quot;&gt;Apêndice IV: Uma implementação para o demultiplexador 1:4&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%matplotlib inline
+
+from qiskit import QuantumCircuit, execute, Aer, IBMQ, QuantumRegister, ClassicalRegister
+from qiskit.compiler import transpile, assemble
+from qiskit.tools.jupyter import *
+from qiskit.visualization import *
+
+
+provider = IBMQ.load_account()
+simulator=Aer.get_backend(&apos;qasm_simulator&apos;)
+
+qi=QuantumRegister(1) #Armazena os inputs
+qs=QuantumRegister(2) #Armazena os sinais de controle
+qxs=QuantumRegister(2) #Buffer para cálculos intermediários
+qb=QuantumRegister(1) #Armazena sinais de controle invertidos
+qo=QuantumRegister(4) #Armazena outputs
+c=ClassicalRegister(4) #Usados para medição dos outputs
+
+circuit=QuantumCircuit(qi,qb,qs,qxs,qo,c)
+
+def fun_or(qc,q0,q1,q2):
+    qc.x(q0)
+    qc.x(q1)
+    qc.ccx(q0,q1,q2)
+    qc.x(q2)
+    qc.x(q1)
+    qc.x(q0)
+
+def or3(qc,q0,q1,q2,b,q3):
+    fun_or(qc,q0,q1,b)
+    fun_or(qc,b,q2,q3)
+    qc.reset(b)
+
+def fun_and(qc,q0,q1,q2):
+    qc.ccx(q0,q1,q2)
+
+def and3(qc,q0,q1,q2,b,q3):
+    fun_and(qc,q0,q1,b)
+    fun_and(qc,b,q2,q3)
+    qc.reset(b)
+
+def or4(qc,q0,q1,q2,q3,b1,b2,q4):
+    or3(qc,q0,q1,q2,b1,b2)
+    fun_or(qc,b2,q3,q4)
+    qc.reset(b1)
+    qc.reset(b2)
+
+#Input
+circuit.x(qi[0])
+
+#Control signal
+circuit.x(qs[1])
+
+for i in range(0,2):
+    circuit.cx(qs[i],qxs[i])
+    circuit.x(qxs[i])
+
+and3(circuit,qxs[0],qxs[1],qi[0],qb[0],qo[0])
+and3(circuit,qs[0],qxs[1],qi[0],qb[0],qo[1])
+and3(circuit,qxs[0],qs[1],qi[0],qb[0],qo[2])
+and3(circuit,qs[0],qs[1],qi[0],qb[0],qo[3])
+
+circuit.measure(qo[0],c[3])
+circuit.measure(qo[1],c[2])
+circuit.measure(qo[2],c[1])
+circuit.measure(qo[3],c[0])
+
+job=execute(circuit,simulator,shots=100)
+result=job.result()
+counts=result.get_counts(circuit)
+
+print(counts)
+#circuit.draw()
+#plot_histogram(counts)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;referências&quot;&gt;Referências&lt;/h2&gt;
+&lt;p&gt;I. Narula, Hridey &amp;amp; Behera, Bikash &amp;amp; Panigrahi, Prasanta. (2020). Implementing Quantum Data Processing Circuits Using IBM Quantum Experience Platform. 10.13140/RG.2.2.36062.38729 [https://www.researchgate.net/publication/338411513_Implementing_Quantum_Data_Processing_Circuits_Using_IBM_Quantum_Experience_Platform]&lt;/p&gt;
+
+&lt;p&gt;II. Arijit Roy, Dibyendu Chatterjee and Subhasis Pal. (2012). Synthesis of Quantum Multiplexer Circuits [http://ijcsi.org/papers/IJCSI-9-1-3-67-74.pdf]&lt;/p&gt;
+
+&lt;h3 id=&quot;futuroquestionamentos&quot;&gt;Futuro/Questionamentos&lt;/h3&gt;
+&lt;ul&gt;
+  &lt;li&gt;Adicionar mais conteúdo teórico usando [ref.II]&lt;/li&gt;
+  &lt;li&gt;É possível criar um gate que flipe 1 para 0 sempre?&lt;/li&gt;
+  &lt;li&gt;Irreversibilidade https://ieeexplore.ieee.org/document/5392446&lt;/li&gt;
+  &lt;li&gt;É possível criar um multiplexador com um qubit de controle?&lt;/li&gt;
+  &lt;li&gt;Invertendo as portas como fazemos no algoritmo de Shor, produzirá os efeitos do decoder e do demux?&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Tue, 03 Jan 2023 07:00:00 -0300</pubDate>
+        <link>http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2023/01/03/encoders-and-multiplexers.html</link>
+        <guid isPermaLink="true">http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2023/01/03/encoders-and-multiplexers.html</guid>
+        
+        
+        <category>teoria</category>
+        
+        <category>computacao-quântica</category>
+        
+        <category>educativo</category>
+        
+      </item>
     
       <item>
         <title>Algoritmo de Shor</title>
