@@ -5,63 +5,27 @@
     <description>Grupo de Estudos de Computação Quântica</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 10 Jan 2023 13:30:19 -0300</pubDate>
-    <lastBuildDate>Tue, 10 Jan 2023 13:30:19 -0300</lastBuildDate>
+    <pubDate>Tue, 24 Jan 2023 10:49:25 -0300</pubDate>
+    <lastBuildDate>Tue, 24 Jan 2023 10:49:25 -0300</lastBuildDate>
     <generator>Jekyll v4.3.1</generator>
     
       <item>
-        <title>Introdução à Quantum Machine Learning</title>
-        <description>&lt;p&gt;Machine learning é um campo bem sucedido de estudo com diversas aplicações que busca encontrar padrões com base nos dados. Assim como para outras ferramentas, procurar análogos quânticos quase sempre nos fornece um aumento de performance e no minimo, algo interessante a ser meticulosamente estudado. Não obstante, temos a área de QML (quantum machine learning) que embora emergente, já tenha propostas que podem ser aplicadas na era NISQ como CQ (dados clássicos aplicados em computadores/algoritmos quânticos) que será o principal foco desse artigo. 
-A proposta desse artigo é fornecer um material inicial para o estudo quantum machine learning. Para tanto, faz-se necessário uma referência sólida e nos basearemos, principalmente, em [ref.I] e [ref.II].&lt;/p&gt;
-
-&lt;p&gt;Jogar na computação quântica dá origem a áreas interessantes de pesquisa que visam usar os princípios da mecânica quântica para aumentar o aprendizado de máquina, ou vice-versa. Nesta página, pretendemos dar a você um vislumbre do campo empolgante e em rápida mudança do aprendizado de máquina quântica de curto prazo.&lt;/p&gt;
-
-&lt;p&gt;NISQ&lt;/p&gt;
-
-&lt;p&gt;CC refere-se ao processamento de dados clássicos usando computadores clássicos, 
-mas usando algoritmos inspirados na computação quântica.&lt;/p&gt;
-
-&lt;p&gt;CQ refere-se ao processamento de dados clássicos usando algoritmos de aprendizado 
-de máquina quântica e será nosso foco.&lt;/p&gt;
-
-&lt;p&gt;QC refere-se ao processamento de dados quânticos usando algoritmos clássicos 
-de aprendizado de máquina. Esta é uma área ativa de investigação, com algoritmos 
-clássicos de aprendizado de máquina usados em muitas áreas da computação quântica, 
-como caracterização, controle e leitura de qubits&lt;/p&gt;
-
-&lt;p&gt;QQ refere-se ao processamento de dados quânticos usando algoritmos de 
-aprendizado de máquina quântica. Este é um tópico interessante, mas muito 
-ainda muito prematuro.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 10 Jan 2023 07:00:00 -0300</pubDate>
-        <link>http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2023/01/10/quantum-machine-learning.html</link>
-        <guid isPermaLink="true">http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2023/01/10/quantum-machine-learning.html</guid>
-        
-        
-        <category>teoria</category>
-        
-        <category>computacao-quântica</category>
-        
-        <category>educativo</category>
-        
-      </item>
-    
-      <item>
         <title>Algoritmo de Deutsch-Josza</title>
-        <description>&lt;p&gt;Neste artigo iremos introduzir, a partir de [ref.I], um dos primeiros algoritmos quânticos criados. Embora não tenha muita aplicação prática, este é simples e fornece um ótimo exemplo de como trabalhar com computação quântica exclusivamente em teoria, o que, de fato, é útil estando na era NISQ. Conforme [ref.II], o algoritmo de Deutsch-Josza também serve para demonstrar a importância de permitir que amplitudes quânticas assumam valores positivos e negativos, em oposição às amplitudes clássicas que são sempre não negativas. 
+        <description>&lt;p&gt;Neste artigo iremos introduzir, a partir de [ref.I], um dos primeiros algoritmos quânticos criados. Embora não tenha muita aplicação prática, este é simples e fornece um ótimo exemplo de como trabalhar com computação quântica exclusivamente em teoria, o que, de fato, é útil estando na era NISQ (Noisy Intermediate-Scale Quantum, que refere-se a época onde temos poucos qubits disponíveis e controle imperfeito destes). Conforme [ref.II], o algoritmo de Deutsch-Josza também serve para demonstrar a importância de permitir que amplitudes quânticas assumam valores positivos e negativos, em oposição às amplitudes clássicas que são sempre não negativas. 
 Antes da leitura desse post é recomendado um conhecimento prévio sobre gates quânticos.&lt;/p&gt;
 
 &lt;h2 id=&quot;introdução&quot;&gt;Introdução&lt;/h2&gt;
-&lt;p&gt;Antes de estudar o algoritmo de Deutsch-Josza iremos relembrar dois conceitos importantes para computação quântica: Oracle e o gate Hadamard em n dimensões&lt;/p&gt;
+&lt;p&gt;Antes de estudar o algoritmo de Deutsch-Josza iremos relembrar dois conceitos importantes para computação quântica: Oracle e o gate Hadamard em \(n\) dimensões.&lt;/p&gt;
 &lt;h4 id=&quot;oracle&quot;&gt;Oracle&lt;/h4&gt;
-&lt;p&gt;Comecemos pelo conceito de Oracle: dispositivo físico misterioso no sentido de não sabermos as regras que o compoem mas podemos interagir com ele através de queries as quais ele nos retornará respostas. 
+&lt;p&gt;Comecemos pelo conceito de Oracle: dispositivo físico misterioso no sentido de não sabermos as regras que o compõem mas podemos interagir com ele através de queries as quais ele nos retornará respostas. 
 Um dos objetivos principais no estudo de Oracles é conseguir respostas relevantes utilizando a quantidade minima de consultas (ou queries) possível.
-Qualquer ação em bits, em um computador clássico, pode ser [ref.III] representada através de uma função \(f:\{0,1\}^n \rightarrow \{0,1\}^m\). Dessa forma nosso Oracle será, por exemplo, a função \(f\).
+Qualquer ação em bits, em um computador clássico, pode ser representada através de uma função \(f:\{0,1\}^n \rightarrow \{0,1\}^m\). Dessa forma nosso Oracle será, por exemplo, a função \(f\).
 Em computação quântica, analogamente, pediremos que nosso Oracle seja reversível e o usaremos diretamente no circuito através do gate simples \(O_f\) que age através de um gate, isto é, dados dois qubits \(x\) e \(y\):&lt;/p&gt;
 
 \[O_f\ket{x}\ket{y} = \ket{x}\ket{y\oplus f(x)}\]
 
-&lt;p&gt;Para facilitar, por enquanto, trabalharemos apenas com \(f:\{0,1\}^n \rightarrow \{0,1\}\). Note que se \(f(x)=x\), então \(O_f\) será o gate CNOT.
+&lt;p&gt;O Oracle não pode ser uma simples função \(f(x)\) porque este deve possuir uma operação inversa. Para mais detalhes, você pode assistir uma explicação do próprio Deutsch em [ref.V].
+Para facilitar, por enquanto, trabalharemos apenas com \(f:\{0,1\}^n \rightarrow \{0,1\}\). Note que se \(f(x)=x\), então \(O_f\) será o gate CNOT.
 Para facilitar a notação, criaremos outro Oracle \(U_f\) baseado em \(O_f\) com \(y=\frac{1}{\sqrt{2}}(\ket{0}-\ket{1})\) que recebe \(\ket{x}\) como entrada e retorna \(U_f\ket{x}\) independentemente de \(y\).
 De fato, note que, com esse \(y\) teremos,&lt;/p&gt;
 
@@ -73,7 +37,7 @@ Logo,&lt;/p&gt;
 \[O_f\ket{x}\ket{y} = (-1)^{f(x)}\ket{x}\]
 
 &lt;p&gt;E portanto \(U_f\) é um operador de fase uma vez que \(U_f\ket{x}=(-1)^{f(x)}\ket{x}\).
-O estudo de Oracles não se restringe a este algoritmo. No algoritmo de Grover este conceito também é fundamental.&lt;/p&gt;
+O estudo de Oracles não se restringe a este algoritmo. No algoritmo de Grover, por exemplo, este conceito também é fundamental. Os algoritmos de Bernstein-Vazirani e de Simon, também populares na literatura, funcionam de forma similar à este algoritmo.&lt;/p&gt;
 
 &lt;h4 id=&quot;hadamard-gate-em-n-dimensões&quot;&gt;Hadamard gate em n dimensões&lt;/h4&gt;
 &lt;p&gt;Para iniciarmos o estudo do Algoritmo de Deutsch-Josza precisamos, por fim, reelembrar a ação do gate Hadamard em n qubits. O leitor pode verificar facilmente que a ação do gate em um qubit puro \(\ket{0}\) ou \(\ket{1}\) é&lt;/p&gt;
@@ -147,22 +111,70 @@ Inicialmente teremos como entrada o estado puro \(\ket{00..0}\) onde temos \(n\)
 
 &lt;p&gt;Portanto, teremos 1 como probabilidade se \(f\) for constante e 0 se \(f\) for balanceada. Dessa forma descobrimos a natureza de \(f\) rodando apenas uma vez o algoritmo cqd.&lt;/p&gt;
 
+&lt;h3 id=&quot;implementação-exemplo&quot;&gt;Implementação exemplo&lt;/h3&gt;
+
+&lt;p&gt;Para tornar o conceito um pouco mais concreto, podemos implementar um caso particular fornecido por Srinjoy Ganguly através de [ref.VI]. Nesta implementação foi considerado \(n=2\) e um Oracle constante.
+Entretanto, para construirmos o algoritmo de Deutsch-Josza, precisamos fixar, e portanto caracterizar, um Oracle.
+Note que a vantagem deste algoritmo reside justamente no fato de não precisarmos descrever a função dentro do Oracle para saber sua natureza. Desta forma, esta implementação serve apenas como exemplo de construção de um circuito a partir do seu algoritmo.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;import numpy as np
+from qiskit import QuantumCircuit, Aer, execute
+from qiskit.visualization import plot_histogram
+
+
+n = 2  # Tamanho da string de bits
+
+# Criamos nosso Oracle constante:
+const_oracle = QuantumCircuit(n+1)
+output = np.random.randint(2) # Gera um número aleatório (0 ou 1)
+if output == 1:
+    const_oracle.x(n)
+const_oracle.draw(&apos;mpl&apos;)
+
+
+# Criamos o circuito:
+dj_circuit = QuantumCircuit(n+1, n)
+
+
+# Passo 1. Colocamos os gates de Hadamard
+for qubit in range(n):
+    dj_circuit.h(qubit)
+
+# Passo 2. Adicionamos o Oracle no circuito
+dj_circuit.compose(const_oracle, inplace=True) 
+dj_circuit.barrier()
+
+# Passo 3. Colocamos novamente os gates de Hadamard
+for qubit in range(n):
+    dj_circuit.h(qubit)
+dj_circuit.barrier()
+
+# Passo 4. Medição no circuito
+for i in range(n):
+    dj_circuit.measure(i, i)
+
+# Simulação
+backend = Aer.get_backend(&apos;qasm_simulator&apos;)
+job = execute(dj_circuit, backend, shots=1000)
+result = job.result()
+
+# Resultados
+counts = result.get_counts(dj_circuit)
+print(&quot;\nTotal counts are:&quot;,counts)
+plot_histogram(counts)
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;h3 id=&quot;referências&quot;&gt;Referências&lt;/h3&gt;
-&lt;p&gt;I. Qiskit - Lecture 2.1 Simple Quantum Algoritms 1 [YouTube] https://www.youtube.com/watch?v=WYAUh-4K5E0&amp;amp;list=PLOFEBzvs-VvqJwybFxkTiDzhf5E11p8BI&amp;amp;index=3 acessado em 06/01/2023&lt;/p&gt;
+&lt;p&gt;I. Qiskit - Lecture 2.1 Simple Quantum Algoritms 1 [YouTube] https://www.youtube.com/watch?v=WYAUh-4K5E0&amp;amp;list=PLOFEBzvs-VvqJwybFxkTiDzhf5E11p8BI&amp;amp;index=3 acessado em 06/01/2023.&lt;/p&gt;
 
-&lt;p&gt;II. Field guide on IBM. Deutsch-Jozsa algorithm, https://quantum-computing.ibm.com/composer/docs/iqx/guide/deutsch-jozsa-algorithm acessado em 06/01/2023&lt;/p&gt;
+&lt;p&gt;II. Field guide on IBM. Deutsch-Jozsa algorithm, https://quantum-computing.ibm.com/composer/docs/iqx/guide/deutsch-jozsa-algorithm acessado em 06/01/2023.&lt;/p&gt;
 
-&lt;p&gt;III. [procurar uma fonte pra isso - lembro de ler em algum texto de comp.]&lt;/p&gt;
+&lt;p&gt;IV. Qiskit https://qiskit.org/textbook/ch-algorithms/deutsch-jozsa.html#4.4-Generalised-Circuits- acessado em 06/01/2023.&lt;/p&gt;
 
-&lt;p&gt;IV. Qiskit https://qiskit.org/textbook/ch-algorithms/deutsch-jozsa.html#4.4-Generalised-Circuits- acessado em 06/01/2023&lt;/p&gt;
+&lt;p&gt;V. Quantum Computation 5: A Quantum Algorithm, https://youtu.be/3I3OBFlJmnE?t=164 acessado em 16/01/2023.&lt;/p&gt;
 
-&lt;h3 id=&quot;futuro&quot;&gt;Futuro&lt;/h3&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;VI. Curso da Udemy (Instrutor Srinjoy Ganguly): Quantum Computing with IBM Qiskit Ultimate Masterclass. Seção 32: Deutsch-Jozsa Algorithm with Qiskit. https://www.udemy.com/course/quantum-computing-with-ibm-qiskit-ultimate-masterclass/learn/lecture/27731102#overview acessado em 23/01/2023.&lt;/p&gt;
 
 </description>
         <pubDate>Fri, 06 Jan 2023 07:00:00 -0300</pubDate>
@@ -193,7 +205,7 @@ Conforme esperado, em computação clássica essas operações são realizadas a
 &lt;h3 id=&quot;codificador-binário-83&quot;&gt;Codificador binário 8:3&lt;/h3&gt;
 
 &lt;p&gt;Utilizaremos como exemplo o codificador binário com inputs entre 0 e \(N\). Logo, teremos \(log_2 (N+1) = K\) linhas de saída. Se \(N = 7\), por exemplo, \(K = 3\) e precisaremos de 3 bits para descrever o número a ser codificado. Seguindo esse exemplo, escreveremos essa cadeia como XYZ com X,Y e Z sendo 0 ou 1.
-Notemos imediatamente que XYZ = 000 quando a entrada for 0. Por outro lado, Z será 1 para as entradas 1, 3, 5 ou 7. Y será 1 quando as entradas forem 2, 3, 6 ou 7 e por fim, X será 1 quando as entradas forem 4, 5, 6 ou 7. Deste sistema com 4 equações e 4 incógnitas, notamos instantaneamente que precisaremos de pelo menos 4 gates OR.
+Notemos imediatamente que XYZ = 000 quando a entrada for 0. Por outro lado, Z será 1 para as entradas 1, 3, 5 ou 7. Y será 1 quando as entradas forem 2, 3, 6 ou 7 e por fim, X será 1 quando as entradas forem 4, 5, 6 ou 7. Deste sistema com 4 equações, notamos que precisaremos de pelo menos 4 gates OR.
 Utilizando gates quânticos em dimensão 2, o gate OR pode ser escrito como uma composição de gates X com um gate de Toffoli:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/gate_or.png&quot; alt=&quot;Gate-OR&quot; /&gt;
@@ -213,14 +225,15 @@ Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/11.png&quot; alt=&quot;11&quot; /&gt;
 Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
 
-&lt;p&gt;Onde o último qubit (ou primeiro qubit no Composer) é a resposta da operação. Uma implementação em Python usando o Qiskit está presente em [ref.I].&lt;/p&gt;
+&lt;p&gt;Onde o primeiro bit da tabela de probabilidades, ou o último qubit no Composer (q[2]), é a resposta da operação. Uma implementação em Python usando o Qiskit está presente em [ref.I].&lt;/p&gt;
 
-&lt;p&gt;Agora poderiammos montar o codificador binário 8:3 se o IBM Quantum Composer nos fornecesse uma ferramenta direta para trabalharmos com mais de 7 qubtis. Como não é o caso, teremos que nos limitar, por enquanto, a esquemas e linhas de código. Uma implementação em Python utilizando o Qiskit e o IBM podem ser encontradas em [ref.I]. A construção do codificador binário 8:3 fica, conforme [ref.I]:&lt;/p&gt;
+&lt;p&gt;O IBM Quantum Composer não nos fornece uma ferramenta direta para trabalharmos com mais de 7 qubtis. Para implementar o codificador binário, teremos que programar no IBM Quantum Lab. Uma implementação em Python utilizando o Qiskit e o IBMQ podem ser encontradas em [ref.I]. A construção do circuito codificador binário 8:3 fica, conforme [ref.I]:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/encoderfinal.png&quot; alt=&quot;encoder&quot; /&gt;
 Fonte: Narula, Hridey &amp;amp; Behera, Bikash &amp;amp; Panigrahi, Prasanta. (2020). Implementing Quantum Data Processing Circuits Using IBM Quantum Experience Platform. 10.13140/RG.2.2.36062.38729&lt;/p&gt;
 
-&lt;p&gt;Onde as linhas q16 correspondem aos inputs, q17 os outputs, q18 e q19 à qubits auxiliares usados como buffer e validação. Foram utilizados 16 qubits porque queriam preservar os valores de entrada.&lt;/p&gt;
+&lt;p&gt;Onde as linhas q16 correspondem aos inputs, q18 os outputs, q17 e q19 à qubits auxiliares usados como buffer e validação. Aparentemente, foram utilizados 16 qubits (e não 8) porque queriam preservar os valores de entrada.
+Para realizar testes nesse sistema, basta acessar o IBM Quantum Lab com sua conta, criar um projeto .ipynb e executar o código do apêndice I. O input n que você quiser testar deve ser escrito na parte “circuit.x(qi[2])” onde, nesse caso, n=2.&lt;/p&gt;
 
 &lt;h3 id=&quot;multiplexador-41&quot;&gt;Multiplexador 4:1&lt;/h3&gt;
 
@@ -243,23 +256,314 @@ Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/assets/images/encoders-multiplexers/quantum_and.png&quot; alt=&quot;Gate-AND&quot; /&gt;
 Fonte: Autor. Utilizado o IBM Quantum Composer.&lt;/p&gt;
 
-&lt;p&gt;Da mesma forma que para o codificador, não podemos implementar um multiplexador no IBM Quantum Composer. O circuito, caso tivessemos 16 qubits, ficaria:
+&lt;p&gt;Da mesma forma que o codificador, não podemos implementar um multiplexador no IBM Quantum Composer. Uma implementação deste está presente no apêndice II e segue o mesmo passo-a-passo (i.e. utilizando o IBMQ Lab) do codificador. O circuito, caso tivessemos 16 qubits, ficaria:
 &lt;img src=&quot;/assets/images/encoders-multiplexers/mux.png&quot; alt=&quot;multiplexer&quot; /&gt;
 Fonte: Narula, Hridey &amp;amp; Behera, Bikash &amp;amp; Panigrahi, Prasanta. (2020). Implementing Quantum Data Processing Circuits Using IBM Quantum Experience Platform. 10.13140/RG.2.2.36062.38729&lt;/p&gt;
 
-&lt;p&gt;Note que uma vez criado o codificador e o multiplexador, basta inverter as portas para obtermos o decodificador e o demultiplexador. Estes são detalhados em [ref.I].&lt;/p&gt;
+&lt;p&gt;Resta construir o decodificador e o demultiplexador. Entretanto, estes só dependem das portas já construídas e portanto, em teoria, basta apenas substitui-las. O decodificador por exemplo só usa portas OR e NOT. A implementação, bem como os circuitos destes, estão detalhados em [ref.I] e o código nos apêndices III e IV.&lt;/p&gt;
+
+&lt;h5 id=&quot;apêndice-i-uma-implementação-para-o-codificador-binário-83&quot;&gt;Apêndice I: Uma implementação para o codificador binário 8:3&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%matplotlib inline
+
+from qiskit import QuantumCircuit, execute, Aer, IBMQ, QuantumRegister, ClassicalRegister
+from qiskit.compiler import transpile, assemble
+from qiskit.tools.jupyter import *
+from qiskit.visualization import *
+
+
+provider = IBMQ.load_account()
+simulator=Aer.get_backend(&apos;qasm_simulator&apos;)
+
+qi=QuantumRegister(8) #Armazena os inputs
+qb=QuantumRegister(2) #Agem como buffers para cálculos intermediários 
+qo=QuantumRegister(3) #Armazena os outputs
+v=QuantumRegister(1) #Indica se o input é válido
+c=ClassicalRegister(4) #Mede os outputs
+
+circuit=QuantumCircuit(qi,qb,qo,v,c)
+
+def fun_or(qc,q0,q1,q2):
+    qc.x(q0)
+    qc.x(q1)
+    qc.ccx(q0,q1,q2)
+    qc.x(q2)
+    qc.x(q1)
+    qc.x(q0)
+
+def or3(qc,q0,q1,q2,b,q3):
+    fun_or(qc,q0,q1,b)
+    fun_or(qc,b,q2,q3)
+    qc.reset(b)
+
+def or4(qc,q0,q1,q2,q3,b1,b2,q4):
+    or3(qc,q0,q1,q2,b1,b2)
+    fun_or(qc,b2,q3,q4)
+    qc.reset(b1)
+    qc.reset(b2)
+
+circuit.x(qi[2])  #Aqui estamos colocando 2 como input
+
+or4(circuit,qi[4],qi[5],qi[6],qi[7],qb[0],qb[1],qo[2])
+or4(circuit,qi[2],qi[3],qi[6],qi[7],qb[0],qb[1],qo[1])
+or4(circuit,qi[1],qi[5],qi[3],qi[7],qb[0],qb[1],qo[0])
+or4(circuit,qi[0],qo[0],qo[1],qo[2],qb[0],qb[1],v[0])
+
+circuit.measure(v[0],c[3])
+circuit.measure(qo[2],c[2])
+circuit.measure(qo[1],c[1])
+circuit.measure(qo[0],c[0])
+
+job=execute(circuit,simulator,shots=100)
+result=job.result()
+counts=result.get_counts(circuit)
+
+print(counts)
+#circuit.draw()
+#plot_histogram(counts)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;apêndice-ii-uma-implementação-para-o-multiplexador-41&quot;&gt;Apêndice II: Uma implementação para o multiplexador 4:1&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%matplotlib inline
+
+from qiskit import QuantumCircuit, execute, Aer, IBMQ, QuantumRegister, ClassicalRegister
+from qiskit.compiler import transpile, assemble
+from qiskit.tools.jupyter import *
+from qiskit.visualization import *
+
+
+provider = IBMQ.load_account()
+simulator=Aer.get_backend(&apos;qasm_simulator&apos;)
+
+qi=QuantumRegister(4) #Armazena os inputs
+qs=QuantumRegister(2) #Armazena os sinais de controle
+qb=QuantumRegister(2) #Buffer para cálculos intermediários
+qe=QuantumRegister(4) #Buffer extra para cálculos intermediários
+qxs=QuantumRegister(2) #Armazena sinais de controle invertidos
+qo=QuantumRegister(1) #Armazena outputs
+c=ClassicalRegister(1) #Usado para medição dos outputs
+
+circuit=QuantumCircuit(qi,qs,qb,qe,qxs,qo,c)
+
+def fun_or(qc,q0,q1,q2):
+    qc.x(q0)
+    qc.x(q1)
+    qc.ccx(q0,q1,q2)
+    qc.x(q2)
+    qc.x(q1)
+    qc.x(q0)
+
+def or3(qc,q0,q1,q2,b,q3):
+    fun_or(qc,q0,q1,b)
+    fun_or(qc,b,q2,q3)
+    qc.reset(b)
+
+def fun_and(qc,q0,q1,q2):
+    qc.ccx(q0,q1,q2)
+
+def and3(qc,q0,q1,q2,b,q3):
+    fun_and(qc,q0,q1,b)
+    fun_and(qc,b,q2,q3)
+    qc.reset(b)
+
+def or4(qc,q0,q1,q2,q3,b1,b2,q4):
+    or3(qc,q0,q1,q2,b1,b2)
+    fun_or(qc,b2,q3,q4)
+    qc.reset(b1)
+    qc.reset(b2)
+
+#Input
+circuit.x(qi[0])
+circuit.x(qi[2])
+circuit.x(qi[3])
+circuit.x(qs[1]) #Bits de controle
+
+#Fazendo uma cópia do input e invertendo-o
+for i in range(0,2):
+    circuit.cx(qs[i],qxs[i])
+    circuit.x(qxs[i])
+
+and3(circuit,qxs[0],qxs[1],qi[0],qb[0],qe[0])
+and3(circuit,qs[0],qxs[1],qi[1],qb[0],qe[1])
+and3(circuit,qxs[0],qs[1],qi[2],qb[0],qe[2])
+and3(circuit,qs[0],qs[1],qi[3],qb[0],qe[3])
+or4(circuit,qe[0],qe[1],qe[2],qe[3],qb[0],qb[1],qo[0])
+
+circuit.measure(qo[0],c[0])
+
+job=execute(circuit,simulator,shots=100)
+result=job.result()
+counts=result.get_counts(circuit)
+
+print(counts)
+#circuit.draw()
+#plot_histogram(counts)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;apêndice-iii-uma-implementação-para-o-decodificador-38&quot;&gt;Apêndice III: Uma implementação para o decodificador 3:8&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%matplotlib inline
+
+from qiskit import QuantumCircuit, execute, Aer, IBMQ, QuantumRegister, ClassicalRegister
+from qiskit.compiler import transpile, assemble
+from qiskit.tools.jupyter import *
+from qiskit.visualization import *
+
+provider = IBMQ.load_account()
+simulator=Aer.get_backend(&apos;qasm_simulator&apos;)
+
+qi=QuantumRegister(3) #Armazena inputs
+qb=QuantumRegister(1) #Age como buffer para cálculos intermediários
+qx=QuantumRegister(3) #Armazena inputs invertidos para cálculos
+qo=QuantumRegister(8) #Armazena outputs
+c=ClassicalRegister(8) #Usado para medição dos outputs
+
+circuit=QuantumCircuit(qi,qx,qb,qo,c)
+
+def fun_or(qc,q0,q1,q2):
+    qc.x(q0)
+    qc.x(q1)
+    qc.ccx(q0,q1,q2)
+    qc.x(q2)
+    qc.x(q1)
+    qc.x(q0)
+
+def or3(qc,q0,q1,q2,b,q3):
+    fun_or(qc,q0,q1,b)
+    fun_or(qc,b,q2,q3)
+    qc.reset(b)
+
+#Input 111:
+circuit.x(qi[2])
+circuit.x(qi[1])
+circuit.x(qi[0])
+
+#Faz uma cópia do input e inverte este
+for i in range(0,3):
+    circuit.cx(qi[i]),qx[i])
+    circuit.x(qx[i])
+
+or3(circuit,qx[0],qx[1],qx[2],qb[0],qo[7])
+or3(circuit,qi[0],qx[1],qx[2],qb[0],qo[6])
+or3(circuit,qx[0],qi[1],qx[2],qb[0],qo[5])
+or3(circuit,qi[0],qi[1],qx[2],qb[0],qo[4])
+or3(circuit,qx[0],qx[1],qi[2],qb[0],qo[3])
+or3(circuit,qi[0],qx[1],qi[2],qb[0],qo[2])
+or3(circuit,qx[0],qi[1],qi[2],qb[0],qo[1])
+or3(circuit,qi[0],qi[1],qi[2],qb[0],qo[0])
+
+for i in range(0,8):
+    circuit.x(qo[i])
+
+circuit.measure(qo[7],c[0])
+circuit.measure(qo[6],c[1])
+circuit.measure(qo[5],c[2])
+circuit.measure(qo[4],c[3])
+circuit.measure(qo[3],c[4])
+circuit.measure(qo[2],c[5])
+circuit.measure(qo[1],c[6])
+circuit.measure(qo[0],c[7])
+
+job=execute(circuit,simulator,shots=100)
+result=job.result()
+counts=result.get_counts(circuit)
+
+print(counts)
+#circuit.draw()
+#plot_histogram(counts)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;apêndice-iv-uma-implementação-para-o-demultiplexador-14&quot;&gt;Apêndice IV: Uma implementação para o demultiplexador 1:4&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%matplotlib inline
+
+from qiskit import QuantumCircuit, execute, Aer, IBMQ, QuantumRegister, ClassicalRegister
+from qiskit.compiler import transpile, assemble
+from qiskit.tools.jupyter import *
+from qiskit.visualization import *
+
+
+provider = IBMQ.load_account()
+simulator=Aer.get_backend(&apos;qasm_simulator&apos;)
+
+qi=QuantumRegister(1) #Armazena os inputs
+qs=QuantumRegister(2) #Armazena os sinais de controle
+qxs=QuantumRegister(2) #Buffer para cálculos intermediários
+qb=QuantumRegister(1) #Armazena sinais de controle invertidos
+qo=QuantumRegister(4) #Armazena outputs
+c=ClassicalRegister(4) #Usados para medição dos outputs
+
+circuit=QuantumCircuit(qi,qb,qs,qxs,qo,c)
+
+def fun_or(qc,q0,q1,q2):
+    qc.x(q0)
+    qc.x(q1)
+    qc.ccx(q0,q1,q2)
+    qc.x(q2)
+    qc.x(q1)
+    qc.x(q0)
+
+def or3(qc,q0,q1,q2,b,q3):
+    fun_or(qc,q0,q1,b)
+    fun_or(qc,b,q2,q3)
+    qc.reset(b)
+
+def fun_and(qc,q0,q1,q2):
+    qc.ccx(q0,q1,q2)
+
+def and3(qc,q0,q1,q2,b,q3):
+    fun_and(qc,q0,q1,b)
+    fun_and(qc,b,q2,q3)
+    qc.reset(b)
+
+def or4(qc,q0,q1,q2,q3,b1,b2,q4):
+    or3(qc,q0,q1,q2,b1,b2)
+    fun_or(qc,b2,q3,q4)
+    qc.reset(b1)
+    qc.reset(b2)
+
+#Input
+circuit.x(qi[0])
+
+#Control signal
+circuit.x(qs[1])
+
+for i in range(0,2):
+    circuit.cx(qs[i],qxs[i])
+    circuit.x(qxs[i])
+
+and3(circuit,qxs[0],qxs[1],qi[0],qb[0],qo[0])
+and3(circuit,qs[0],qxs[1],qi[0],qb[0],qo[1])
+and3(circuit,qxs[0],qs[1],qi[0],qb[0],qo[2])
+and3(circuit,qs[0],qs[1],qi[0],qb[0],qo[3])
+
+circuit.measure(qo[0],c[3])
+circuit.measure(qo[1],c[2])
+circuit.measure(qo[2],c[1])
+circuit.measure(qo[3],c[0])
+
+job=execute(circuit,simulator,shots=100)
+result=job.result()
+counts=result.get_counts(circuit)
+
+print(counts)
+#circuit.draw()
+#plot_histogram(counts)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;referências&quot;&gt;Referências&lt;/h2&gt;
 &lt;p&gt;I. Narula, Hridey &amp;amp; Behera, Bikash &amp;amp; Panigrahi, Prasanta. (2020). Implementing Quantum Data Processing Circuits Using IBM Quantum Experience Platform. 10.13140/RG.2.2.36062.38729 [https://www.researchgate.net/publication/338411513_Implementing_Quantum_Data_Processing_Circuits_Using_IBM_Quantum_Experience_Platform]&lt;/p&gt;
 
 &lt;p&gt;II. Arijit Roy, Dibyendu Chatterjee and Subhasis Pal. (2012). Synthesis of Quantum Multiplexer Circuits [http://ijcsi.org/papers/IJCSI-9-1-3-67-74.pdf]&lt;/p&gt;
 
-&lt;h3 id=&quot;futuro&quot;&gt;Futuro&lt;/h3&gt;
+&lt;h3 id=&quot;futuroquestionamentos&quot;&gt;Futuro/Questionamentos&lt;/h3&gt;
 &lt;ul&gt;
   &lt;li&gt;Adicionar mais conteúdo teórico usando [ref.II]&lt;/li&gt;
   &lt;li&gt;É possível criar um gate que flipe 1 para 0 sempre?&lt;/li&gt;
   &lt;li&gt;Irreversibilidade https://ieeexplore.ieee.org/document/5392446&lt;/li&gt;
   &lt;li&gt;É possível criar um multiplexador com um qubit de controle?&lt;/li&gt;
+  &lt;li&gt;Invertendo as portas como fazemos no algoritmo de Shor, produzirá os efeitos do decoder e do demux?&lt;/li&gt;
 &lt;/ul&gt;
 
 </description>
@@ -2165,6 +2469,166 @@ Fonte: &lt;a href=&quot;https://quantum-computing.ibm.com/composer/&quot;&gt;IBM
         <pubDate>Tue, 24 May 2022 05:00:00 -0300</pubDate>
         <link>http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/05/24/portas-unicas.html</link>
         <guid isPermaLink="true">http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/05/24/portas-unicas.html</guid>
+        
+        
+        <category>teoria</category>
+        
+        <category>computacao-quântica</category>
+        
+        <category>educativo</category>
+        
+      </item>
+    
+      <item>
+        <title>O Experimento da Dupla Fenda</title>
+        <description>&lt;p&gt;Este experimento é interessante por que ilustra as diferenças entre o mundo intuitivo que temos construído e o mundo que é construído a partir dos experimentos em escala atômica.&lt;/p&gt;
+
+&lt;h3 id=&quot;o-experimento-de-young&quot;&gt;O Experimento de Young&lt;/h3&gt;
+
+&lt;p&gt;A primeira vez que se tem conhecimento que este experimento foi realizado foi por &lt;a href=&quot;https://en.wikipedia.org/wiki/Thomas_Young_(scientist)&quot;&gt;Thomas Young&lt;/a&gt; em 1801. Nesta época tinha-se o pensamento de que a luz consistia ou de ondas ou de partículas. Newton era defensor de que a luz fosse composta de partículas enquanto que Huygens defendia que a luz fosse uma onda. Thomas Young foi importante para a construção da ideia de que a luz tinha uma natureza ondular. Ja que ele demonstrou que com a luz acontecia o efeito chamado de &lt;a href=&quot;https://pt.wikipedia.org/wiki/Difra%C3%A7%C3%A3o&quot;&gt;Difração&lt;/a&gt;, um fenômeno físico que ocorre quando uma onda se deforma após encontrar um obstáculo.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/difracao_ondas_mar.jpg&quot; alt=&quot;Difração nas ondas do Mar&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://www.texasgateway.org/resource/171-understanding-diffraction-and-interference&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;Acontece então que pelo princípio de Huygens cada ponto de uma frente de onda possui a funcionalidade de uma nova fonte pontual. Neste processo, cada nova onda interage uma com as outras de forma a compor a nova frente de onda resultante. Este processo de interação é chamado &lt;em&gt;Interferência&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/500px-Refraction_on_an_aperture_-_Huygens-Fresnel_principle.svg.png&quot; alt=&quot;Difração segundo os princípios de Huygens&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://en.wikipedia.org/wiki/Huygens%E2%80%93Fresnel_principle#/media/File:Refraction_on_an_aperture_-_Huygens-Fresnel_principle.svg&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;O padrão de interferência varia conforme o tamanho da abertura em relação ao tamanho do cumprimento de onda.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/tamanhos_diferentes_abertura.jpg&quot; alt=&quot;Aberturas diferentes&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://www.texasgateway.org/resource/171-understanding-diffraction-and-interference&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/tamanho_cumprimento_onda.jpg&quot; alt=&quot;Aberturas diferentes&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://cnx.org/contents/_aXvpa21@1.100:qsjr0i21@3/Single-Slit-Diffraction&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;o-experimento&quot;&gt;O Experimento&lt;/h3&gt;
+
+&lt;p&gt;O experimento consiste em projetar um feixe de luz através de duas fendas e perceber a figura projetada em um anteparo colocado depois da fenda.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/young.jpg&quot; alt=&quot;O Experimento&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://www.texasgateway.org/resource/171-understanding-diffraction-and-interference&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;Ao invés de mostrar apenas o formato das duas fendas no anteparo, é possivel ver mais que duas figuras projetadas no fundo da caixa.&lt;/p&gt;
+
+&lt;p&gt;Se a luz fosse de pequenas unidades de matéria, estas iriam se comportar passando por uma pequena fresta ou por outra, seguindo em linha reta e apresentando o seguinte padrão no fundo da caixa.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/padrao_particula.jpg&quot; alt=&quot;Padrão de Interferência com uma única fenda&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://mybigtoe.com.br/experimento-dupla-fenda-quantica/&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;Porém, o visto é um padrão chamado de interferência, em que há posições em que acontece interferência construtiva e há posições em que acontece interferência destrutiva.&lt;/p&gt;
+
+&lt;h3 id=&quot;experimentando-a-difração&quot;&gt;Experimentando a Difração&lt;/h3&gt;
+
+&lt;p&gt;Aqui, usei este &lt;a href=&quot;https://www.openstaxcollege.org/l/28interference&quot;&gt;simulador&lt;/a&gt; na opção Diffraction para observamos as possíveis figuras projetadas. No experimento, um lazer com comprimento de onda variável é apontado para um anteparo com algumas opções de aberturas.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/unica_fenda.PNG&quot; alt=&quot;Padrão de Interferência com uma única fenda&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://www.openstaxcollege.org/l/28interference&lt;/em&gt;   &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;Podemos perceber então, um padrão em que a figura formada é muito maior que a fenda, quanto menor inclusive o tamanho da fenda maior o espalhamento da figura.
+A figura apresenta uma maior intensidade no meio e vai diminuindo sua intensidade conforme se afasta do centro, porém, existem alguns pontos em que nenhuma luz chega
+em que presumimos uma interferência negativa, ou destrutiva, aconteceu.&lt;/p&gt;
+
+&lt;p&gt;E qual seria o padrão visto no caso de haver duas fendas?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/duas_fendas_experimento.PNG&quot; alt=&quot;Padrão de Interferência com duas fendas&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://www.openstaxcollege.org/l/28interference&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;É um padrão de interferência.&lt;/p&gt;
+
+&lt;h3 id=&quot;o-experimento-mental-de-feyman&quot;&gt;O Experimento Mental de Feyman&lt;/h3&gt;
+
+&lt;p&gt;Devido a dificuldade de realizar o experimento da dupla fenda com um disparador de elétrons, Feyman, construiu um arranjo experimental didático para explicar aos seus alunos alguns conceitos da mecânica quântica. Este arranjo experimental era dito “mental” por que ainda não havia sido demonstrado em laboratório em sua versão com um único elétron.&lt;/p&gt;
+
+&lt;h4 id=&quot;o-caso-dos-projéteis&quot;&gt;O caso dos projéteis&lt;/h4&gt;
+
+&lt;p&gt;A ideia era repetir a construção de Young, uma vez utilizando um atirador de projéteis que atiraria através das fendas. As balas só ultrapassam através das fendas. Varios detectores são espalhados pelo anteparo depois das fendas. Ao final de um certo tempo em que o disparador atira projéteis, conta-se as balas em cada detector e se pode fazer uma distribuição diferentes posições é obtida.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_experimento.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: http://www.if.ufrgs.br/historia/young.html&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;Em um primeiro cenário, apenas a primeira fenda está aberta.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_cenario1.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: http://www.if.ufrgs.br/historia/young.html&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;No segundo cenário, apenas a segunda fenda está aberta.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_cenario2.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: http://www.if.ufrgs.br/historia/young.html&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;E no terceiro cenário, as duas fendas estão abertas.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bala_cenario3.gif&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: http://www.if.ufrgs.br/historia/young.html&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;Perceba que não existem regiões vagas de projéteis, em que projéteis possam não ter chegado de alguma forma. A distribuição das posições que os projéteis chegam ao anteparo final com as duas fendas abertas é percebido como a soma das distribuições de quando cada um das fendas está fechada. Entendemos que as distribuições do cenário 1 e 2 são independentes e por isso, a propabilidade de um projétil chegar em um ponto x é sempre a soma da probabilidade do projétil chegar na posição vindo pela fenda 1 com a probabilidade do projetil chegar na mesma posição vinda pela fenda 2.&lt;/p&gt;
+
+&lt;h4 id=&quot;o-caso-do-disparador-de-elétrons&quot;&gt;O caso do disparador de Elétrons&lt;/h4&gt;
+
+&lt;p&gt;Da mesma maneira, considera-se que seja possível criar um disparador de elétrons. Este disparador envia um elétron por vez. O disparador atira os elétrons através de duas fendas e sobre o aparato final existem detectores que registram em que posição o elétron o atingiu. Repetimos os mesmos três cenários do caso de projéteis. A distribuição P&lt;sub&gt;1&lt;/sub&gt; foi construída enquanto a fenda 2 estava fechada. A distribuição P&lt;sub&gt;2&lt;/sub&gt; foi construída quando a fenda 1 estava fechada. E, a distribuição P&lt;sub&gt;12&lt;/sub&gt; foi construída com as duas fendas abertas.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/electron_gun.png&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: https://quantummechanics.ucsd.edu/ph130a/130_notes/node68.html&lt;/em&gt;&lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;Acontece agora que, quando as duas fendas estão abertas, os eventos de passar por uma fenda ou outra não são mais independentes. Eventos independentes podem ser somados, o que nao acontece na distribuição P&lt;sub&gt;12&lt;/sub&gt;, ela não é a simples soma dos eventos independentes de passar por uma fenda ou passar por outra. Um ajuste matemático é necessário fazer para determinar a distribuição P&lt;sub&gt;12&lt;/sub&gt;. Aparentemente, P&lt;sub&gt;1&lt;/sub&gt; ou P&lt;sub&gt;2&lt;/sub&gt; tem componentes em si que nem sempre são positivas \(\phi\)&lt;sub&gt;1&lt;/sub&gt; e \(\phi\)&lt;sub&gt;2&lt;/sub&gt;. Algumas vezes,  estas componentes tem sinais invertidos e quando somados podem inclusive se cancelar. Desta forma P&lt;sub&gt;12&lt;/sub&gt; deve ser calculado usando o quadrado do módulo da soma entre estas componentes de maneira a fazerem os dados se ajustarem.&lt;/p&gt;
+
+&lt;p&gt;Acontece então que embora o elétron seja encontrado em uma posição pontual no anteparo, existem posições que ele nunca é atingido e também existe um alargamento da área em que o elétron alcança.&lt;/p&gt;
+
+&lt;p&gt;Lembramos que apenas um elétron por vez é disparado, e passar por uma fenda ou passar por outra fenda não são mais eventos independentes. Aparenta que de forma similar a uma onda  o elétron passou pelas duas fendas, se propagou de forma ondulatória até que chegou no anteparo. E é este fenômeno que chamamos &lt;em&gt;Superposição&lt;/em&gt;. Reparamos que o elétron esteve na sua forma ondulatória, em superposição, até chegar no anteparo, quando interagiu com o anteparo em sua forma corpuscular.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/Double_slit_experiment.gif&quot; alt=&quot;Simulação baseada na Equação de Shrodinger&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: https://en.wikipedia.org/wiki/File:Double_slit_experiment.webm&lt;/em&gt;&lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;o-caso-do-disparador-de-elétros-em-que-se-tenta-determinar-a-fenda-pelo-qual-o-elétron-passou&quot;&gt;O caso do disparador de elétros em que se tenta determinar a fenda pelo qual o elétron passou&lt;/h4&gt;
+
+&lt;p&gt;Neste caso final, uma fonte de luz é colocada depois das fendas e alguns detectores são acionados. Eles são reponsáveis por observar cada um sua fenda e determinar se o elétron passou por lá ou não. Quando um elétron passa pela fenda 1 então o detector \(D_1\) é acionado, quando o elétron passa pela fenda 2 o detector \(D_2\) é acionado.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/determinar_a_fenda.png&quot; alt=&quot;Experimento com detectores&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: https://quantummechanics.ucsd.edu/ph130a/130_notes/node68.html&lt;/em&gt;&lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;Quando repetimos os três cenários de observação, primeiro tampando a fenda 2, depois tampando a fenda 1 e por fim deixando ambas abertas o resultado é:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/eletron_observado.png&quot; alt=&quot;Experimento com detectores&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: https://quantummechanics.ucsd.edu/ph130a/130_notes/node68.html&lt;/em&gt;&lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/particula_comportamento.jpg&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt; &lt;em&gt;Ref: https://mybigtoe.com.br/experimento-dupla-fenda-quantica/&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;p&gt;O que acontece é que quando passamos a observar por qual fenda o elétron passou  o resultado é o que o padrão de interferência desaparece! Quando observamos a posição do elétron antes de chegar no anteparo, o elétron para de se comportar como onda e passa a se comportar com partícula. &lt;em&gt;Percebemos que a partícula permanece em superposição até interagir com outros objetos&lt;/em&gt;. Quando esta interação acontece chamamos de &lt;em&gt;observação&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Em mais uma disposição da experiência, a intensidade da fonte de luz é reduzida e por isso nem sempre é possível aos detectores perceber por qual fenda o elétron passou. Este caso considera quando o detector não é muito aguçado, consegue observar alguns elétrons mas não todos. O resultado é um misto entre as figuras de interfências e a de partícula.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/detector_pouco_agu%C3%A7ado.jpg&quot; alt=&quot;Experimento com projéteis&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: http://eurekabrasil.com/o-que-e-que-nao-e-mecanica-quantica/&lt;/em&gt;  &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;por-que-não-observamos-a-superposição-no-cotidiano&quot;&gt;Por que não observamos a superposição no cotidiano?&lt;/h3&gt;
+
+&lt;p&gt;O que acontece no nosso mundo cotidiano é que os corpos não estão isolados. O isolamento é parte fundamental para que a superposição aconteça. A interação faz com que conhecimento sobre as características dos corpos sejam conhecidos e a superposição se desfaz.&lt;/p&gt;
+
+&lt;h3 id=&quot;curiosidades&quot;&gt;Curiosidades&lt;/h3&gt;
+
+&lt;p&gt;Em 1927, Clinton Davisson e Lester Germer observaram a difração de feixes de eletrons através de cristal de niquel. Demostrando propriedades ondulatórias das partículas pela primeira vez. E Geroge Thomson fez o mesmo com filmes finos de celulóide e outros materiais pouco depois. Davisson e Thomson receberam o premio Nobel de 1937 “por sua descoberta experimental da difração de [feixe de] elétrons através de cristais”. Porém, nunca executaram o experimento da dupla fenda com elétrons. O que foi feito em 1961 por Claus Jönsson of Tübingen e em 1970 por Pier Giorgio Merli, Giulio Pozzi and GianFranco Missiroli em Bologna.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/dupla-fenda/bologna-image.jpg&quot; alt=&quot;Experimento realizado por Pier Giorgio Merli, Giulio Pozzi and GianFranco Missiroli em Bologna&quot; /&gt;
+&lt;sub&gt;&lt;sup&gt;&lt;em&gt;Ref: https://physicsworld.com/a/the-double-slit-experiment/&lt;/em&gt; &lt;/sup&gt;&lt;/sub&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;referências&quot;&gt;Referências&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.texasgateway.org/resource/171-understanding-diffraction-and-interference&quot;&gt;https://www.texasgateway.org/resource/171-understanding-diffraction-and-interference&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.openstaxcollege.org/l/28interference&quot;&gt;https://www.openstaxcollege.org/l/28interference&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://eurekabrasil.com/o-que-e-que-nao-e-mecanica-quantica/&quot;&gt;http://eurekabrasil.com/o-que-e-que-nao-e-mecanica-quantica/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://physicsworld.com/a/the-double-slit-experiment/&quot;&gt;https://physicsworld.com/a/the-double-slit-experiment/&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Double-slit_experiment&quot;&gt;https://en.wikipedia.org/wiki/Double-slit_experiment&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://mybigtoe.com.br/experimento-dupla-fenda-quantica/&quot;&gt;https://mybigtoe.com.br/experimento-dupla-fenda-quantica/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</description>
+        <pubDate>Tue, 10 May 2022 11:24:00 -0300</pubDate>
+        <link>http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/05/10/o-experimento-da-dupla-fenda.html</link>
+        <guid isPermaLink="true">http://localhost:4000/teoria/computacao-qu%C3%A2ntica/educativo/2022/05/10/o-experimento-da-dupla-fenda.html</guid>
         
         
         <category>teoria</category>

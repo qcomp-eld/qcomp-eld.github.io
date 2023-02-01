@@ -88,7 +88,7 @@ Onde foi aplicado o gate de Hadamard para cada um dos qubits 0,1 e 0, e a soma �
 
 
 ## O Algoritmo de Deutsch-Josza
-Seja $$f:\{0,1\}^n \rightarrow \{0,1\}$$ performado por um Oracle tal que $$f(x)$$ seja constante ($$f(x)=0$$ ou $$f(x)=1$$ para todo $$x \in \{0,1\}^n$$) ou balanceado (nesse caso teremos $$f(x)=1$$ e $$f(y)=0$$ por algum $$x$$ e $$y$$ $$\in \{0,1\}^n$$). 
+Seja $$f:\{0,1\}^n \rightarrow \{0,1\}$$ performado por um Oracle tal que $$f(x)$$ seja constante ($$f(x)=0$$ ou $$f(x)=1$$ para todo $$x \in \{0,1\}^n$$) ou balanceado (nesse caso teremos $$f(x)=1$$ e $$f(y)=0$$ por alguns $$x$$ e $$y$$ $$\in \{0,1\}^n$$). Para a função ser considerada como balanceada, é necessário que existam a mesma quantidade de $$x$$ e $$y$$ que satisfaçam a condição.
 Nosso objetivo é descobrir se $$f$$ é constante ou balanceada. Para isso, o melhor que poderiamos fazer usando computação clássica é chamar, pelo menos, duas vezes o Oracle e caso as respostas sejam diferentes poderiamos afirmar que $$f$$ é balanceada. Entretanto, no pior dos casos, teriamos que fazer $$\frac{N}{2}+1=2^{n-1}+1$$ consultas para detectar a natureza da função, onde $$n$$ é a quantidade de bits de entrada e $$N=2^n$$ é a quantidade total de strings obtidas por estes.
 O algoritmo de Deutsch-Josza nos fornece uma forma onde somente 1 consulta é necessária utilizando por causa do fenômeno de superposição.
 O circuito quântico, em n=4, que implementa o algoritmo de Deutsch-Josza é:
