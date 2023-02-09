@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "QML 01: Data Encoding com Qiskit e Quantum Paddle"
+title:  "QML 01: Data Encoding"
 date:   2023-02-06 10:00:00
 author: luccas_marim
 categories: teoria computacao-quântica educativo
