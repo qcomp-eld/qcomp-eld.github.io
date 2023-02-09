@@ -9,7 +9,7 @@ usemathjax: true
 
 Para utilizarmos modelos de Machine Learning, precisamos primeiro representar os dados em inputs numéricos para o nosso sistema interpretá-los. Em Quantum Machine Learning (QML) também passamos por esse processo e aqui teremos um problema mais fundamental visto que estamos transformando, a príncipio, representações de objetos clássicos em quânticos. O nome mais popular na literatura deste processo é Data Encoding. 
 Conforme [ref.IV], este processo é uma parte crítica dos algoritmos de QML e afeta diretamente seu poder computacional.
-Neste artigo iremos estudar como esse processo é feito atualmente com base em nossas referências. Estudaremos os três métodos mais famosos de Data Encoding: Basis Encoding, Amplitude Encoding e Angle Encoding bem como exemplos ou direcionamentos de implementação. Para tanto, utilizaremos os frameworks fornecidos pela IBM Qiskit e Baidu Paddle Quantum. Iremos também, superficialmente, comparar os módulos.
+Neste artigo iremos estudar como esse processo é feito atualmente com base em nossas referências. Estudaremos os três métodos mais famosos de Data Encoding: Basis Encoding, Amplitude Encoding e Angle Encoding bem como exemplos ou direcionamentos de implementação. Para tanto, utilizaremos os frameworks fornecidos pela IBM Qiskit, Baidu Paddle Quantum e Xanadu PennyLane.
 O processo de Data Encoding geralmente é intuitivo e simples mas quando implementamos é diferente. Nossos dispositivos quânticos atuais tem quantidade limitada de qubits e estes são estáveis por curto período de tempo. Além disso, não há consenso em dizer qual dos métodos estudados nesse artigo é o melhor. Atualmente a escolha entre métodos depende do problema em questão.
 
 ### Introdução
@@ -381,7 +381,7 @@ print(qml.draw(circuit, expansion_strategy="device")(X))
 Esse método é diferente dos outros porque codifica apenas um ponto dos dados por vez. Segundo [ref.IV], este método é um método que pode ser utilizado com o hardware quântico atual.
 
 
-O problema de Data Encoding ainda é relevante no cenário de QML atual e existem outros métodos mais recentes como IQP Style Encoding e Hamiltonian Evolution Ansatz Encoding que não tratamos nesse artigo.
+O problema de Data Encoding ainda é relevante no cenário de QML atual e existem outros métodos criados mais recentementes como IQP Style Encoding e Hamiltonian Evolution Ansatz Encoding que não tratamos nesse artigo.
 
 ### Referências
 I. Qiskit - Lecture 5.1 Building a Quantum Classifier [YouTube] https://www.youtube.com/watch?v=-sxlXNz7ZxU&list=PLOFEBzvs-VvqJwybFxkTiDzhf5E11p8BI&index=10 .Acessado em 06/02/2023.
